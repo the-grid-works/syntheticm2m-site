@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Synthetic M2M — Automation Studio</title>
-<meta name="description" content="Synthetic M2M builds scrapers, integrations, data pipelines, and web products — fixed scope, fast turnaround, delivered working.">
+<meta name="description" content="Synthetic M2M builds software that does your busywork: scrapers, integrations, data pipelines, and web products — fixed scope, delivered working.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#05060a; --text:#f4f6fb; --muted:#8b93a7; --line:rgba(255,255,255,.08);
-    --card:rgba(255,255,255,.028); --g1:#7c6cff; --g2:#4dd6c1; --g3:#f0739b;
+    --card:rgba(255,255,255,.028); --g1:#7c6cff; --g2:#4dd6c1; --g3:#f0739b; --cyan:#00dcff;
     --radius:20px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -50,25 +50,33 @@
   @media(max-width:720px){.navlinks{display:none}}
 
   /* ---- hero ---- */
-  header{padding:190px 0 110px;text-align:center;position:relative;overflow:hidden}
-  #synapse{position:absolute;inset:0;width:100%;height:100%;z-index:0;
-    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 70%,transparent 100%);
-            mask-image:linear-gradient(180deg,#000 0%,#000 70%,transparent 100%)}
+  header{padding:170px 0 40px;text-align:center;position:relative}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);
     border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 16px;border-radius:99px;margin-bottom:28px}
   .pill .pulse{width:7px;height:7px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 0 #4dd6c1aa;animation:pulse 2s infinite}
   @keyframes pulse{70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
-  h1{font-size:clamp(42px,7vw,78px);line-height:1.04;font-weight:800;letter-spacing:-.035em;max-width:900px;margin:0 auto 24px}
-  h1 .grad{background:linear-gradient(92deg,#00dcff 0%,var(--g2) 55%,var(--g1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,220,255,.35))}
-  .sub{font-size:19px;color:var(--muted);max-width:600px;margin:0 auto 40px}
-  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  h1{font-size:clamp(40px,6.5vw,72px);line-height:1.05;font-weight:800;letter-spacing:-.035em;max-width:880px;margin:0 auto 22px}
+  h1 .grad{background:linear-gradient(92deg,var(--cyan) 0%,var(--g2) 55%,var(--g1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,220,255,.35))}
+  .sub{font-size:19px;color:var(--muted);max-width:600px;margin:0 auto 36px}
+  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
   .hero-ctas .btn{padding:14px 28px;font-size:15px}
-  .stats{display:flex;gap:0;justify-content:center;margin-top:72px;border:1px solid var(--line);border-radius:var(--radius);
-    background:rgba(255,255,255,.02);backdrop-filter:blur(8px);max-width:720px;margin-left:auto;margin-right:auto;overflow:hidden}
-  .stat{flex:1;padding:22px 12px;border-left:1px solid var(--line)}
-  .stat:first-child{border-left:0}
-  .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em}
-  .stat span{font-size:12.5px;color:var(--muted)}
+
+  /* ---- pipeline explainer ---- */
+  .pipeline-box{max-width:980px;margin:30px auto 0;border:1px solid var(--line);border-radius:24px;
+    background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.008));padding:26px 18px 10px;position:relative;overflow:hidden}
+  .pipeline-box::before{content:"";position:absolute;top:-1px;left:20%;right:20%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--g1),var(--g2),transparent)}
+  .pipe-caption{display:flex;justify-content:space-between;max-width:860px;margin:0 auto;padding:0 30px 14px;
+    font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .pipe-caption .in{color:var(--g3)} .pipe-caption .mid{color:var(--g2)} .pipe-caption .out{color:var(--cyan)}
+  svg text{font-family:"Inter",system-ui,sans-serif}
+  .flowline{stroke-dasharray:6 8;animation:flow 1.2s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-14}}
+  .core-ring{transform-origin:450px 190px;animation:spin 14s linear infinite}
+  .core-ring.r2{animation-duration:22s;animation-direction:reverse}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .core-glow{animation:coreglow 2.6s ease-in-out infinite}
+  @keyframes coreglow{0%,100%{opacity:.55}50%{opacity:1}}
 
   /* ---- sections ---- */
   section{padding:96px 0;position:relative}
@@ -76,6 +84,57 @@
     background:linear-gradient(92deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px}
   h2{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
   .lead{color:var(--muted);font-size:17px;max-width:560px;margin-bottom:52px}
+
+  /* ---- how it works (animated steps) ---- */
+  .hiw{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .hiw-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:26px;position:relative;overflow:hidden}
+  .hiw-card .num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--g2);display:block;margin-bottom:12px}
+  .hiw-card h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
+  .hiw-card p{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+  .stage{height:150px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.25);position:relative;overflow:hidden;padding:14px}
+
+  /* step 1: chat typing */
+  .bubble{max-width:85%;padding:9px 13px;border-radius:12px;font-size:12.5px;line-height:1.45;opacity:0;transform:translateY(8px)}
+  .bubble.user{background:rgba(124,108,255,.16);border:1px solid rgba(124,108,255,.35);border-bottom-left-radius:4px;margin-bottom:8px}
+  .bubble.reply{background:rgba(77,214,193,.12);border:1px solid rgba(77,214,193,.3);border-bottom-right-radius:4px;margin-left:auto}
+  .play .bubble.user{animation:bubbin .5s ease forwards .2s}
+  .play .bubble.reply{animation:bubbin .5s ease forwards 1.6s}
+  @keyframes bubbin{to{opacity:1;transform:none}}
+  .dots{display:inline-flex;gap:4px;margin-left:2px}
+  .dots i{width:5px;height:5px;border-radius:50%;background:var(--g2);opacity:.3;animation:dot 1s infinite}
+  .dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+  @keyframes dot{40%{opacity:1}}
+
+  /* step 2: build progress */
+  .blocks{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px}
+  .blocks b{height:26px;border-radius:6px;background:linear-gradient(135deg,rgba(124,108,255,.35),rgba(77,214,193,.3));
+    border:1px solid rgba(124,108,255,.4);opacity:0;transform:scale(.6)}
+  .play .blocks b{animation:blockin .4s cubic-bezier(.2,1.4,.4,1) forwards}
+  .play .blocks b:nth-child(1){animation-delay:.1s}.play .blocks b:nth-child(2){animation-delay:.25s}
+  .play .blocks b:nth-child(3){animation-delay:.4s}.play .blocks b:nth-child(4){animation-delay:.55s}
+  .play .blocks b:nth-child(5){animation-delay:.7s}.play .blocks b:nth-child(6){animation-delay:.85s}
+  .play .blocks b:nth-child(7){animation-delay:1s}.play .blocks b:nth-child(8){animation-delay:1.15s}
+  .play .blocks b:nth-child(9){animation-delay:1.3s}.play .blocks b:nth-child(10){animation-delay:1.45s}
+  .play .blocks b:nth-child(11){animation-delay:1.6s}.play .blocks b:nth-child(12){animation-delay:1.75s}
+  @keyframes blockin{to{opacity:1;transform:none}}
+  .pbar{height:8px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+  .pbar span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--g1),var(--g2))}
+  .play .pbar span{animation:fill 2.2s ease forwards .2s}
+  @keyframes fill{to{width:100%}}
+  .pdone{font-size:11.5px;color:var(--g2);margin-top:8px;font-family:"JetBrains Mono",monospace;opacity:0}
+  .play .pdone{animation:bubbin .4s ease forwards 2.3s}
+
+  /* step 3: notifications while sleeping */
+  .notif{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);
+    border-radius:11px;padding:8px 11px;font-size:12px;margin-bottom:8px;opacity:0;transform:translateX(30px)}
+  .notif .ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;
+    background:linear-gradient(135deg,rgba(124,108,255,.25),rgba(77,214,193,.2))}
+  .play .notif:nth-child(1){animation:notifin .45s ease forwards .3s}
+  .play .notif:nth-child(2){animation:notifin .45s ease forwards 1s}
+  .play .notif:nth-child(3){animation:notifin .45s ease forwards 1.7s}
+  @keyframes notifin{to{opacity:1;transform:none}}
+  .moon{position:absolute;top:10px;right:12px;font-size:16px;opacity:.7;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-4px)}}
 
   /* spotlight cards */
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
@@ -92,18 +151,12 @@
   .card .go{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:14px;font-weight:600;color:var(--g2)}
   .card .go svg{transition:transform .25s}
   .card .go:hover svg{transform:translateX(4px)}
-  .card .icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
-    background:linear-gradient(135deg,rgba(124,108,255,.18),rgba(77,214,193,.14));border:1px solid var(--line)}
-  .card .icon svg{width:21px;height:21px;stroke:url(#ic-grad)}
 
-  /* process */
-  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
-  .step{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:28px}
-  .step .num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--g2);margin-bottom:14px;display:block}
-  .step b{display:block;font-size:16.5px;margin-bottom:8px;letter-spacing:-.01em}
-  .step p{color:var(--muted);font-size:14px}
+  ul.svc{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  ul.svc li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:15px}
+  ul.svc li b{display:block;margin-bottom:3px}
+  ul.svc li span{color:var(--muted);font-size:13.5px}
 
-  /* CTA band */
   .band{border:1px solid var(--line);border-radius:28px;padding:72px 32px;text-align:center;position:relative;overflow:hidden;
     background:linear-gradient(180deg,rgba(124,108,255,.10),rgba(77,214,193,.05) 60%,transparent)}
   .band::before{content:"";position:absolute;top:-1px;left:15%;right:15%;height:1px;
@@ -114,15 +167,16 @@
   footer{padding:52px 0 64px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
   .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 
-  /* reveal on scroll */
   .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
   .rv.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.orb{animation:none}}
+  @media(prefers-reduced-motion:reduce){
+    .rv{opacity:1;transform:none}
+    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i{animation:none!important}
+    .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
+  }
 </style>
 </head>
 <body>
-
-<svg width="0" height="0" aria-hidden="true"><defs><linearGradient id="ic-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c6cff"/><stop offset="100%" stop-color="#4dd6c1"/></linearGradient></defs></svg>
 
 <div class="bgfx"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
 <div class="grid-lines"></div>
@@ -130,36 +184,128 @@
 <nav>
   <a class="brand" href="#top"><span class="dot"></span>Synthetic&nbsp;M2M</a>
   <div class="navlinks">
-    <a href="#work">Work</a><a href="#services">Services</a><a href="#process">Process</a>
+    <a href="#how">How it works</a><a href="#work">Live products</a><a href="#services">Services</a>
   </div>
   <a class="btn primary" href="mailto:sales@syntheticm2m.com">Get a quote</a>
 </nav>
 
 <header id="top">
-  <canvas id="synapse" aria-hidden="true"></canvas>
-  <div class="wrap" style="position:relative;z-index:2">
+  <div class="wrap">
     <div class="pill rv"><span class="pulse"></span>Available for new projects</div>
-    <h1 class="rv">Software that runs your busywork <span class="grad">while you sleep.</span></h1>
-    <p class="sub rv">A small automation studio. Scrapers, integrations, data pipelines, dashboards, and lightweight web products — fixed scope, fast turnaround, delivered working.</p>
+    <h1 class="rv">Your busywork goes in.<br><span class="grad">Finished work comes out.</span></h1>
+    <p class="sub rv">We build the software in the middle: scrapers, integrations, data pipelines, dashboards, and document automation — running 24/7 so you don't have to.</p>
     <div class="hero-ctas rv">
       <a class="btn primary" href="mailto:sales@syntheticm2m.com">Start a project</a>
-      <a class="btn ghost" href="#work">See live work
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <a class="btn ghost" href="#how">See how it works
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
       </a>
     </div>
-    <div class="stats rv">
-      <div class="stat"><b>24/7</b><span>products running live</span></div>
-      <div class="stat"><b>Fixed</b><span>scope &amp; price, in writing</span></div>
-      <div class="stat"><b>~$0</b><span>monthly hosting we hand you</span></div>
+
+    <!-- animated pipeline explainer -->
+    <div class="pipeline-box rv" aria-label="Animation: messy inputs flow into the automation core and come out as finished results">
+      <svg viewBox="0 0 900 380" width="100%" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f0739b"/><stop offset="50%" stop-color="#4dd6c1"/><stop offset="100%" stop-color="#00dcff"/>
+          </linearGradient>
+          <radialGradient id="coreg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#4dd6c1" stop-opacity=".55"/><stop offset="100%" stop-color="#4dd6c1" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- flow paths -->
+        <path id="pIn1" d="M120,110 C240,110 300,170 375,182" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
+        <path id="pIn2" d="M120,190 C230,190 300,190 372,190" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
+        <path id="pIn3" d="M120,270 C240,270 300,210 375,198" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
+        <path id="pOut1" d="M525,182 C600,170 660,110 780,110" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
+        <path id="pOut2" d="M528,190 C600,190 670,190 780,190" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
+        <path id="pOut3" d="M525,198 C600,210 660,270 780,270" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
+
+        <!-- input tokens: messy docs -->
+        <g opacity=".95">
+          <g><rect x="-14" y="-10" width="28" height="20" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-14 -10 L0 2 L14 -10" fill="none" stroke="#f0739b" stroke-width="1.2"/>
+            <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#pIn1"/></animateMotion></g>
+          <g><rect x="-13" y="-13" width="26" height="26" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-13 -4 h26 M-13 5 h26 M-4 -13 v26" stroke="#f0739b" stroke-width="1" opacity=".8"/>
+            <animateMotion dur="5s" begin="1.6s" repeatCount="indefinite"><mpath href="#pIn2"/></animateMotion></g>
+          <g><rect x="-11" y="-14" width="22" height="28" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-5 -7 h10 M-5 -1 h10 M-5 5 h7" stroke="#f0739b" stroke-width="1.2"/>
+            <animateMotion dur="5s" begin="3.2s" repeatCount="indefinite"><mpath href="#pIn3"/></animateMotion></g>
+        </g>
+
+        <!-- core -->
+        <circle cx="450" cy="190" r="86" fill="url(#coreg)" class="core-glow"/>
+        <g class="core-ring"><circle cx="450" cy="190" r="62" fill="none" stroke="rgba(124,108,255,.5)" stroke-width="1.4" stroke-dasharray="10 7"/></g>
+        <g class="core-ring r2"><circle cx="450" cy="190" r="48" fill="none" stroke="rgba(77,214,193,.55)" stroke-width="1.4" stroke-dasharray="4 6"/></g>
+        <circle cx="450" cy="190" r="34" fill="#0b0e17" stroke="url(#lg)" stroke-width="1.6"/>
+        <text x="450" y="186" text-anchor="middle" font-size="11" font-weight="700" fill="#f4f6fb" letter-spacing="1">M2M</text>
+        <text x="450" y="200" text-anchor="middle" font-size="7.5" fill="#8b93a7" letter-spacing="1.5">AUTOMATION</text>
+        <text x="450" y="286" text-anchor="middle" font-size="11" fill="#4dd6c1" font-weight="600" letter-spacing="2">RUNS 24/7</text>
+
+        <!-- output tokens: clean results -->
+        <g opacity=".95">
+          <g><rect x="-14" y="-11" width="28" height="22" rx="4" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><path d="M-8 0 l4 4 l8 -9" fill="none" stroke="#00dcff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <animateMotion dur="5s" begin=".8s" repeatCount="indefinite"><mpath href="#pOut1"/></animateMotion></g>
+          <g><rect x="-14" y="-12" width="28" height="24" rx="4" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><path d="M-8 6 v-6 M-2 6 v-11 M4 6 v-4 M9 6 v-8" stroke="#00dcff" stroke-width="1.8" stroke-linecap="round"/>
+            <animateMotion dur="5s" begin="2.4s" repeatCount="indefinite"><mpath href="#pOut2"/></animateMotion></g>
+          <g><path d="M0,-11 c6,0 9,5 9,10 l3,5 h-24 l3,-5 c0,-5 3,-10 9,-10 z" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><circle cx="0" cy="8" r="2.4" fill="#00dcff"/>
+            <animateMotion dur="5s" begin="4s" repeatCount="indefinite"><mpath href="#pOut3"/></animateMotion></g>
+        </g>
+
+        <!-- end labels -->
+        <text x="120" y="70" text-anchor="middle" font-size="10.5" fill="#8b93a7">emails · PDFs · spreadsheets</text>
+        <text x="780" y="70" text-anchor="middle" font-size="10.5" fill="#8b93a7">reports · dashboards · alerts</text>
+      </svg>
+      <div class="pipe-caption">
+        <span class="in">① Busywork in</span><span class="mid">② Software does it</span><span class="out">③ Results out</span>
+      </div>
     </div>
   </div>
 </header>
+
+<section id="how">
+  <div class="wrap">
+    <span class="eyebrow rv">How it works</span>
+    <h2 class="rv">From "ugh, this again" to automated<br>in three steps.</h2>
+    <p class="lead rv">No jargon required — you describe the chore in plain English, we turn it into software.</p>
+    <div class="hiw">
+      <div class="hiw-card rv anim">
+        <span class="num">STEP 01</span>
+        <h3>Tell us the chore</h3>
+        <p>In plain words, over email or chat. That's the whole brief.</p>
+        <div class="stage">
+          <div class="bubble user">"Every Monday I copy 200 rows from our orders into a spreadsheet and email a summary to my team… it takes half my morning."</div>
+          <div class="bubble reply">Got it. We'll automate the whole loop — fixed quote coming up. <span class="dots"><i></i><i></i><i></i></span></div>
+        </div>
+      </div>
+      <div class="hiw-card rv anim">
+        <span class="num">STEP 02</span>
+        <h3>We build it</h3>
+        <p>Fixed scope in writing first. You see a working demo early — judge us fast.</p>
+        <div class="stage">
+          <div class="blocks"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+          <div class="pbar"><span></span></div>
+          <div class="pdone">✓ demo ready — staging link sent</div>
+        </div>
+      </div>
+      <div class="hiw-card rv anim">
+        <span class="num">STEP 03</span>
+        <h3>It runs while you sleep</h3>
+        <p>Deployed on infrastructure that costs almost nothing, with docs and a handover.</p>
+        <div class="stage">
+          <span class="moon">🌙</span>
+          <div class="notif"><span class="ic">📊</span>Monday summary sent to the team — 7:00 AM</div>
+          <div class="notif"><span class="ic">✅</span>214 orders processed, 0 errors</div>
+          <div class="notif"><span class="ic">📬</span>3 new leads captured &amp; replied to</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="work">
   <div class="wrap">
     <span class="eyebrow rv">Live products</span>
     <h2 class="rv">Don't take our word for it.<br>Click these.</h2>
-    <p class="lead rv">Real deployed products — not mockups — running around the clock on serverless infrastructure. We build client work the same way.</p>
+    <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
     <div class="cards">
       <div class="card rv">
         <span class="tag"><span class="pulse"></span>Live</span>
@@ -189,52 +335,14 @@
     <span class="eyebrow rv">Services</span>
     <h2 class="rv">What we build for clients</h2>
     <p class="lead rv">If it's repetitive, glue-shaped, or data-shaped — we've probably already built one.</p>
-    <div class="cards">
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6H4zM4 14h10v6H4zM18 14h2v6h-2z"/></svg></div>
-        <h3>Web scraping &amp; automation</h3>
-        <p>Data collection, form-filling bots, scheduled jobs, and workflow automation that replaces hours of copy-paste.</p>
-      </div>
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h8M12 3v6m0 6v6M5 7l4 4m6 2l4 4M19 7l-4 4M9 13l-4 4"/></svg></div>
-        <h3>API integrations</h3>
-        <p>Connect two services that don't talk to each other — webhooks, syncs, and small REST APIs that just work.</p>
-      </div>
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16v-5m5 5V8m5 8v-3m4-9l-6 4-4-3-6 5"/></svg></div>
-        <h3>Data cleaning &amp; dashboards</h3>
-        <p>Messy spreadsheets in, clean datasets out — plus live dashboards and reports that update themselves.</p>
-      </div>
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14H7zM15 3v4h4M10 12h6m-6 4h6"/></svg></div>
-        <h3>Document &amp; invoice tooling</h3>
-        <p>PDF generation, invoice systems, and template automation — documents that write themselves.</p>
-      </div>
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
-        <h3>Browser extensions</h3>
-        <p>Chrome extensions from spec to store-ready package — tools that live right where you work.</p>
-      </div>
-      <div class="card rv">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg></div>
-        <h3>Small web apps &amp; MVPs</h3>
-        <p>Landing pages to working products, deployed on infrastructure that costs almost nothing to run.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="process">
-  <div class="wrap">
-    <span class="eyebrow rv">Process</span>
-    <h2 class="rv">Fixed scope. Fast delivery.<br>No surprises.</h2>
-    <p class="lead rv">The same four-step deal, every project.</p>
-    <div class="steps">
-      <div class="step rv"><span class="num">01</span><b>Scope in writing</b><p>We agree exactly what "done" means before any money moves.</p></div>
-      <div class="step rv"><span class="num">02</span><b>Milestone first</b><p>Bigger projects start with a small paid milestone so you can judge the work early.</p></div>
-      <div class="step rv"><span class="num">03</span><b>Delivered working</b><p>Running software, setup docs, and a real handover — not a zip file and a shrug.</p></div>
-      <div class="step rv"><span class="num">04</span><b>Cheap to run</b><p>Serverless-first deployment, so your hosting bill stays near zero after we leave.</p></div>
-    </div>
+    <ul class="svc">
+      <li class="rv"><b>Web scraping &amp; automation</b><span>Data collection, form-filling bots, scheduled jobs that replace hours of copy-paste.</span></li>
+      <li class="rv"><b>API integrations</b><span>Connect two services that don't talk — webhooks, syncs, small REST APIs.</span></li>
+      <li class="rv"><b>Data cleaning &amp; dashboards</b><span>Messy spreadsheets in, clean datasets and self-updating reports out.</span></li>
+      <li class="rv"><b>Document &amp; invoice tooling</b><span>PDF generation, invoice systems, template automation.</span></li>
+      <li class="rv"><b>Browser extensions</b><span>Chrome extensions from spec to store-ready package.</span></li>
+      <li class="rv"><b>Small web apps &amp; MVPs</b><span>Landing pages to working products on near-zero-cost infrastructure.</span></li>
+    </ul>
   </div>
 </section>
 
@@ -257,91 +365,22 @@
 </footer>
 
 <script>
-  // scroll reveal
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+  // reveal on scroll; .anim cards also start their internal animations (.play)
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      if (e.target.classList.contains('anim')) e.target.classList.add('play');
+      io.unobserve(e.target);
+    }
+  }), {threshold:.25});
   document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = (i % 6) * 60 + 'ms'; io.observe(el); });
+
   // spotlight follows cursor
   document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
     const r = c.getBoundingClientRect();
     c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
     c.style.setProperty('--my', (e.clientY - r.top) + 'px');
   }));
-
-  // interactive synapse network (hero background)
-  (() => {
-    const canvas = document.getElementById('synapse');
-    if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = canvas.getContext('2d');
-    const CONNECT_R = 180, NODE_COUNT = innerWidth < 700 ? 34 : 60, TRAIL = 0.15;
-    let W, H;
-    const mouse = { x: -9999, y: -9999 };
-
-    const resize = () => {
-      const r = canvas.parentElement.getBoundingClientRect();
-      W = canvas.width = r.width; H = canvas.height = r.height;
-    };
-    resize();
-    addEventListener('resize', resize);
-    addEventListener('pointermove', e => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    });
-    addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
-
-    class Node {
-      constructor() {
-        this.x = Math.random() * W; this.y = Math.random() * H;
-        this.vx = (Math.random() - .5) * .5; this.vy = (Math.random() - .5) * .5;
-        this.r = Math.random() * 2 + 1.5; this.conn = []; this.pulses = []; this.act = 0;
-      }
-      update() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < 0 || this.x > W) this.vx *= -1;
-        if (this.y < 0 || this.y > H) this.vy *= -1;
-        const d = Math.hypot(this.x - mouse.x, this.y - mouse.y);
-        const target = Math.max(0, 1 - d / (CONNECT_R * .8));
-        this.act += (target - this.act) * .1;
-        if (this.act > .5 && Math.random() > .98 && this.conn.length) {
-          const to = this.conn[Math.floor(Math.random() * this.conn.length)];
-          this.pulses.push({ s: this, e: to, p: 0 });
-        }
-        this.pulses = this.pulses.filter(p => p.p < 1);
-        this.pulses.forEach(p => p.p += .03);
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,220,255,${Math.max(.2, this.act)})`;
-        ctx.fill();
-        this.pulses.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.s.x + (p.e.x - p.s.x) * p.p, p.s.y + (p.e.y - p.s.y) * p.p, 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(255,255,255,.95)';
-          ctx.fill();
-        });
-      }
-    }
-
-    const nodes = Array.from({ length: NODE_COUNT }, () => new Node());
-    const relink = () => nodes.forEach(a => {
-      a.conn = nodes.filter(b => b !== a && Math.hypot(a.x - b.x, a.y - b.y) < CONNECT_R);
-    });
-    relink();
-    setInterval(relink, 3000); // nodes drift, so refresh links occasionally
-
-    (function animate() {
-      ctx.fillStyle = `rgba(5,6,10,${TRAIL})`;
-      ctx.fillRect(0, 0, W, H);
-      nodes.forEach(a => a.conn.forEach(b => {
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0,220,255,${Math.max(.04, a.act, b.act) * .2})`;
-        ctx.stroke();
-      }));
-      nodes.forEach(n => { n.update(); n.draw(); });
-      requestAnimationFrame(animate);
-    })();
-  })();
 </script>
 </body>
 </html>
