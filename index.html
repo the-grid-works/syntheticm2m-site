@@ -136,6 +136,56 @@
   .moon{position:absolute;top:10px;right:12px;font-size:16px;opacity:.7;animation:bob 3s ease-in-out infinite}
   @keyframes bob{50%{transform:translateY(-4px)}}
 
+  /* ---- capabilities marquee ---- */
+  .marq{overflow:hidden;position:relative;margin:8px 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .marq .track{display:flex;gap:12px;width:max-content;animation:marq 46s linear infinite;padding:4px 0}
+  .marq.rev .track{animation-direction:reverse;animation-duration:52s}
+  .marq:hover .track{animation-play-state:paused}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  .chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text);
+    border:1px solid var(--line);background:rgba(255,255,255,.035);padding:9px 16px;border-radius:99px;white-space:nowrap;transition:.25s}
+  .chip:hover{border-color:rgba(77,214,193,.5);background:rgba(77,214,193,.08)}
+  .chip .em{font-size:14px}
+
+  /* capability cards + animated icons */
+  .capgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:38px}
+  .cap{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:24px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+  .cap:hover{border-color:rgba(255,255,255,.16);transform:translateY(-3px)}
+  .cap h3{font-size:16.5px;margin:14px 0 6px;letter-spacing:-.01em}
+  .cap p{color:var(--muted);font-size:13.5px}
+  .cap .ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(124,108,255,.18),rgba(77,214,193,.14));border:1px solid var(--line);font-size:19px}
+  .cap:hover .ico{animation:icopop .5s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes icopop{40%{transform:scale(1.25) rotate(-8deg)}}
+  .cap .ico.spin{animation:slowspin 9s linear infinite}
+  .cap .ico.bob{animation:bob 3.2s ease-in-out infinite}
+  .cap .ico.pulse2{animation:coreglow 2.8s ease-in-out infinite}
+  @keyframes slowspin{to{transform:rotate(360deg)}}
+
+  /* count-up stats */
+  .bigstats{display:flex;gap:0;justify-content:center;margin-top:52px;border:1px solid var(--line);border-radius:var(--radius);
+    background:rgba(255,255,255,.02);max-width:860px;margin-left:auto;margin-right:auto;overflow:hidden;flex-wrap:wrap}
+  .bstat{flex:1 1 190px;padding:26px 14px;border-left:1px solid var(--line);text-align:center}
+  .bstat:first-child{border-left:0}
+  .bstat b{display:block;font-size:32px;font-weight:800;letter-spacing:-.02em;
+    background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bstat span{font-size:12.5px;color:var(--muted)}
+
+  /* sweeping beam on CTA band */
+  .band .beam{position:absolute;top:-1px;height:1px;width:220px;left:-220px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:beam 4.5s linear infinite}
+  @keyframes beam{to{left:100%}}
+
+  /* services hover life */
+  ul.svc li{transition:transform .25s,border-color .25s}
+  ul.svc li:hover{transform:translateY(-3px);border-color:rgba(124,108,255,.45)}
+  ul.svc li b{position:relative;display:inline-block}
+  ul.svc li b::after{content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;border-radius:2px;
+    background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .35s}
+  ul.svc li:hover b::after{width:100%}
+
   /* spotlight cards */
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
   .card{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:30px;overflow:hidden;transition:border-color .3s,transform .3s}
@@ -171,7 +221,7 @@
   .rv.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){
     .rv{opacity:1;transform:none}
-    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i{animation:none!important}
+    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i,.marq .track,.band .beam,.cap .ico{animation:none!important}
     .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
   }
 </style>
@@ -184,7 +234,7 @@
 <nav>
   <a class="brand" href="#top"><span class="dot"></span>Synthetic&nbsp;M2M</a>
   <div class="navlinks">
-    <a href="#how">How it works</a><a href="#work">Live products</a><a href="#services">Services</a>
+    <a href="#how">How it works</a><a href="#capabilities">Capabilities</a><a href="#work">Live products</a>
   </div>
   <a class="btn primary" href="mailto:sales@syntheticm2m.com">Get a quote</a>
 </nav>
@@ -301,6 +351,80 @@
   </div>
 </section>
 
+<section id="capabilities" style="padding-top:40px">
+  <div class="wrap">
+    <span class="eyebrow rv">Capabilities</span>
+    <h2 class="rv">If it's digital and repetitive,<br>we can probably build it.</h2>
+    <p class="lead rv">A sample of what comes off our production line — every one delivered as working software with docs, for a fixed quote.</p>
+  </div>
+  <div class="marq rv">
+    <div class="track">
+      <span class="chip"><span class="em">🤖</span>AI assistant trained on your docs</span>
+      <span class="chip"><span class="em">🕷️</span>Competitor price-tracking scraper</span>
+      <span class="chip"><span class="em">🧾</span>Invoice &amp; quote PDF generator</span>
+      <span class="chip"><span class="em">🔗</span>Sync two apps that don't talk</span>
+      <span class="chip"><span class="em">📊</span>Self-updating KPI dashboard</span>
+      <span class="chip"><span class="em">📬</span>Lead capture + instant auto-reply</span>
+      <span class="chip"><span class="em">🧹</span>CRM &amp; contact-list dedupe</span>
+      <span class="chip"><span class="em">📄</span>OCR: receipts &amp; forms → spreadsheet</span>
+      <span class="chip"><span class="em">🛒</span>Shopify / WooCommerce custom features</span>
+      <span class="chip"><span class="em">⏰</span>Scheduled jobs that run in the cloud</span>
+      <span class="chip"><span class="em">🤖</span>AI assistant trained on your docs</span>
+      <span class="chip"><span class="em">🕷️</span>Competitor price-tracking scraper</span>
+      <span class="chip"><span class="em">🧾</span>Invoice &amp; quote PDF generator</span>
+      <span class="chip"><span class="em">🔗</span>Sync two apps that don't talk</span>
+      <span class="chip"><span class="em">📊</span>Self-updating KPI dashboard</span>
+      <span class="chip"><span class="em">📬</span>Lead capture + instant auto-reply</span>
+      <span class="chip"><span class="em">🧹</span>CRM &amp; contact-list dedupe</span>
+      <span class="chip"><span class="em">📄</span>OCR: receipts &amp; forms → spreadsheet</span>
+      <span class="chip"><span class="em">🛒</span>Shopify / WooCommerce custom features</span>
+      <span class="chip"><span class="em">⏰</span>Scheduled jobs that run in the cloud</span>
+    </div>
+  </div>
+  <div class="marq rev rv">
+    <div class="track">
+      <span class="chip"><span class="em">📈</span>Financial models &amp; underwriting sheets</span>
+      <span class="chip"><span class="em">🗂️</span>Messy spreadsheet → clean database</span>
+      <span class="chip"><span class="em">🔔</span>Alerts to your phone when X happens</span>
+      <span class="chip"><span class="em">🧩</span>Chrome extensions for internal tools</span>
+      <span class="chip"><span class="em">✉️</span>Automated email digests &amp; reports</span>
+      <span class="chip"><span class="em">📝</span>Content &amp; SEO article pipelines</span>
+      <span class="chip"><span class="em">🎙️</span>Text-to-speech &amp; audio integrations</span>
+      <span class="chip"><span class="em">🏷️</span>Bulk product listing &amp; catalog tools</span>
+      <span class="chip"><span class="em">📅</span>Booking systems with calendar sync</span>
+      <span class="chip"><span class="em">🌐</span>Landing pages that load instantly</span>
+      <span class="chip"><span class="em">📈</span>Financial models &amp; underwriting sheets</span>
+      <span class="chip"><span class="em">🗂️</span>Messy spreadsheet → clean database</span>
+      <span class="chip"><span class="em">🔔</span>Alerts to your phone when X happens</span>
+      <span class="chip"><span class="em">🧩</span>Chrome extensions for internal tools</span>
+      <span class="chip"><span class="em">✉️</span>Automated email digests &amp; reports</span>
+      <span class="chip"><span class="em">📝</span>Content &amp; SEO article pipelines</span>
+      <span class="chip"><span class="em">🎙️</span>Text-to-speech &amp; audio integrations</span>
+      <span class="chip"><span class="em">🏷️</span>Bulk product listing &amp; catalog tools</span>
+      <span class="chip"><span class="em">📅</span>Booking systems with calendar sync</span>
+      <span class="chip"><span class="em">🌐</span>Landing pages that load instantly</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="capgrid">
+      <div class="cap rv"><div class="ico pulse2">🤖</div><h3>AI assistants &amp; chat tools</h3><p>Answer customers, draft replies, summarize documents — assistants that know your business and work around the clock.</p></div>
+      <div class="cap rv"><div class="ico bob">🕸️</div><h3>Data collection &amp; scrapers</h3><p>Prices, listings, leads, public records — gathered on schedule and delivered as clean spreadsheets or live feeds.</p></div>
+      <div class="cap rv"><div class="ico spin">⚙️</div><h3>Workflow automation</h3><p>The multi-step chore you do every week becomes a button — or better, a schedule that presses itself.</p></div>
+      <div class="cap rv"><div class="ico bob">📊</div><h3>Dashboards &amp; reporting</h3><p>Your numbers, always current, in one place — with scheduled PDF or email reports your team actually reads.</p></div>
+      <div class="cap rv"><div class="ico pulse2">📄</div><h3>Document automation</h3><p>Invoices, proposals, contracts, labels — generated from your data in your branding, at any volume.</p></div>
+      <div class="cap rv"><div class="ico bob">🔗</div><h3>Integrations &amp; APIs</h3><p>CRM to spreadsheet, store to accounting, form to calendar — we make your tools pass work between themselves.</p></div>
+      <div class="cap rv"><div class="ico pulse2">🔔</div><h3>Monitoring &amp; alerts</h3><p>When inventory drops, a payment fails, or a competitor moves — your phone knows before you'd have noticed.</p></div>
+      <div class="cap rv"><div class="ico spin">🚀</div><h3>Web apps &amp; MVPs</h3><p>From landing page to working product with payments — deployed on infrastructure that costs pennies to run.</p></div>
+    </div>
+    <div class="bigstats rv">
+      <div class="bstat"><b data-count="10">0</b><span>systems we run in production</span></div>
+      <div class="bstat"><b>24/7</b><span>everything we ship runs itself</span></div>
+      <div class="bstat"><b data-count="100" data-suffix="%">0</b><span>fixed-scope quotes, in writing</span></div>
+      <div class="bstat"><b>~$0</b><span>monthly hosting we hand you</span></div>
+    </div>
+  </div>
+</section>
+
 <section id="work">
   <div class="wrap">
     <span class="eyebrow rv">Live products</span>
@@ -349,6 +473,7 @@
 <section>
   <div class="wrap">
     <div class="band rv">
+      <span class="beam"></span>
       <span class="eyebrow">Contact</span>
       <h2>Have a repetitive problem?<br>We'll automate it.</h2>
       <p>Tell us what eats your hours. You'll get a fixed quote and a delivery date.</p>
@@ -366,14 +491,36 @@
 
 <script>
   // reveal on scroll; .anim cards also start their internal animations (.play)
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('in');
-      if (e.target.classList.contains('anim')) e.target.classList.add('play');
-      io.unobserve(e.target);
-    }
-  }), {threshold:.25});
-  document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = (i % 6) * 60 + 'ms'; io.observe(el); });
+  const reveal = el => { el.classList.add('in'); if (el.classList.contains('anim')) el.classList.add('play'); };
+  const revealAll = () => document.querySelectorAll('.rv:not(.in)').forEach(el => { el.style.transitionDelay = '0ms'; reveal(el); });
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
+    }), {threshold:.25});
+    document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = (i % 6) * 60 + 'ms'; io.observe(el); });
+    // safety net: if the observer is broken (some webviews), the hero never reveals — show everything
+    setTimeout(() => { if (!document.querySelector('.rv.in')) revealAll(); }, 1200);
+  } else { revealAll(); }
+
+  // count-up stats
+  const countUp = el => {
+    if (el.dataset.done) return;
+    el.dataset.done = 1;
+    const target = +el.dataset.count, suf = el.dataset.suffix || '+';
+    const t0 = performance.now(), dur = 1400;
+    (function tick(t) {
+      const p = Math.min(1, (t - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * ease) + (p === 1 ? suf : '');
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  };
+  if ('IntersectionObserver' in window) {
+    const cio = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { countUp(e.target); cio.unobserve(e.target); }
+    }), {threshold:.6});
+    document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+    setTimeout(() => { if (!document.querySelector('.rv.in') || document.querySelectorAll('.rv.in').length === document.querySelectorAll('.rv').length) document.querySelectorAll('[data-count]').forEach(countUp); }, 1300);
+  } else { document.querySelectorAll('[data-count]').forEach(countUp); }
 
   // spotlight follows cursor
   document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
