@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero variants — pick one</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#05060a;--text:#f4f6fb;--muted:#8b93a7;--line:rgba(255,255,255,.1);--g1:#7c6cff;--g2:#4dd6c1;--g3:#f0739b;--cyan:#00dcff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,sans-serif;overflow-x:hidden}
+  /* switcher */
+  .switch{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+    background:rgba(10,12,20,.7);border:1px solid var(--line);border-radius:99px;padding:6px;backdrop-filter:blur(16px)}
+  .switch button{border:0;cursor:pointer;font:600 12.5px Inter;color:var(--muted);background:transparent;padding:8px 14px;border-radius:99px;transition:.2s}
+  .switch button:hover{color:var(--text)}
+  .switch button.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
+  /* shared hero shell */
+  .hero{display:none;position:relative;min-height:100vh;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:90px 24px 40px}
+  .hero.show{display:flex}
+  .inner{position:relative;z-index:5;max-width:900px}
+  h1{font-size:clamp(38px,6.5vw,70px);line-height:1.06;font-weight:800;letter-spacing:-.035em;margin-bottom:20px}
+  .sub{font-size:18px;color:var(--muted);max-width:600px;margin:0 auto 32px}
+  .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;font:600 15px Inter;padding:14px 28px;border-radius:99px;color:#fff;text-decoration:none}
+  .btn.p{background:linear-gradient(135deg,var(--g1),var(--g2));box-shadow:0 4px 24px #7c6cff59}
+  .btn.g{border:1px solid var(--line);background:rgba(255,255,255,.04)}
+  .grad{background:linear-gradient(92deg,var(--cyan),var(--g2) 55%,var(--g1));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,220,255,.3))}
+  .tagname{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:6;font:500 12px "JetBrains Mono";color:var(--muted);letter-spacing:.15em;text-transform:uppercase;border:1px solid var(--line);padding:6px 14px;border-radius:99px;background:rgba(10,12,20,.6)}
+  canvas.fx{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+
+  /* V2 aurora */
+  .aur{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;mix-blend-mode:screen;animation:aurmove 16s ease-in-out infinite alternate}
+  @keyframes aurmove{to{transform:translate(120px,60px) scale(1.25) rotate(30deg)}}
+  .aur.a1{width:55vw;height:55vw;background:radial-gradient(circle,#7c6cff77,transparent 60%);top:-15%;left:-10%}
+  .aur.a2{width:50vw;height:50vw;background:radial-gradient(circle,#00dcff55,transparent 60%);top:5%;right:-12%;animation-delay:-5s}
+  .aur.a3{width:60vw;height:60vw;background:radial-gradient(circle,#f0739b44,transparent 60%);bottom:-25%;left:15%;animation-delay:-10s}
+  .aur.a4{width:35vw;height:35vw;background:radial-gradient(circle,#4dd6c166,transparent 60%);bottom:0;right:10%;animation-delay:-2.5s;animation-duration:12s}
+
+  /* V3 tron grid */
+  .tron-wrap{position:absolute;inset:0;z-index:1;perspective:520px;overflow:hidden}
+  .tron-floor{position:absolute;left:-50%;right:-50%;bottom:-42%;height:90%;transform:rotateX(62deg);
+    background:linear-gradient(rgba(0,220,255,.28) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(0,220,255,.28) 1.5px,transparent 1.5px);
+    background-size:64px 64px;animation:floor 2.4s linear infinite;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%);mask-image:linear-gradient(180deg,transparent,#000 30%)}
+  @keyframes floor{to{background-position:0 64px,0 0}}
+  .tron-sun{position:absolute;left:50%;top:30%;transform:translateX(-50%);width:440px;height:440px;border-radius:50%;z-index:0;
+    background:radial-gradient(circle,#00dcff2e 0%,#7c6cff1c 45%,transparent 70%)}
+  .tron-hz{position:absolute;left:0;right:0;top:58%;height:2px;z-index:2;background:linear-gradient(90deg,transparent,var(--cyan),transparent);filter:blur(1px);opacity:.8}
+
+  /* V4 terminal */
+  .term{width:min(640px,92vw);margin:34px auto 0;text-align:left;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:rgba(8,10,16,.85);box-shadow:0 20px 60px rgba(0,0,0,.5);backdrop-filter:blur(6px)}
+  .term .bar{display:flex;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+  .term .bar i{width:11px;height:11px;border-radius:50%}
+  .term .bar i:nth-child(1){background:#ff5f57}.term .bar i:nth-child(2){background:#febc2e}.term .bar i:nth-child(3){background:#28c840}
+  .term pre{padding:18px;font:500 13px/1.9 "JetBrains Mono";color:#c9d4e5;white-space:pre-wrap;min-height:220px}
+  .term .c-p{color:var(--g2)} .term .c-ok{color:#28c840} .term .c-dim{color:var(--muted)}
+  .caret{display:inline-block;width:8px;height:15px;background:var(--g2);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* V5 beams */
+  .beams{position:absolute;inset:0;z-index:1}
+  .beams path{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:90 900;animation:beamdash 5.5s linear infinite}
+  @keyframes beamdash{to{stroke-dashoffset:-990}}
+
+  /* V6 bento */
+  .bento{display:grid;grid-template-columns:repeat(4,minmax(120px,160px));gap:12px;justify-content:center;margin-top:38px}
+  .tile{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035);backdrop-filter:blur(8px);padding:14px;text-align:left;position:relative;overflow:hidden;min-height:104px}
+  .tile h4{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .tile.wide{grid-column:span 2}
+  .bars{display:flex;gap:5px;align-items:flex-end;height:48px}
+  .bars b{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--g2),rgba(77,214,193,.25));transform-origin:bottom;animation:bargrow 2.4s ease-in-out infinite alternate}
+  .bars b:nth-child(1){height:40%;animation-delay:0s}.bars b:nth-child(2){height:70%;animation-delay:.2s}
+  .bars b:nth-child(3){height:52%;animation-delay:.4s}.bars b:nth-child(4){height:88%;animation-delay:.6s}
+  .bars b:nth-child(5){height:64%;animation-delay:.8s}.bars b:nth-child(6){height:97%;animation-delay:1s}
+  @keyframes bargrow{to{transform:scaleY(.55)}}
+  .toast{font-size:11px;background:rgba(77,214,193,.1);border:1px solid rgba(77,214,193,.3);border-radius:8px;padding:6px 9px;margin-bottom:6px;opacity:0;animation:toastcycle 6s infinite}
+  .toast:nth-child(2){animation-delay:0s}.toast:nth-child(3){animation-delay:2s}.toast:nth-child(4){animation-delay:4s}
+  @keyframes toastcycle{5%,28%{opacity:1;transform:none}0%,33%,100%{opacity:0;transform:translateY(8px)}}
+  .bignum{font-size:30px;font-weight:800;background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ring{width:54px;height:54px;border-radius:50%;border:3px solid rgba(255,255,255,.08);border-top-color:var(--g1);border-right-color:var(--g2);animation:spin 1.6s linear infinite;margin:4px auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .gearrow{font-size:22px;display:flex;gap:10px;justify-content:center;margin-top:6px}
+  .gearrow span{animation:spin 7s linear infinite}
+  .gearrow span:nth-child(2){animation-direction:reverse;animation-duration:5s}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="switch" id="switch"></div>
+
+<!-- V1 SYNAPSE (restored) -->
+<section class="hero" data-name="1 · Synapse Network (the original)">
+  <canvas class="fx" id="synapse"></canvas>
+  <div class="inner">
+    <h1>Software that runs your busywork <span class="grad">while you sleep.</span></h1>
+    <p class="sub">Scrapers, integrations, data pipelines, dashboards, and web products — fixed scope, fast turnaround, delivered working.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+  </div>
+</section>
+
+<!-- V2 AURORA -->
+<section class="hero" data-name="2 · Aurora Mesh">
+  <div class="aur a1"></div><div class="aur a2"></div><div class="aur a3"></div><div class="aur a4"></div>
+  <div class="inner">
+    <h1>Your busywork goes in.<br><span class="grad">Finished work comes out.</span></h1>
+    <p class="sub">We build the software in the middle — running 24/7 on infrastructure that costs almost nothing.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+  </div>
+</section>
+
+<!-- V3 TRON GRID -->
+<section class="hero" data-name="3 · Grid Horizon">
+  <div class="tron-sun"></div>
+  <div class="tron-wrap"><div class="tron-floor"></div></div>
+  <div class="tron-hz"></div>
+  <div class="inner">
+    <h1>Welcome to <span class="grad">the grid that works.</span></h1>
+    <p class="sub">Automation, integrations, and data pipelines — built fast, priced fixed, running forever.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+  </div>
+</section>
+
+<!-- V4 TERMINAL -->
+<section class="hero" data-name="4 · Live Terminal">
+  <div class="inner">
+    <h1>Tell us the chore.<br><span class="grad">Watch it disappear.</span></h1>
+    <p class="sub">Scrapers, integrations, reports, alerts — automated end to end.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+    <div class="term"><div class="bar"><i></i><i></i><i></i></div><pre id="termout"></pre></div>
+  </div>
+</section>
+
+<!-- V5 BEAMS -->
+<section class="hero" data-name="5 · Background Beams">
+  <svg class="beams" viewBox="0 0 1440 800" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="b1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c6cff"/><stop offset="1" stop-color="#00dcff"/></linearGradient>
+      <linearGradient id="b2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0739b"/><stop offset="1" stop-color="#7c6cff"/></linearGradient>
+      <linearGradient id="b3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4dd6c1"/><stop offset="1" stop-color="#7c6cff"/></linearGradient>
+    </defs>
+    <path d="M-60,720 C300,640 420,320 720,300 C1020,280 1140,80 1500,40" stroke="url(#b1)" opacity=".55"/>
+    <path d="M-60,780 C360,720 480,430 760,400 C1060,370 1180,180 1500,140" stroke="url(#b2)" opacity=".45" style="animation-delay:-1.8s"/>
+    <path d="M-60,660 C260,560 460,240 780,220 C1080,200 1200,20 1500,-20" stroke="url(#b3)" opacity=".5" style="animation-delay:-3.6s"/>
+    <path d="M-60,840 C400,800 560,540 820,500 C1120,455 1220,300 1500,260" stroke="url(#b1)" opacity=".35" style="animation-delay:-2.7s"/>
+    <path d="M-60,600 C240,480 500,160 820,140 C1100,122 1240,-40 1500,-80" stroke="url(#b2)" opacity=".3" style="animation-delay:-4.5s"/>
+  </svg>
+  <div class="inner">
+    <h1>Repetitive work, <span class="grad">rerouted through software.</span></h1>
+    <p class="sub">We turn the tasks that eat your week into systems that never get tired.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+  </div>
+</section>
+
+<!-- V6 BENTO -->
+<section class="hero" data-name="6 · Living Bento">
+  <div class="inner">
+    <h1>An operations team <span class="grad">made of software.</span></h1>
+    <p class="sub">Everything below is the kind of thing we automate — watch it work.</p>
+    <div class="ctas"><a class="btn p" href="#">Start a project</a><a class="btn g" href="#">See live work</a></div>
+    <div class="bento">
+      <div class="tile wide"><h4>Weekly report</h4><div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
+      <div class="tile wide"><h4>Alerts</h4>
+        <div class="toast">📬 3 new leads captured &amp; replied</div>
+        <div class="toast">✅ 214 orders processed, 0 errors</div>
+        <div class="toast">📊 Monday summary sent, 7:00 AM</div>
+      </div>
+      <div class="tile"><h4>Rows cleaned</h4><div class="bignum" id="rows">0</div></div>
+      <div class="tile"><h4>Sync running</h4><div class="ring"></div></div>
+      <div class="tile"><h4>Pipelines</h4><div class="gearrow"><span>⚙️</span><span>⚙️</span></div></div>
+      <div class="tile"><h4>Uptime</h4><div class="bignum">24/7</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="tagname" id="tag"></div>
+
+<script>
+  // switcher
+  const heroes = [...document.querySelectorAll('.hero')];
+  const sw = document.getElementById('switch'), tag = document.getElementById('tag');
+  heroes.forEach((h, i) => {
+    const b = document.createElement('button');
+    b.textContent = h.dataset.name.split('·')[1].trim();
+    b.onclick = () => show(i);
+    sw.appendChild(b);
+  });
+  function show(i){
+    heroes.forEach((h, j) => h.classList.toggle('show', i === j));
+    [...sw.children].forEach((b, j) => b.classList.toggle('on', i === j));
+    tag.textContent = heroes[i].dataset.name;
+    if (i === 0) initSynapse();
+    if (i === 3) initTerm();
+    if (i === 5) initRows();
+  }
+
+  // V1 synapse (restored from the original port)
+  let synDone = false;
+  function initSynapse(){
+    if (synDone) return; synDone = true;
+    const canvas = document.getElementById('synapse');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    const CONNECT_R = 180, N = innerWidth < 700 ? 34 : 60, TRAIL = .15;
+    let W, H; const mouse = {x:-9999, y:-9999};
+    const resize = () => { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; };
+    resize(); addEventListener('resize', resize);
+    addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+    class Node{
+      constructor(){ this.x = Math.random()*W; this.y = Math.random()*H; this.vx = (Math.random()-.5)*.5; this.vy = (Math.random()-.5)*.5; this.r = Math.random()*2+1.5; this.conn = []; this.pulses = []; this.act = 0; }
+      update(){
+        this.x += this.vx; this.y += this.vy;
+        if (this.x<0||this.x>W) this.vx*=-1; if (this.y<0||this.y>H) this.vy*=-1;
+        const d = Math.hypot(this.x-mouse.x, this.y-mouse.y);
+        this.act += (Math.max(0, 1-d/(CONNECT_R*.8)) - this.act)*.1;
+        if (this.act>.5 && Math.random()>.98 && this.conn.length)
+          this.pulses.push({s:this, e:this.conn[Math.floor(Math.random()*this.conn.length)], p:0});
+        this.pulses = this.pulses.filter(p => p.p<1); this.pulses.forEach(p => p.p += .03);
+      }
+      draw(){
+        ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,7); ctx.fillStyle = `rgba(0,220,255,${Math.max(.2,this.act)})`; ctx.fill();
+        this.pulses.forEach(p => { ctx.beginPath(); ctx.arc(p.s.x+(p.e.x-p.s.x)*p.p, p.s.y+(p.e.y-p.s.y)*p.p, 2.5, 0, 7); ctx.fillStyle='rgba(255,255,255,.95)'; ctx.fill(); });
+      }
+    }
+    const nodes = Array.from({length:N}, () => new Node());
+    const relink = () => nodes.forEach(a => a.conn = nodes.filter(b => b!==a && Math.hypot(a.x-b.x,a.y-b.y) < CONNECT_R));
+    relink(); setInterval(relink, 3000);
+    (function anim(){
+      ctx.fillStyle = `rgba(5,6,10,${TRAIL})`; ctx.fillRect(0,0,W,H);
+      nodes.forEach(a => a.conn.forEach(b => { ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+        ctx.strokeStyle = `rgba(0,220,255,${Math.max(.04,a.act,b.act)*.2}`+`)`; ctx.stroke(); }));
+      nodes.forEach(n => { n.update(); n.draw(); });
+      requestAnimationFrame(anim);
+    })();
+  }
+
+  // V4 terminal typing
+  let termDone = false;
+  function initTerm(){
+    if (termDone) return; termDone = true;
+    const lines = [
+      ['p','$ automate "copy orders into the weekly sheet"'],
+      ['dim','  scanning source... 214 rows found'],
+      ['ok','  ✓ cleaned + deduped'],
+      ['ok','  ✓ summary emailed to the team'],
+      ['p','$ automate "watch competitor prices"'],
+      ['dim','  checking 38 product pages...'],
+      ['ok','  ✓ 2 price drops → alert sent to your phone'],
+      ['p','$ status'],
+      ['ok','  all systems running · next run 7:00 AM · cost this month: $0.14'],
+    ];
+    const out = document.getElementById('termout');
+    let li = 0, ci = 0, buf = '';
+    (function type(){
+      if (li >= lines.length) { setTimeout(() => { out.innerHTML=''; li=0; ci=0; buf=''; type(); }, 4200); return; }
+      const [cls, text] = lines[li];
+      ci++;
+      const cur = text.slice(0, ci);
+      out.innerHTML = buf + `<span class="c-${cls}">${cur}</span><span class="caret"></span>`;
+      if (ci >= text.length) { buf += `<span class="c-${cls}">${text}</span>\n`; li++; ci = 0; setTimeout(type, cls==='p'?500:180); }
+      else setTimeout(type, text[ci-1]===' ' ? 24 : 14 + Math.random()*26);
+    })();
+  }
+
+  // V6 rows counter
+  let rowsDone = false;
+  function initRows(){
+    if (rowsDone) return; rowsDone = true;
+    const el = document.getElementById('rows'); let n = 0;
+    setInterval(() => { n = (n + Math.floor(Math.random()*7+3)) % 100000; el.textContent = n.toLocaleString(); }, 300);
+  }
+
+  show(0);
+</script>
+</body>
+</html>

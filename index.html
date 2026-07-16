@@ -55,7 +55,35 @@
   @media(max-width:720px){.navlinks{display:none}}
 
   /* ---- hero ---- */
-  header{padding:170px 0 40px;text-align:center;position:relative}
+  header{padding:170px 0 60px;text-align:center;position:relative;overflow:hidden}
+  #synapse{position:absolute;inset:0;width:100%;height:100%;z-index:0;
+    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%);
+            mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%)}
+  header .wrap{position:relative;z-index:2}
+
+  /* living bento */
+  .bento{display:grid;grid-template-columns:repeat(4,minmax(120px,170px));gap:12px;justify-content:center;margin:44px auto 0}
+  .tile{border:1px solid var(--line);border-radius:16px;background:rgba(10,13,20,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    padding:14px;text-align:left;position:relative;overflow:hidden;min-height:104px;transition:border-color .3s,transform .3s}
+  .tile:hover{border-color:rgba(0,220,255,.35);transform:translateY(-2px)}
+  .tile h4{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .tile.wide{grid-column:span 2}
+  @media(max-width:640px){.bento{grid-template-columns:repeat(2,minmax(130px,1fr))}}
+  .bars{display:flex;gap:5px;align-items:flex-end;height:48px}
+  .bars b{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--g2),rgba(77,214,193,.25));transform-origin:bottom;animation:bargrow 2.4s ease-in-out infinite alternate}
+  .bars b:nth-child(1){height:40%}.bars b:nth-child(2){height:70%;animation-delay:.2s}
+  .bars b:nth-child(3){height:52%;animation-delay:.4s}.bars b:nth-child(4){height:88%;animation-delay:.6s}
+  .bars b:nth-child(5){height:64%;animation-delay:.8s}.bars b:nth-child(6){height:97%;animation-delay:1s}
+  @keyframes bargrow{to{transform:scaleY(.55)}}
+  .toast{font-size:11px;background:rgba(77,214,193,.1);border:1px solid rgba(77,214,193,.3);border-radius:8px;padding:6px 9px;margin-bottom:6px;opacity:0;animation:toastcycle 6.6s infinite}
+  .toast:nth-child(3){animation-delay:2.2s}.toast:nth-child(4){animation-delay:4.4s}
+  @keyframes toastcycle{5%,28%{opacity:1;transform:none}0%,33%,100%{opacity:0;transform:translateY(8px)}}
+  .bignum{font-size:28px;font-weight:800;background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ring{width:50px;height:50px;border-radius:50%;border:3px solid rgba(255,255,255,.08);border-top-color:var(--g1);border-right-color:var(--g2);animation:ringspin 1.6s linear infinite;margin:4px auto}
+  @keyframes ringspin{to{transform:rotate(360deg)}}
+  .gearrow{font-size:22px;display:flex;gap:10px;justify-content:center;margin-top:8px}
+  .gearrow span{display:inline-block;animation:ringspin 7s linear infinite}
+  .gearrow span:nth-child(2){animation-direction:reverse;animation-duration:5s}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);
     border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 16px;border-radius:99px;margin-bottom:28px}
   .pill .pulse{width:7px;height:7px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 0 #4dd6c1aa;animation:pulse 2s infinite}
@@ -226,7 +254,8 @@
   .rv.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){
     .rv{opacity:1;transform:none}
-    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i,.marq .track,.band .beam,.cap .ico{animation:none!important}
+    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i,.marq .track,.band .beam,.cap .ico,.bars b,.toast,.ring,.gearrow span{animation:none!important}
+    .toast{opacity:1;transform:none}
     .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
   }
 </style>
@@ -245,6 +274,7 @@
 </nav>
 
 <header id="top">
+  <canvas id="synapse" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="pill rv"><span class="pulse"></span>Available for new projects</div>
     <h1 class="rv">Your busywork goes in.<br><span class="grad">Finished work comes out.</span></h1>
@@ -256,6 +286,24 @@
       </a>
     </div>
 
+    <!-- living bento dashboard -->
+    <div class="bento rv">
+      <div class="tile wide"><h4>Weekly report</h4><div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
+      <div class="tile wide"><h4>Alerts</h4>
+        <div class="toast">📬 3 new leads captured &amp; replied</div>
+        <div class="toast">✅ 214 orders processed, 0 errors</div>
+        <div class="toast">📊 Monday summary sent, 7:00 AM</div>
+      </div>
+      <div class="tile"><h4>Rows cleaned</h4><div class="bignum" id="rowsnum">0</div></div>
+      <div class="tile"><h4>Sync running</h4><div class="ring"></div></div>
+      <div class="tile"><h4>Pipelines</h4><div class="gearrow"><span>⚙️</span><span>⚙️</span></div></div>
+      <div class="tile"><h4>Uptime</h4><div class="bignum">24/7</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="flow" style="padding:40px 0 0">
+  <div class="wrap">
     <!-- animated pipeline explainer -->
     <div class="pipeline-box rv" aria-label="Animation: messy inputs flow into the automation core and come out as finished results">
       <svg viewBox="0 0 900 380" width="100%" role="img" aria-hidden="true">
@@ -314,7 +362,7 @@
       </div>
     </div>
   </div>
-</header>
+</section>
 
 <section id="how">
   <div class="wrap">
@@ -513,6 +561,79 @@
     // safety net: if the observer is broken (some webviews), the hero never reveals — show everything
     setTimeout(() => { if (!document.querySelector('.rv.in')) revealAll(); }, 1200);
   } else { revealAll(); }
+
+  // synapse network (hero background)
+  (() => {
+    const canvas = document.getElementById('synapse');
+    if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    const CONNECT_R = 180, N = innerWidth < 700 ? 30 : 55, TRAIL = 0.15;
+    let W, H;
+    const mouse = { x: -9999, y: -9999 };
+    const resize = () => { W = canvas.width = canvas.offsetWidth || innerWidth || 1280; H = canvas.height = canvas.offsetHeight || 700; };
+    resize();
+    addEventListener('resize', resize);
+    addEventListener('pointermove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    });
+    class Node {
+      constructor() {
+        this.x = Math.random() * W; this.y = Math.random() * H;
+        this.vx = (Math.random() - .5) * .5; this.vy = (Math.random() - .5) * .5;
+        this.r = Math.random() * 2 + 1.5; this.conn = []; this.pulses = []; this.act = 0;
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        if (this.x < 0 || this.x > W) this.vx *= -1;
+        if (this.y < 0 || this.y > H) this.vy *= -1;
+        const d = Math.hypot(this.x - mouse.x, this.y - mouse.y);
+        this.act += (Math.max(0, 1 - d / (CONNECT_R * .8)) - this.act) * .1;
+        if (this.act > .5 && Math.random() > .98 && this.conn.length)
+          this.pulses.push({ s: this, e: this.conn[Math.floor(Math.random() * this.conn.length)], p: 0 });
+        this.pulses = this.pulses.filter(p => p.p < 1);
+        this.pulses.forEach(p => p.p += .03);
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, 7);
+        ctx.fillStyle = `rgba(0,220,255,${Math.max(.2, this.act)})`;
+        ctx.fill();
+        this.pulses.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.s.x + (p.e.x - p.s.x) * p.p, p.s.y + (p.e.y - p.s.y) * p.p, 2.5, 0, 7);
+          ctx.fillStyle = 'rgba(255,255,255,.95)';
+          ctx.fill();
+        });
+      }
+    }
+    const nodes = Array.from({ length: N }, () => new Node());
+    const relink = () => nodes.forEach(a => {
+      a.conn = nodes.filter(b => b !== a && Math.hypot(a.x - b.x, a.y - b.y) < CONNECT_R);
+    });
+    relink();
+    setInterval(relink, 3000);
+    (function anim() {
+      ctx.fillStyle = `rgba(5,6,10,${TRAIL})`;
+      ctx.fillRect(0, 0, W, H);
+      nodes.forEach(a => a.conn.forEach(b => {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(0,220,255,${Math.max(.04, a.act, b.act) * .2})`;
+        ctx.stroke();
+      }));
+      nodes.forEach(n => { n.update(); n.draw(); });
+      requestAnimationFrame(anim);
+    })();
+  })();
+
+  // bento rows counter
+  (() => {
+    const el = document.getElementById('rowsnum');
+    if (!el) return;
+    let n = 4180;
+    setInterval(() => { n += Math.floor(Math.random() * 7 + 3); el.textContent = n.toLocaleString(); }, 400);
+  })();
 
   // count-up stats
   const countUp = el => {
