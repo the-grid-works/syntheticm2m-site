@@ -229,6 +229,7 @@
   .tag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
     padding:5px 12px;border-radius:99px;margin-bottom:18px;border:1px solid rgba(77,214,193,.35);color:var(--g2);background:rgba(77,214,193,.08)}
   .tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--g2);animation:pulse 2s infinite}
+  .tag.dev{border-color:rgba(245,158,11,.4);color:#fbbf24;background:rgba(245,158,11,.08)}
   .card h3{font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
   .card p{color:var(--muted);font-size:14.5px}
   .card .go{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:14px;font-weight:600;color:var(--g2)}
@@ -268,7 +269,7 @@
 <nav>
   <a class="brand" href="#top"><span class="dot"></span>Synthetic&nbsp;M2M</a>
   <div class="navlinks">
-    <a href="#how">How it works</a><a href="#capabilities">Capabilities</a><a href="#work">Live products</a>
+    <a href="#work">Live products</a><a href="#how">How it works</a><a href="#capabilities">Capabilities</a>
   </div>
   <a class="btn primary" href="mailto:sales@syntheticm2m.com">Get a quote</a>
 </nav>
@@ -286,24 +287,6 @@
       </a>
     </div>
 
-    <!-- living bento dashboard -->
-    <div class="bento rv">
-      <div class="tile wide"><h4>Weekly report</h4><div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
-      <div class="tile wide"><h4>Alerts</h4>
-        <div class="toast">📬 3 new leads captured &amp; replied</div>
-        <div class="toast">✅ 214 orders processed, 0 errors</div>
-        <div class="toast">📊 Monday summary sent, 7:00 AM</div>
-      </div>
-      <div class="tile"><h4>Rows cleaned</h4><div class="bignum" id="rowsnum">0</div></div>
-      <div class="tile"><h4>Sync running</h4><div class="ring"></div></div>
-      <div class="tile"><h4>Pipelines</h4><div class="gearrow"><span>⚙️</span><span>⚙️</span></div></div>
-      <div class="tile"><h4>Uptime</h4><div class="bignum">24/7</div></div>
-    </div>
-  </div>
-</header>
-
-<section id="flow" style="padding:40px 0 0">
-  <div class="wrap">
     <!-- animated pipeline explainer -->
     <div class="pipeline-box rv" aria-label="Animation: messy inputs flow into the automation core and come out as finished results">
       <svg viewBox="0 0 900 380" width="100%" role="img" aria-hidden="true">
@@ -362,6 +345,71 @@
       </div>
     </div>
   </div>
+</header>
+
+<section id="work">
+  <div class="wrap">
+    <span class="eyebrow rv">Live products</span>
+    <h2 class="rv">Don't take our word for it.<br>Click these.</h2>
+    <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
+    <div class="cards">
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>Live</span>
+        <h3>Marketplace Guardian</h3>
+        <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish — also packaged as a Chrome extension.</p>
+        <a class="go" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Try it live
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>Live preview</span>
+        <h3>VinBaba</h3>
+        <p>Instant used-car value report from a VIN — pricing snapshot, comparable listings, and a clean shareable report. Built end-to-end: lookup, valuation logic, report rendering, payment flow.</p>
+        <a class="go" href="https://vinbaba.com" target="_blank" rel="noopener">Try the demo
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>Live</span>
+        <h3>Alt-Data Signal Hub</h3>
+        <p>A market-signals dashboard that fuses alternative data — insider buying clusters, federal contract awards, short-volume trends, severe-weather alerts, and news — into ranked setups across 350+ tickers. Strictly data, no advice; refreshes itself daily with zero hands on it.</p>
+        <a class="go" href="https://kfr6jaqvl6.execute-api.us-east-1.amazonaws.com/" target="_blank" rel="noopener">Open the dashboard
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>Live</span>
+        <h3>Autonomous Publisher</h3>
+        <p>An always-on publisher for an AI-agent social network: writes fresh, on-brand posts, publishes daily, and engages with replies — fully hands-off since launch. Not one post has needed a human.</p>
+        <a class="go" href="https://www.moltbook.com/u/syntheticm2m" target="_blank" rel="noopener">See the live profile
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>In production</span>
+        <h3>Internal automation fleet</h3>
+        <p>Systems we run for our own operations: cloud watchers that ping a phone within minutes of an event, scheduled data pipelines, uptime monitors, and browser automation that posts, files, and reconciles — no human in the loop.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:44px">
+      <span class="eyebrow rv">In development</span>
+      <p class="lead rv" style="margin-bottom:24px">Built and working — launching after validation. The point: the engine that builds these is repeatable.</p>
+      <div class="cards">
+        <div class="card rv">
+          <span class="tag dev">⚙ In development</span>
+          <h3>GovCon Award Feed</h3>
+          <p>A daily intelligence digest that tells government contractors which federal contracts are coming up for renewal — and which incumbents look vulnerable. Pipeline, dashboard, and checkout built end-to-end.</p>
+        </div>
+        <div class="card rv">
+          <span class="tag dev">⚙ In development</span>
+          <h3>Disaster-Recovery Money Feed</h3>
+          <p>Tracks federal disaster-relief dollars county-by-county as they're awarded, for recovery contractors chasing rebuild work. Same engine as the GovCon feed — ported to a new vertical in a day.</p>
+        </div>
+        <div class="card rv">
+          <span class="tag dev">⚙ In development</span>
+          <h3>Filing Anomaly Alerts</h3>
+          <p>Watches regulatory filings in real time and turns material events — insider buying clusters, activist stakes — into plain-English alerts for small investment firms. Built end-to-end; launch deliberately gated on a compliance review.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="how">
@@ -401,6 +449,22 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <span class="eyebrow rv">Services</span>
+    <h2 class="rv">What we build for clients</h2>
+    <p class="lead rv">If it's repetitive, glue-shaped, or data-shaped — we've probably already built one.</p>
+    <ul class="svc">
+      <li class="rv"><b>Web scraping &amp; automation</b><span>Data collection, form-filling bots, scheduled jobs that replace hours of copy-paste.</span></li>
+      <li class="rv"><b>API integrations</b><span>Connect two services that don't talk — webhooks, syncs, small REST APIs.</span></li>
+      <li class="rv"><b>Data cleaning &amp; dashboards</b><span>Messy spreadsheets in, clean datasets and self-updating reports out.</span></li>
+      <li class="rv"><b>Document &amp; invoice tooling</b><span>PDF generation, invoice systems, template automation.</span></li>
+      <li class="rv"><b>Browser extensions</b><span>Chrome extensions from spec to store-ready package.</span></li>
+      <li class="rv"><b>Small web apps &amp; MVPs</b><span>Landing pages to working products on near-zero-cost infrastructure.</span></li>
+    </ul>
   </div>
 </section>
 
@@ -469,6 +533,19 @@
       <div class="cap rv"><div class="ico pulse2">🔔</div><h3>Monitoring &amp; alerts</h3><p>When inventory drops, a payment fails, or a competitor moves — your phone knows before you'd have noticed.</p></div>
       <div class="cap rv"><div class="ico spin">🚀</div><h3>Web apps &amp; MVPs</h3><p>From landing page to working product with payments — deployed on infrastructure that costs pennies to run.</p></div>
     </div>
+    <!-- living bento dashboard -->
+    <div class="bento rv">
+      <div class="tile wide"><h4>Weekly report</h4><div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
+      <div class="tile wide"><h4>Alerts</h4>
+        <div class="toast">📬 3 new leads captured &amp; replied</div>
+        <div class="toast">✅ 214 orders processed, 0 errors</div>
+        <div class="toast">📊 Monday summary sent, 7:00 AM</div>
+      </div>
+      <div class="tile"><h4>Rows cleaned</h4><div class="bignum" id="rowsnum">0</div></div>
+      <div class="tile"><h4>Sync running</h4><div class="ring"></div></div>
+      <div class="tile"><h4>Pipelines</h4><div class="gearrow"><span>⚙️</span><span>⚙️</span></div></div>
+      <div class="tile"><h4>Uptime</h4><div class="bignum">24/7</div></div>
+    </div>
     <div class="bigstats rv">
       <div class="bstat"><b data-count="10">0</b><span>systems we run in production</span></div>
       <div class="bstat"><b>24/7</b><span>everything we ship runs itself</span></div>
@@ -478,57 +555,6 @@
   </div>
 </section>
 
-<section id="work">
-  <div class="wrap">
-    <span class="eyebrow rv">Live products</span>
-    <h2 class="rv">Don't take our word for it.<br>Click these.</h2>
-    <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
-    <div class="cards">
-      <div class="card rv">
-        <span class="tag"><span class="pulse"></span>Live</span>
-        <h3>Marketplace Guardian</h3>
-        <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish.</p>
-        <a class="go" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Try it live
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="card rv">
-        <span class="tag"><span class="pulse"></span>Live preview</span>
-        <h3>VinBaba</h3>
-        <p>Instant used-car value report from a VIN — pricing snapshot, comparable listings, and a clean shareable report. Built end-to-end: lookup, valuation logic, report rendering, payment flow.</p>
-        <a class="go" href="https://vinbaba.com" target="_blank" rel="noopener">Try the demo
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="card rv">
-        <span class="tag"><span class="pulse"></span>Live</span>
-        <h3>Alt-Data Signal Hub</h3>
-        <p>A market-signals dashboard that fuses alternative data — insider buying clusters, federal contract awards, short-volume trends, severe-weather alerts, and news — into ranked setups across 350+ tickers. Strictly data, no advice; refreshes itself daily with zero hands on it.</p>
-        <a class="go" href="https://kfr6jaqvl6.execute-api.us-east-1.amazonaws.com/" target="_blank" rel="noopener">Open the dashboard
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="card rv">
-        <span class="tag"><span class="pulse"></span>In production</span>
-        <h3>Internal automation fleet</h3>
-        <p>Systems we run for our own operations: a fully autonomous daily content publisher, market-data dashboards, scheduled pipelines, and browser automation that posts, files, and reconciles — no human in the loop.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="services">
-  <div class="wrap">
-    <span class="eyebrow rv">Services</span>
-    <h2 class="rv">What we build for clients</h2>
-    <p class="lead rv">If it's repetitive, glue-shaped, or data-shaped — we've probably already built one.</p>
-    <ul class="svc">
-      <li class="rv"><b>Web scraping &amp; automation</b><span>Data collection, form-filling bots, scheduled jobs that replace hours of copy-paste.</span></li>
-      <li class="rv"><b>API integrations</b><span>Connect two services that don't talk — webhooks, syncs, small REST APIs.</span></li>
-      <li class="rv"><b>Data cleaning &amp; dashboards</b><span>Messy spreadsheets in, clean datasets and self-updating reports out.</span></li>
-      <li class="rv"><b>Document &amp; invoice tooling</b><span>PDF generation, invoice systems, template automation.</span></li>
-      <li class="rv"><b>Browser extensions</b><span>Chrome extensions from spec to store-ready package.</span></li>
-      <li class="rv"><b>Small web apps &amp; MVPs</b><span>Landing pages to working products on near-zero-cost infrastructure.</span></li>
-    </ul>
-  </div>
-</section>
 
 <section>
   <div class="wrap">

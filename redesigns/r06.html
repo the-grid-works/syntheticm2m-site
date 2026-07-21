@@ -1,0 +1,397 @@
+<title>Synthetic M2M — Automation Studio</title>
+<link rel="icon" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Synthetic M2M builds the automations, scrapers, dashboards, and small web apps that take busywork off your plate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fdf6ec;
+    --cream-2:#fbeedd;
+    --coral:#ff8a70;
+    --coral-dark:#e8674b;
+    --mint:#8fe3c7;
+    --mint-dark:#4fbf9c;
+    --butter:#ffd76a;
+    --butter-dark:#f0b93a;
+    --plum:#6f5b7e;
+    --ink:#4a3f4d;
+    --ink-soft:#7a6d7d;
+    --card:#fff6ea;
+    --shadow-dark: rgba(150, 110, 90, 0.35);
+    --shadow-light: rgba(255, 255, 255, 0.9);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Quicksand', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.logo,.btn,.tab-label{font-family:'Baloo 2', cursive;}
+
+  /* ---------- floating blobs ---------- */
+  .blob{
+    position:absolute;
+    border-radius:58% 42% 65% 35% / 45% 55% 45% 55%;
+    filter:blur(0px);
+    opacity:0.55;
+    z-index:0;
+    animation:morph 14s ease-in-out infinite, drift 22s ease-in-out infinite;
+  }
+  @keyframes morph{
+    0%,100%{border-radius:58% 42% 65% 35% / 45% 55% 45% 55%;}
+    33%{border-radius:40% 60% 45% 55% / 60% 40% 60% 40%;}
+    66%{border-radius:65% 35% 40% 60% / 35% 65% 35% 65%;}
+  }
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(18px,-24px) rotate(8deg);}
+  }
+  .blob-1{width:340px;height:340px;background:var(--mint);top:-100px;right:-90px;}
+  .blob-2{width:260px;height:260px;background:var(--butter);top:520px;left:-110px;}
+  .blob-3{width:220px;height:220px;background:var(--coral);top:1200px;right:-80px;opacity:0.4;}
+  .blob-4{width:180px;height:180px;background:var(--mint);bottom:60px;left:6%;opacity:0.35;}
+
+  section{position:relative;z-index:1;}
+
+  /* ---------- nav ---------- */
+  nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 6vw;
+    position:relative;z-index:5;
+  }
+  .logo{font-size:1.4rem;font-weight:700;color:var(--plum);display:flex;align-items:center;gap:8px;}
+  .logo .dot{
+    display:inline-block;width:14px;height:14px;border-radius:50%;
+    background:var(--coral);
+    box-shadow:0 3px 0 var(--coral-dark);
+    animation:bounce-dot 2.2s ease-in-out infinite;
+  }
+  @keyframes bounce-dot{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+  }
+  nav a{
+    color:var(--plum);text-decoration:none;font-weight:600;margin-left:22px;font-size:0.98rem;
+  }
+  nav .links{display:flex;align-items:center;}
+
+  /* ---------- clay card mixin ---------- */
+  .clay{
+    background:var(--card);
+    border-radius:32px;
+    box-shadow:
+      12px 12px 24px var(--shadow-dark),
+      -10px -10px 22px var(--shadow-light),
+      inset 0 2px 4px rgba(255,255,255,0.8);
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease;
+  }
+  .clay:hover{
+    transform:translateY(-6px) scale(1.02);
+    box-shadow:
+      16px 16px 30px var(--shadow-dark),
+      -12px -12px 26px var(--shadow-light),
+      inset 0 2px 4px rgba(255,255,255,0.8);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    text-align:center;
+    padding:60px 6vw 90px;
+  }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--butter);
+    padding:8px 20px;border-radius:999px;
+    font-weight:700;font-size:0.9rem;color:#6b4c00;
+    box-shadow:6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+    margin-bottom:28px;
+  }
+  .hero-badge .wave{display:inline-block;animation:wave 2s ease-in-out infinite;transform-origin:70% 70%;}
+  @keyframes wave{
+    0%,100%{transform:rotate(0deg);}
+    20%{transform:rotate(16deg);}
+    40%{transform:rotate(-8deg);}
+    60%{transform:rotate(12deg);}
+  }
+  h1{
+    font-size:clamp(2.2rem, 5.5vw, 3.6rem);
+    color:var(--plum);
+    line-height:1.15;
+    margin:0 0 22px;
+    max-width:850px;
+    margin-left:auto;margin-right:auto;
+  }
+  h1 .accent{color:var(--coral-dark);}
+  .hero p.sub{
+    font-size:1.15rem;color:var(--ink-soft);max-width:560px;margin:0 auto 36px;font-weight:500;
+  }
+  .btn{
+    display:inline-block;
+    font-size:1.05rem;font-weight:700;
+    padding:16px 36px;border-radius:20px;
+    text-decoration:none;
+    cursor:pointer;border:none;
+    transition:transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s ease;
+  }
+  .btn-primary{
+    background:var(--coral);color:#fff;
+    box-shadow:0 8px 0 var(--coral-dark), 8px 14px 20px var(--shadow-dark);
+  }
+  .btn-primary:hover{transform:translateY(-4px) scale(1.04);}
+  .btn-primary:active{
+    transform:translateY(2px) scale(0.97);
+    box-shadow:0 4px 0 var(--coral-dark), 4px 8px 14px var(--shadow-dark);
+  }
+
+  /* ---------- section headers ---------- */
+  .section{padding:70px 6vw;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 50px;}
+  .kicker{
+    display:inline-block;background:var(--mint);color:#155945;
+    font-weight:700;padding:6px 18px;border-radius:999px;font-size:0.85rem;
+    box-shadow:4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+    margin-bottom:16px;
+  }
+  h2{font-size:clamp(1.7rem,3.6vw,2.4rem);color:var(--plum);margin:0 0 12px;}
+  .section-head p{color:var(--ink-soft);font-size:1.05rem;font-weight:500;}
+
+  /* ---------- products ---------- */
+  .products{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:32px;max-width:1100px;margin:0 auto;
+  }
+  .product-card{padding:36px 30px;text-align:left;}
+  .product-emoji{
+    font-size:2.6rem;display:inline-block;margin-bottom:16px;
+    animation:bob 3s ease-in-out infinite;
+  }
+  .product-card:nth-child(2) .product-emoji{animation-delay:.4s;}
+  .product-card:nth-child(3) .product-emoji{animation-delay:.8s;}
+  @keyframes bob{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-8px) rotate(-6deg);}
+  }
+  .product-card h3{font-size:1.3rem;color:var(--plum);margin:0 0 10px;}
+  .product-card p{color:var(--ink-soft);font-weight:500;line-height:1.55;margin:0 0 20px;}
+  .status-pill{
+    display:inline-block;font-size:0.78rem;font-weight:700;
+    padding:4px 14px;border-radius:999px;margin-bottom:14px;
+  }
+  .status-live{background:var(--mint);color:#0f4d3a;}
+  .status-internal{background:#e4d9ee;color:#553a70;}
+  .product-link{
+    display:inline-block;font-weight:700;color:var(--coral-dark);text-decoration:none;
+    border-bottom:3px solid var(--coral);padding-bottom:2px;
+  }
+  .product-link:hover{color:var(--coral);}
+
+  /* ---------- how it works ---------- */
+  .steps{
+    display:flex;gap:28px;max-width:900px;margin:0 auto;flex-wrap:wrap;justify-content:center;
+  }
+  .step{
+    flex:1 1 240px;padding:32px 26px;text-align:center;
+  }
+  .step-num{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--butter);color:#6b4c00;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Baloo 2',cursive;font-weight:800;font-size:1.3rem;
+    margin:0 auto 18px;
+    box-shadow:4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+  }
+  .step h3{color:var(--plum);font-size:1.15rem;margin:0 0 10px;}
+  .step p{color:var(--ink-soft);font-size:0.98rem;font-weight:500;margin:0;}
+  .step-arrow{
+    align-self:center;font-size:1.8rem;color:var(--coral);
+    animation:arrow-nudge 1.6s ease-in-out infinite;
+  }
+  @keyframes arrow-nudge{
+    0%,100%{transform:translateX(0);}
+    50%{transform:translateX(6px);}
+  }
+
+  /* ---------- capabilities ---------- */
+  .capgrid{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:26px;max-width:1100px;margin:0 auto;
+  }
+  .cap-card{
+    padding:28px 24px;
+  }
+  .cap-emoji{font-size:1.8rem;margin-bottom:12px;display:inline-block;}
+  .cap-card h3{font-size:1.08rem;color:var(--plum);margin:0 0 8px;}
+  .cap-card p{color:var(--ink-soft);font-size:0.92rem;font-weight:500;margin:0;line-height:1.5;}
+
+  /* ---------- contact ---------- */
+  .contact-card{
+    max-width:640px;margin:0 auto;padding:56px 40px;text-align:center;
+  }
+  .contact-card h2{margin-bottom:14px;}
+  .contact-card p{color:var(--ink-soft);font-weight:500;margin-bottom:30px;}
+  .mailto-box{
+    display:inline-flex;align-items:center;gap:12px;
+    background:var(--cream-2);padding:14px 24px;border-radius:18px;
+    font-weight:700;color:var(--plum);
+    box-shadow:inset 4px 4px 10px rgba(150,110,90,0.15), inset -4px -4px 10px rgba(255,255,255,0.7);
+    margin-bottom:26px;font-size:1.02rem;
+  }
+
+  footer{
+    text-align:center;padding:36px 6vw 50px;color:var(--ink-soft);font-size:0.9rem;font-weight:500;
+  }
+
+  @media (max-width:640px){
+    nav{flex-direction:column;gap:14px;}
+    nav .links{flex-wrap:wrap;justify-content:center;}
+    nav a{margin:0 10px;}
+    .steps{flex-direction:column;}
+    .step-arrow{display:none;}
+    .section{padding:50px 5vw;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+      animation-duration:0.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.001ms !important;
+    }
+    .blob{animation:none;}
+  }
+</style>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="blob blob-4"></div>
+
+<nav>
+  <div class="logo"><span class="dot"></span>Synthetic M2M</div>
+  <div class="links">
+    <a href="#products">Products</a>
+    <a href="#how">How it works</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="hero-badge"><span class="wave">👋</span> Automation studio</span>
+  <h1>Your busywork goes in.<br><span class="accent">Finished work</span> comes out.</h1>
+  <p class="sub">We build the scrapers, dashboards, and quiet little robots that take the repetitive stuff off your plate — so you don't have to.</p>
+  <a class="btn btn-primary" href="mailto:sales@syntheticm2m.com">Tell us the chore 🍬</a>
+</section>
+
+<section class="section" id="products">
+  <div class="section-head">
+    <span class="kicker">Live right now</span>
+    <h2>Things we've already built</h2>
+    <p>Not slideware — these run today.</p>
+  </div>
+  <div class="products">
+    <div class="clay product-card">
+      <span class="product-emoji">🛡️</span>
+      <div><span class="status-pill status-live">Live · Free</span></div>
+      <h3>Marketplace Guardian</h3>
+      <p>A free toolkit that checks marketplace listings and messages for scam red flags, in English and Spanish. Paste it in, get a plain-language read.</p>
+      <a class="product-link" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Try it free →</a>
+    </div>
+    <div class="clay product-card">
+      <span class="product-emoji">🚗</span>
+      <div><span class="status-pill status-live">Live</span></div>
+      <h3>AutoComps</h3>
+      <p>Drop in a VIN, get an instant vehicle value report back. No spreadsheets, no digging through listings — just a straight answer.</p>
+      <a class="product-link" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">Get a report →</a>
+    </div>
+    <div class="clay product-card">
+      <span class="product-emoji">⚙️</span>
+      <div><span class="status-pill status-internal">Internal fleet</span></div>
+      <h3>The automation fleet</h3>
+      <p>A quiet crew of publishers, dashboards, and watchers that run around the clock behind our own tools — the same crew we can build for you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how" style="background:var(--cream-2);border-radius:60px;max-width:1300px;margin:0 auto;">
+  <div class="section-head">
+    <span class="kicker">How it works</span>
+    <h2>Two steps, no meetings marathon</h2>
+  </div>
+  <div class="steps">
+    <div class="clay step">
+      <div class="step-num">1</div>
+      <h3>Tell us the chore</h3>
+      <p>Describe the repetitive task eating your time. We scope it and show you a demo before anything's final.</p>
+    </div>
+    <div class="step-arrow">➜</div>
+    <div class="clay step">
+      <div class="step-num">2</div>
+      <h3>It runs 24/7</h3>
+      <p>Once you're happy, it goes live and keeps working quietly in the background — no babysitting required.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="capabilities">
+  <div class="section-head">
+    <span class="kicker">What we build</span>
+    <h2>Capabilities</h2>
+    <p>If it's repetitive and rule-based, it's probably a good candidate.</p>
+  </div>
+  <div class="capgrid">
+    <div class="clay cap-card">
+      <span class="cap-emoji">🕸️</span>
+      <h3>Scrapers & data collection</h3>
+      <p>Pull structured data from sites and feeds on a schedule, cleanly and reliably.</p>
+    </div>
+    <div class="clay cap-card">
+      <span class="cap-emoji">🔌</span>
+      <h3>API integrations</h3>
+      <p>Wire your tools together so information moves without anyone copy-pasting.</p>
+    </div>
+    <div class="clay cap-card">
+      <span class="cap-emoji">📊</span>
+      <h3>Data cleaning + dashboards</h3>
+      <p>Messy spreadsheets become tidy, live dashboards you can actually trust.</p>
+    </div>
+    <div class="clay cap-card">
+      <span class="cap-emoji">📄</span>
+      <h3>Document automation</h3>
+      <p>Generate, fill, and route documents automatically instead of by hand.</p>
+    </div>
+    <div class="clay cap-card">
+      <span class="cap-emoji">🔔</span>
+      <h3>Monitoring + alerts</h3>
+      <p>Get pinged the moment something changes, breaks, or needs attention.</p>
+    </div>
+    <div class="clay cap-card">
+      <span class="cap-emoji">🧩</span>
+      <h3>Web apps + MVPs</h3>
+      <p>Small, focused tools and first versions built fast, without the bloat.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="clay contact-card">
+    <span style="font-size:2.4rem;display:block;margin-bottom:10px;" class="product-emoji">✉️</span>
+    <h2>Got a chore for us?</h2>
+    <p>Tell us what's eating your time. We'll tell you honestly if it's automatable.</p>
+    <div class="mailto-box">sales@syntheticm2m.com</div>
+    <br>
+    <a class="btn btn-primary" href="mailto:sales@syntheticm2m.com">Send us a note</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Synthetic M2M. Built quietly, runs loudly.
+</footer>

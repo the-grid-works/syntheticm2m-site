@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthetic M2M — Automation Studio</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --paper:#ffffff;
+    --red:#e8231a;
+    --line:#0a0a0a;
+    --gray:#6a6a6a;
+    --grayline:#d9d9d9;
+    --unit: 8px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', Helvetica, Arial, sans-serif;
+    font-weight:400;
+    line-height:1.35;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+
+  /* progress bar */
+  .progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:var(--red); z-index:9999; transition:width .08s linear;
+  }
+
+  /* grid frame */
+  .frame{
+    position:relative;
+    max-width:1400px;
+    margin:0 auto;
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+  }
+  .frame::before{
+    content:"";
+    position:fixed;
+    top:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:1400px; height:100%;
+    pointer-events:none;
+    background-image:
+      repeating-linear-gradient(to right, transparent 0, transparent calc(100%/12 - 1px), var(--grayline) calc(100%/12 - 1px), var(--grayline) calc(100%/12));
+    opacity:.5;
+    z-index:0;
+    display:none;
+  }
+  @media(min-width:900px){ .frame::before{ display:block; } }
+
+  header.top{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 24px;
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--paper); z-index:100;
+  }
+  .logo{
+    font-weight:800; font-size:15px; letter-spacing:.02em; text-transform:uppercase;
+  }
+  .logo span{color:var(--red);}
+  nav.top-nav{display:flex; gap:28px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;}
+  nav.top-nav a{position:relative; padding-bottom:2px;}
+  nav.top-nav a::after{
+    content:""; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:var(--red);
+    transition:width .25s ease;
+  }
+  nav.top-nav a:hover::after{width:100%;}
+  @media(max-width:700px){ nav.top-nav{display:none;} }
+
+  section{
+    border-bottom:1px solid var(--line);
+    padding:80px 24px;
+    position:relative;
+  }
+  .section-num{
+    position:absolute; top:24px; right:24px;
+    font-size:12px; font-weight:700; color:var(--gray);
+    letter-spacing:.05em;
+  }
+  .kicker{
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.15em;
+    color:var(--red); margin-bottom:16px; display:flex; align-items:center; gap:10px;
+  }
+  .kicker::before{content:""; width:24px; height:2px; background:var(--red); display:inline-block;}
+
+  /* HERO */
+  .hero{
+    padding-top:70px; padding-bottom:60px;
+    min-height:80vh;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 9vw, 7.2rem);
+    font-weight:800;
+    letter-spacing:-0.03em;
+    line-height:.98;
+    text-transform:uppercase;
+    max-width:1200px;
+  }
+  .hero h1 .reveal{
+    display:block;
+    overflow:hidden;
+  }
+  .hero h1 .reveal span{
+    display:block;
+    transform:translateY(110%);
+    animation:slideUp .8s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero h1 .reveal:nth-child(1) span{animation-delay:.05s;}
+  .hero h1 .reveal:nth-child(2) span{animation-delay:.18s;}
+  @keyframes slideUp{ to{ transform:translateY(0); } }
+
+  .hero h1 .accent{color:var(--red);}
+
+  .hero-sub{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;
+    margin-top:48px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+  }
+  .hero-desc{max-width:420px; font-size:15px; color:var(--gray);}
+  .cta{
+    display:inline-flex; align-items:center; gap:12px;
+    background:var(--ink); color:var(--paper);
+    padding:16px 28px; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.08em;
+    border:1px solid var(--ink);
+    transition:background .2s ease, color .2s ease;
+  }
+  .cta:hover{background:var(--red); border-color:var(--red);}
+  .cta .arrow{transition:transform .2s ease;}
+  .cta:hover .arrow{transform:translateX(4px);}
+
+  /* marquee */
+  .marquee-wrap{
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:14px 0;
+    background:var(--ink);
+  }
+  .marquee-track{
+    display:inline-flex;
+    animation:marquee 22s linear infinite;
+  }
+  @media(prefers-reduced-motion:reduce){ .marquee-track{animation:none;} }
+  .marquee-track span{
+    color:var(--paper);
+    font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.1em;
+    padding:0 28px;
+    display:inline-flex; align-items:center; gap:28px;
+  }
+  .marquee-track span::after{content:"—"; color:var(--red);}
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* section headers */
+  h2.section-title{
+    font-size:clamp(1.8rem, 5vw, 3.4rem);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:-.02em;
+    margin-bottom:48px;
+    max-width:900px;
+  }
+
+  /* PRODUCTS */
+  .products-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  @media(max-width:900px){ .products-grid{grid-template-columns:1fr;} }
+  .product-card{
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:36px 28px;
+    min-height:340px;
+    display:flex; flex-direction:column;
+    position:relative;
+    transition:background .25s ease;
+  }
+  .product-card:hover{background:#f7f7f7;}
+  .product-status{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+    display:inline-flex; align-items:center; gap:8px;
+    margin-bottom:24px;
+    color:var(--gray);
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--red); display:inline-block;}
+  .dot.live{animation:pulse 1.6s ease-in-out infinite;}
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  @media(prefers-reduced-motion:reduce){ .dot.live{animation:none;} }
+  .product-card h3{
+    font-size:1.5rem; font-weight:800; text-transform:uppercase; margin-bottom:14px; letter-spacing:-.01em;
+  }
+  .product-card p{
+    font-size:14px; color:var(--gray); flex-grow:1;
+  }
+  .product-link{
+    margin-top:24px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    display:inline-flex; align-items:center; gap:8px; border-bottom:2px solid var(--ink); padding-bottom:4px;
+    align-self:flex-start;
+  }
+  .product-link:hover{border-color:var(--red); color:var(--red);}
+  .product-idx{
+    position:absolute; top:36px; right:28px; font-size:13px; font-weight:700; color:var(--grayline);
+  }
+
+  /* HOW IT WORKS */
+  .steps{
+    border-top:1px solid var(--line);
+  }
+  .step{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    border-bottom:1px solid var(--line);
+    padding:36px 0;
+    gap:24px;
+    align-items:start;
+  }
+  .step-num{
+    font-size:3rem; font-weight:800; color:var(--grayline); line-height:1;
+  }
+  .step-body h3{font-size:1.4rem; font-weight:700; text-transform:uppercase; margin-bottom:10px;}
+  .step-body p{color:var(--gray); font-size:14px; max-width:600px;}
+
+  /* CAPABILITIES */
+  .cap-list{
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+  }
+  @media(max-width:900px){ .cap-list{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .cap-list{grid-template-columns:1fr;} }
+  .cap-item{
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:28px 20px;
+    font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:.02em;
+    display:flex; align-items:center; min-height:110px;
+    transition:color .2s ease, background .2s ease;
+  }
+  .cap-item:hover{background:var(--ink); color:var(--paper);}
+  .cap-item .n{color:var(--red); margin-right:12px; font-weight:800;}
+  .cap-item:hover .n{color:var(--red);}
+
+  /* CONTACT */
+  .contact-section{
+    display:flex; flex-direction:column; align-items:flex-start;
+  }
+  .big-link{
+    font-size:clamp(1.8rem, 8vw, 5rem);
+    font-weight:800;
+    text-transform:lowercase;
+    letter-spacing:-.02em;
+    border-bottom:3px solid var(--ink);
+    padding-bottom:6px;
+    transition:color .25s ease, border-color .25s ease;
+  }
+  .big-link:hover{color:var(--red); border-color:var(--red);}
+  .contact-meta{
+    margin-top:40px;
+    display:flex; gap:60px; flex-wrap:wrap;
+    font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--gray);
+  }
+  .contact-meta div span{display:block; color:var(--ink); font-weight:700; margin-top:6px;}
+
+  footer{
+    padding:28px 24px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--gray);
+  }
+
+  ::selection{ background:var(--red); color:var(--paper); }
+</style>
+</head>
+<body>
+<div class="progress" id="progressBar"></div>
+
+<div class="frame">
+
+  <header class="top">
+    <div class="logo">Synthetic<span>M2M</span></div>
+    <nav class="top-nav">
+      <a href="#products">Products</a>
+      <a href="#how">Process</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;">01 / Studio</div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="kicker">Automation Studio</div>
+    <h1>
+      <span class="reveal"><span>Your busywork</span></span>
+      <span class="reveal"><span>goes in. <span class="accent">Finished</span></span></span>
+      <span class="reveal"><span>work comes out.</span></span>
+    </h1>
+    <div class="hero-sub">
+      <p class="hero-desc">We turn the repetitive parts of your operation — data entry, lookups, monitoring, reports — into software that runs itself. No dashboards you have to babysit.</p>
+      <a class="cta" href="mailto:sales@syntheticm2m.com">Start a build <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>SCRAPERS</span><span>API INTEGRATIONS</span><span>DASHBOARDS</span><span>DOCUMENT AUTOMATION</span><span>MONITORING &amp; ALERTS</span><span>WEB APPS</span>
+      <span>SCRAPERS</span><span>API INTEGRATIONS</span><span>DASHBOARDS</span><span>DOCUMENT AUTOMATION</span><span>MONITORING &amp; ALERTS</span><span>WEB APPS</span>
+    </div>
+  </div>
+
+  <section id="products">
+    <div class="section-num">02</div>
+    <div class="kicker">Live Products</div>
+    <h2 class="section-title">Things we've already built &amp; shipped.</h2>
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="product-idx">A</div>
+        <div class="product-status"><span class="dot live"></span>Live · Free</div>
+        <h3>Marketplace Guardian</h3>
+        <p>A free marketplace-safety toolkit — scam check, listing helper, and negotiation assistant. Available in English and Spanish.</p>
+        <a class="product-link" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Open tool →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-idx">B</div>
+        <div class="product-status"><span class="dot live"></span>Live · Free</div>
+        <h3>AutoComps</h3>
+        <p>Instant vehicle value report from a VIN. Type it in, get a clean comparable-based valuation back in seconds.</p>
+        <a class="product-link" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">Open tool →</a>
+      </div>
+
+      <div class="product-card">
+        <div class="product-idx">C</div>
+        <div class="product-status"><span class="dot"></span>Internal</div>
+        <h3>Internal automation fleet</h3>
+        <p>An autonomous publisher, live dashboards, and watchdog processes running quietly in the background — the same engine behind every build we do for clients.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="section-num">03</div>
+    <div class="kicker">How It Works</div>
+    <h2 class="section-title">Two steps. No meetings you don't need.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Tell us the chore</h3>
+          <p>Describe the task you're doing by hand — pulling data, checking a site, filling a form, chasing a report. We scope it and quote a flat build.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>Demo early, run 24/7</h3>
+          <p>You see a working version fast, before full polish. Once it's approved it runs on its own — no server to manage, no license to renew, no attention required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <div class="section-num">04</div>
+    <div class="kicker">Capabilities</div>
+    <h2 class="section-title">What we build.</h2>
+    <div class="cap-list">
+      <div class="cap-item"><span class="n">01</span>Scrapers &amp; data collection</div>
+      <div class="cap-item"><span class="n">02</span>API integrations</div>
+      <div class="cap-item"><span class="n">03</span>Data cleaning &amp; dashboards</div>
+      <div class="cap-item"><span class="n">04</span>Document automation</div>
+      <div class="cap-item"><span class="n">05</span>Monitoring &amp; alerts</div>
+      <div class="cap-item"><span class="n">06</span>Web apps &amp; MVPs</div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-num">05</div>
+    <div class="kicker">Contact</div>
+    <h2 class="section-title">Have a chore worth automating?</h2>
+    <div class="contact-section">
+      <a class="big-link" href="mailto:sales@syntheticm2m.com">sales@syntheticm2m.com</a>
+      <div class="contact-meta">
+        <div>Response time<span>Within 1 business day</span></div>
+        <div>Engagement<span>Flat-fee build</span></div>
+        <div>Format<span>Async, no calls required</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 Synthetic M2M</div>
+    <div>Automation Studio</div>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var bar = document.getElementById('progressBar');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function updateProgress(){
+      var h = document.documentElement;
+      var scrollTop = h.scrollTop || document.body.scrollTop;
+      var scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, {passive:true});
+    updateProgress();
+
+    if(!reduced){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.style.transition = 'opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1)';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, {threshold:0.15});
+      document.querySelectorAll('.product-card, .step, .cap-item').forEach(function(el, i){
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(18px)';
+        observer.observe(el);
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

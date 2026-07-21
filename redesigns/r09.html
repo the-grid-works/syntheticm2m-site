@@ -1,0 +1,536 @@
+<link rel="icon" href="/favicon.svg">
+<title>Synthetic M2M — Automation Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Synthetic M2M builds automation that runs while you don't.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#000;
+    --white:#fff;
+    --acid:#ccff00;
+    --gray:#8a8a8a;
+    --line:#2a2a2a;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+    cursor:default;
+  }
+
+  ::selection{background:var(--acid);color:#000;}
+
+  .display{
+    font-family:'Archivo Black','Inter',sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    line-height:0.92;
+    letter-spacing:-0.02em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .accent{color:var(--acid);}
+
+  /* ---------- Spotlight cursor layer ---------- */
+  #spotlight{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:5;
+    background:radial-gradient(circle 260px at var(--x,50%) var(--y,50%), rgba(204,255,0,0.08), rgba(255,255,255,0.02) 40%, transparent 70%);
+    mix-blend-mode:screen;
+    transition:background 0.05s linear;
+  }
+  @media (prefers-reduced-motion: reduce){
+    #spotlight{display:none;}
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:50;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.4rem clamp(1.2rem,4vw,3rem);
+    mix-blend-mode:difference;
+  }
+  .logo{
+    font-family:'Archivo Black',sans-serif;
+    font-size:1.1rem;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:clamp(1rem,3vw,2.4rem);
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  nav a{
+    position:relative;
+    padding-bottom:2px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    height:2px;
+    width:0;
+    background:var(--acid);
+    transition:width 0.35s cubic-bezier(.2,.8,.2,1);
+  }
+  nav a:hover::after{width:100%;}
+  @media (max-width:640px){
+    nav ul{gap:0.8rem;font-size:0.7rem;}
+  }
+
+  section{
+    position:relative;
+    z-index:2;
+    padding:clamp(5rem,10vw,8rem) clamp(1.2rem,5vw,3rem);
+    border-bottom:1px solid var(--line);
+  }
+
+  /* ---------- Hero ---------- */
+  #hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:6rem;
+  }
+  .kicker{
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.2em;
+    color:var(--gray);
+    margin-bottom:1.4rem;
+  }
+  .kicker::before{
+    content:"● ";
+    color:var(--acid);
+  }
+  h1.hero-line{
+    font-size:clamp(2.6rem,10vw,8.5rem);
+    overflow:hidden;
+  }
+  h1.hero-line span{
+    display:block;
+    transform:translateY(110%);
+    animation:slideUp 0.9s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  h1.hero-line:nth-of-type(1) span{animation-delay:0.05s;}
+  @keyframes slideUp{
+    to{transform:translateY(0);}
+  }
+  .hero-sub{
+    max-width:44ch;
+    margin-top:2rem;
+    font-size:clamp(1rem,1.5vw,1.25rem);
+    color:#ccc;
+    line-height:1.5;
+  }
+  .cta-row{
+    margin-top:2.6rem;
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.6rem;
+    padding:1.1rem 2rem;
+    background:var(--acid);
+    color:#000;
+    font-weight:900;
+    text-transform:uppercase;
+    font-size:0.95rem;
+    letter-spacing:0.03em;
+    border:2px solid var(--acid);
+    transition:transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+  .btn:hover{
+    background:transparent;
+    color:var(--white);
+    transform:translate(-4px,-4px);
+    box-shadow:6px 6px 0 var(--acid);
+  }
+  .btn-ghost{
+    padding:1.1rem 2rem;
+    border:2px solid #444;
+    text-transform:uppercase;
+    font-size:0.95rem;
+    letter-spacing:0.03em;
+    font-weight:600;
+    transition:border-color 0.25s ease, color 0.25s ease;
+  }
+  .btn-ghost:hover{border-color:var(--acid);color:var(--acid);}
+
+  /* ---------- Marquee ---------- */
+  .marquee-wrap{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    padding:1.6rem 0;
+    white-space:nowrap;
+  }
+  .marquee{
+    display:inline-flex;
+    animation:scroll 22s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee{animation:none;}
+    .marquee-wrap{overflow-x:auto;}
+  }
+  .marquee span{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(2rem,6vw,4.5rem);
+    text-transform:uppercase;
+    -webkit-text-stroke:1.5px var(--white);
+    color:transparent;
+    padding-right:3rem;
+  }
+  .marquee span.filled{
+    -webkit-text-stroke:0;
+    color:var(--acid);
+  }
+  @keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- Section headers ---------- */
+  .sec-num{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(3rem,9vw,7rem);
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--line);
+    line-height:1;
+    margin-bottom:-1rem;
+  }
+  .sec-title{
+    font-size:clamp(2.2rem,6vw,4.5rem);
+    margin-bottom:2.4rem;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(60px);
+    transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ---------- Products ---------- */
+  .product-list{
+    display:flex;
+    flex-direction:column;
+  }
+  .product{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:1.5rem 2rem;
+    align-items:center;
+    padding:2.4rem 0;
+    border-top:1px solid var(--line);
+    transition:background 0.3s ease;
+  }
+  .product:last-child{border-bottom:1px solid var(--line);}
+  .product:hover{background:rgba(204,255,0,0.04);}
+  .product-status{
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--acid);
+    border:1px solid var(--acid);
+    padding:0.3rem 0.7rem;
+    justify-self:start;
+    white-space:nowrap;
+  }
+  .product-status.internal{
+    color:var(--gray);
+    border-color:var(--gray);
+  }
+  .product-name{
+    font-size:clamp(1.4rem,4vw,2.6rem);
+    font-family:'Archivo Black',sans-serif;
+    text-transform:uppercase;
+  }
+  .product-desc{
+    color:#bbb;
+    font-size:0.95rem;
+    max-width:60ch;
+    margin-top:0.5rem;
+    font-weight:400;
+    text-transform:none;
+  }
+  .product-link{
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    border-bottom:2px solid var(--acid);
+    white-space:nowrap;
+    justify-self:end;
+  }
+  .product-link:hover{color:var(--acid);}
+  @media (max-width:720px){
+    .product{grid-template-columns:1fr;justify-items:start;gap:0.8rem;}
+    .product-link{justify-self:start;}
+  }
+
+  /* ---------- How it works ---------- */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:2px;
+    background:var(--line);
+  }
+  .step{
+    background:var(--black);
+    padding:2.6rem 2rem;
+    position:relative;
+  }
+  .step-num{
+    font-family:'Archivo Black',sans-serif;
+    font-size:3.5rem;
+    color:var(--acid);
+    line-height:1;
+    margin-bottom:1.2rem;
+  }
+  .step h3{
+    font-size:1.3rem;
+    text-transform:uppercase;
+    margin-bottom:0.8rem;
+    font-weight:900;
+  }
+  .step p{color:#bbb;line-height:1.5;font-size:0.95rem;}
+
+  /* ---------- Capabilities ---------- */
+  .cap-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .cap{
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:2.6rem 2rem;
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+  .cap:hover{
+    background:var(--acid);
+    color:#000;
+  }
+  .cap:hover .cap-idx{color:#000;opacity:0.4;}
+  .cap-idx{
+    font-family:'Archivo Black',sans-serif;
+    color:var(--gray);
+    opacity:0.5;
+    font-size:0.9rem;
+    margin-bottom:1rem;
+  }
+  .cap h3{
+    font-size:1.2rem;
+    text-transform:uppercase;
+    font-weight:900;
+    margin-bottom:0.6rem;
+  }
+  .cap p{font-size:0.9rem;line-height:1.5;}
+
+  /* ---------- Contact ---------- */
+  #contact{
+    min-height:70vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    border-bottom:none;
+  }
+  .contact-big{
+    font-size:clamp(2.4rem,9vw,7rem);
+    margin-bottom:2rem;
+  }
+  .contact-big a{
+    border-bottom:4px solid var(--acid);
+  }
+  .contact-big a:hover{color:var(--acid);}
+
+  footer{
+    padding:2rem clamp(1.2rem,5vw,3rem) 3rem;
+    display:flex;
+    justify-content:space-between;
+    color:var(--gray);
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+</style>
+
+<div id="spotlight"></div>
+
+<header>
+  <div class="logo">Synthetic M2M</div>
+  <nav>
+    <ul>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#how">Process</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="hero">
+  <div class="kicker">Automation Studio</div>
+  <h1 class="display hero-line"><span>Your busywork</span></h1>
+  <h1 class="display hero-line"><span>goes in.</span></h1>
+  <h1 class="display hero-line"><span><span class="accent">Finished work</span></span></h1>
+  <h1 class="display hero-line"><span>comes out.</span></h1>
+  <p class="hero-sub">We build the scrapers, integrations, and dashboards that quietly do the job nobody wants to do twice.</p>
+  <div class="cta-row">
+    <a class="btn" href="mailto:sales@syntheticm2m.com">Start a project →</a>
+    <a class="btn-ghost" href="#products">See it running</a>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Automate</span><span class="filled">Automate</span><span>Automate</span><span class="filled">Automate</span>
+    <span>Automate</span><span class="filled">Automate</span><span>Automate</span><span class="filled">Automate</span>
+  </div>
+</div>
+
+<section id="products">
+  <div class="sec-num reveal">01</div>
+  <h2 class="display sec-title reveal">Live Products</h2>
+  <div class="product-list">
+    <div class="product reveal">
+      <span class="product-status">Free · Live</span>
+      <div>
+        <div class="product-name">Marketplace Guardian</div>
+        <div class="product-desc">A free marketplace-safety toolkit, in English and Spanish — scam checks, listing helpers, and negotiation support for anyone buying or selling online.</div>
+      </div>
+      <a class="product-link" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Open tool →</a>
+    </div>
+    <div class="product reveal">
+      <span class="product-status">Free · Live</span>
+      <div>
+        <div class="product-name">AutoComps</div>
+        <div class="product-desc">Enter a VIN, get an instant vehicle value report. Built for anyone who needs a fast, honest read on what a car is actually worth.</div>
+      </div>
+      <a class="product-link" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">Open tool →</a>
+    </div>
+    <div class="product reveal">
+      <span class="product-status internal">Internal</span>
+      <div>
+        <div class="product-name">Automation Fleet</div>
+        <div class="product-desc">The unglamorous machinery running underneath — an autonomous publisher, live dashboards, and watchers that check on things so we don't have to.</div>
+      </div>
+      <span></span>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="sec-num reveal">02</div>
+  <h2 class="display sec-title reveal">How It Works</h2>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h3>Tell us the chore</h3>
+      <p>Describe the task you're stuck doing by hand — the file, the spreadsheet, the repetitive click-through. That's all we need to start.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <h3>Demo early</h3>
+      <p>You see a working version fast, on real data, before we call anything finished. No long build-in-the-dark phase.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <h3>It runs 24/7</h3>
+      <p>Once it's right, it runs on its own — no babysitting, no reminders, no repeat invoice for the same task twice.</p>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities">
+  <div class="sec-num reveal">03</div>
+  <h2 class="display sec-title reveal">Capabilities</h2>
+  <div class="cap-grid">
+    <div class="cap reveal"><div class="cap-idx">(A)</div><h3>Scrapers &amp; data collection</h3><p>Pulling structured information out of messy, scattered, or public sources on a schedule.</p></div>
+    <div class="cap reveal"><div class="cap-idx">(B)</div><h3>API integrations</h3><p>Connecting the tools you already use so information moves between them without a human copy-pasting.</p></div>
+    <div class="cap reveal"><div class="cap-idx">(C)</div><h3>Data cleaning &amp; dashboards</h3><p>Turning raw exports into numbers you can actually trust and glance at in one place.</p></div>
+    <div class="cap reveal"><div class="cap-idx">(D)</div><h3>Document automation</h3><p>Generating, filling, and routing the paperwork that piles up behind every business.</p></div>
+    <div class="cap reveal"><div class="cap-idx">(E)</div><h3>Monitoring &amp; alerts</h3><p>Watching for the thing that matters and telling you the moment it happens — nothing more.</p></div>
+    <div class="cap reveal"><div class="cap-idx">(F)</div><h3>Web apps &amp; MVPs</h3><p>Small, focused tools built to prove an idea works before anyone commits real budget to it.</p></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-num reveal">04</div>
+  <h2 class="display contact-big reveal">Let's build<br>the <span class="accent">machine.</span></h2>
+  <p class="hero-sub reveal" style="margin-bottom:2rem;">One email. Tell us the chore. We'll tell you honestly if it's automatable.</p>
+  <div class="cta-row reveal">
+    <a class="btn" href="mailto:sales@syntheticm2m.com">sales@syntheticm2m.com →</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Synthetic M2M</span>
+  <span>Automation studio</span>
+</footer>
+
+<script>
+  (function(){
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Spotlight follows cursor
+    if(!reduced){
+      var spot = document.getElementById('spotlight');
+      window.addEventListener('pointermove', function(e){
+        spot.style.setProperty('--x', e.clientX + 'px');
+        spot.style.setProperty('--y', e.clientY + 'px');
+      }, {passive:true});
+    }
+
+    // Scroll reveal
+    var els = document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window && !reduced){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, {threshold:0.15});
+      els.forEach(function(el){ io.observe(el); });
+    } else {
+      els.forEach(function(el){ el.classList.add('in'); });
+    }
+  })();
+</script>

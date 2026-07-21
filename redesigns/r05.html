@@ -1,0 +1,437 @@
+<link rel="icon" href="/favicon.svg">
+<title>Synthetic M2M — Automation Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+
+  :root{
+    --bg:#010401;
+    --green:#33ff66;
+    --green-dim:#1c9c3d;
+    --green-bright:#adffc4;
+    --amber:#ffb000;
+    --crt-shadow: 0 0 2px currentColor, 0 0 8px currentColor;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0;
+    background:var(--bg);
+    color:var(--green);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    font-size:15px;
+    line-height:1.5;
+    text-shadow: 0 0 1px rgba(51,255,102,0.6), 0 0 6px rgba(51,255,102,0.25);
+  }
+
+  /* Scanline + vignette overlay */
+  .crt-overlay{
+    pointer-events:none;
+    position:fixed; inset:0;
+    z-index:100;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0px,
+        rgba(0,0,0,0) 1px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 3px
+      );
+    mix-blend-mode:multiply;
+  }
+  .crt-vignette{
+    pointer-events:none;
+    position:fixed; inset:0;
+    z-index:101;
+    box-shadow: inset 0 0 10vw 2vw rgba(0,0,0,0.75);
+  }
+  .crt-flicker{
+    pointer-events:none;
+    position:fixed; inset:0;
+    z-index:102;
+    background:rgba(51,255,102,0.02);
+    animation: flicker 6.5s infinite;
+  }
+  @keyframes flicker{
+    0%,19%,21%,23%,80%,100%{ opacity:1; }
+    20%,22%{ opacity:0.65; }
+    50%{ opacity:0.92; }
+    81%{ opacity:0.8; }
+  }
+
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:40px 20px 120px;
+    position:relative;
+    z-index:1;
+  }
+
+  .boot-line{ color:var(--green-dim); font-size:13px; }
+  .boot-line .ok{ color:var(--green-bright); }
+
+  .prompt-row{
+    display:flex; gap:8px; align-items:baseline;
+    margin-top:28px; margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .prompt{ color:var(--green-bright); font-weight:700; }
+  .path{ color:var(--green-dim); }
+  .cmd{ color:var(--green); font-weight:700; }
+
+  .cursor{
+    display:inline-block;
+    width:0.6em; height:1em;
+    background:var(--green);
+    vertical-align:text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .output{
+    margin: 8px 0 0 0;
+    padding-left:0;
+  }
+
+  .ascii-div{
+    color:var(--green-dim);
+    font-size:11px;
+    line-height:1.1;
+    white-space:pre;
+    overflow-x:auto;
+    margin:36px 0;
+    opacity:0.8;
+  }
+
+  /* HERO */
+  .hero{ margin-top:10px; }
+  .hero h1{
+    font-size: clamp(1.5rem, 4.2vw, 2.6rem);
+    line-height:1.25;
+    margin: 10px 0 6px;
+    color:var(--green-bright);
+    font-weight:800;
+  }
+  .hero .type-target{
+    border-right: 0.55em solid var(--green);
+    white-space:nowrap;
+    overflow:hidden;
+    display:inline-block;
+    animation: caret 0.9s steps(1) infinite;
+  }
+  @keyframes caret{ 50%{ border-color:transparent; } }
+
+  .hero p.sub{
+    color:var(--green-dim);
+    max-width:640px;
+    margin: 14px 0 26px;
+  }
+
+  .btn-row{ display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; }
+  .btn{
+    display:inline-block;
+    border:1px solid var(--green);
+    color:var(--green-bright);
+    background:rgba(51,255,102,0.05);
+    padding:12px 20px;
+    text-decoration:none;
+    font-weight:700;
+    letter-spacing:0.5px;
+    position:relative;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .btn::before{ content:"> "; }
+  .btn:hover{
+    background:rgba(51,255,102,0.15);
+    box-shadow: 0 0 14px rgba(51,255,102,0.5);
+  }
+  .btn.secondary{
+    color:var(--green-dim);
+    border-color:var(--green-dim);
+  }
+
+  /* Section labels */
+  h2.section-title{
+    color:var(--green-bright);
+    font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+    margin:0 0 4px;
+    font-weight:800;
+    letter-spacing:1px;
+  }
+  .section-meta{ color:var(--green-dim); font-size:12px; margin-bottom:18px; }
+
+  /* Product cards as terminal panels */
+  .panel{
+    border:1px solid var(--green-dim);
+    padding:16px 18px;
+    margin:16px 0;
+    background: linear-gradient(180deg, rgba(51,255,102,0.03), rgba(51,255,102,0.005));
+    position:relative;
+  }
+  .panel .tag{
+    display:inline-block;
+    border:1px solid var(--green);
+    color:var(--green-bright);
+    font-size:11px;
+    padding:2px 8px;
+    margin-bottom:10px;
+    letter-spacing:1px;
+  }
+  .panel .tag.internal{ border-color:var(--green-dim); color:var(--green-dim); }
+  .panel h3{ margin:0 0 8px; color:var(--green-bright); font-size:1.05rem; }
+  .panel p{ margin:0 0 12px; color:var(--green); opacity:0.9; }
+  .panel a.link{
+    color:var(--amber);
+    text-decoration:none;
+    border-bottom:1px dashed var(--amber);
+  }
+  .panel a.link:hover{ text-shadow:0 0 8px var(--amber); }
+  .status-line{ font-size:12px; color:var(--green-dim); }
+  .status-line .dot{
+    display:inline-block; width:8px; height:8px; border-radius:50%;
+    background:var(--green-bright); margin-right:6px;
+    box-shadow:0 0 6px var(--green-bright);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+  /* how it works - step list styled as executed sequence */
+  .steps{ list-style:none; margin:0; padding:0; }
+  .steps li{
+    padding:10px 0 10px 26px;
+    border-left:2px solid var(--green-dim);
+    margin-left:6px;
+    position:relative;
+  }
+  .steps li::before{
+    content: attr(data-n);
+    position:absolute;
+    left:-13px; top:8px;
+    background:var(--bg);
+    color:var(--green-bright);
+    border:1px solid var(--green);
+    font-size:11px;
+    width:20px; height:20px;
+    line-height:18px;
+    text-align:center;
+    border-radius:50%;
+  }
+  .steps li b{ color:var(--green-bright); }
+  .steps li span.small{ color:var(--green-dim); font-size:12.5px; }
+
+  /* capabilities grid as ls -la */
+  .filelist{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    margin-top:10px;
+  }
+  .filelist tr{ border-bottom:1px dotted rgba(51,255,102,0.15); }
+  .filelist td{ padding:8px 10px; vertical-align:top; }
+  .filelist td.perm{ color:var(--green-dim); white-space:nowrap; }
+  .filelist td.name{ color:var(--green-bright); font-weight:700; white-space:nowrap; }
+  .filelist td.desc{ color:var(--green); opacity:0.85; }
+  .filelist tr:hover{ background:rgba(51,255,102,0.05); }
+
+  /* contact */
+  .contact-box{
+    border:1px solid var(--green);
+    padding:22px;
+    margin-top:12px;
+    text-align:left;
+    position:relative;
+  }
+  .contact-box::before{
+    content:"[ CONTACT ]";
+    position:absolute; top:-11px; left:14px;
+    background:var(--bg);
+    padding:0 8px;
+    color:var(--green-bright);
+    font-size:12px;
+    letter-spacing:2px;
+  }
+  .contact-box a{
+    color:var(--amber);
+    font-size:1.15rem;
+    font-weight:700;
+    text-decoration:none;
+  }
+  .contact-box a:hover{ text-shadow:0 0 10px var(--amber); }
+
+  footer{
+    margin-top:60px;
+    color:var(--green-dim);
+    font-size:11.5px;
+    border-top:1px dashed rgba(51,255,102,0.2);
+    padding-top:16px;
+  }
+
+  .glitch-hover:hover{ animation: glitch 0.25s steps(2,end) 2; }
+  @keyframes glitch{
+    0%{ transform:translate(0,0); }
+    25%{ transform:translate(-1px,1px); text-shadow:2px 0 var(--amber), -2px 0 var(--green-bright); }
+    50%{ transform:translate(1px,-1px); }
+    75%{ transform:translate(-1px,0); }
+    100%{ transform:translate(0,0); }
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:24px 14px 100px; }
+    .filelist{ font-size:11.5px; }
+    .filelist td.perm{ display:none; }
+    .ascii-div{ font-size:8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .crt-flicker, .cursor, .status-line .dot, .hero .type-target{ animation:none !important; }
+    .glitch-hover:hover{ animation:none !important; }
+  }
+</style>
+
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+<div class="crt-flicker"></div>
+
+<div class="wrap">
+
+  <div class="boot-line">SYNTHETIC-M2M BIOS v2.6 ................ <span class="ok">OK</span></div>
+  <div class="boot-line">MEM CHECK 640K STUDIO CAPACITY .......... <span class="ok">OK</span></div>
+  <div class="boot-line">LOADING AUTOMATION KERNEL ............... <span class="ok">DONE</span></div>
+  <div class="boot-line">MOUNTING /dev/busywork ................... <span class="ok">READY</span></div>
+
+  <div class="prompt-row">
+    <span class="prompt">root@syntheticm2m</span><span class="path">:~$</span>
+    <span class="cmd">run ./welcome.sh</span>
+  </div>
+
+  <section class="hero">
+    <h1><span class="type-target" id="typeTarget"></span></h1>
+    <p class="sub">We build the automation. You stop doing the busywork. Tell us the chore, we script it, test it, and ship a working process — no dashboards to babysit, no new hires.</p>
+    <div class="btn-row">
+      <a class="btn" href="mailto:sales@syntheticm2m.com">mail sales@syntheticm2m.com</a>
+      <a class="btn secondary" href="#products">cat ./live_products.log</a>
+    </div>
+  </section>
+
+  <div class="ascii-div">╔══════════════════════════════════════════════════════════════════╗
+║  SECTION 01                                                        ║
+╚══════════════════════════════════════════════════════════════════╝</div>
+
+  <div class="prompt-row" id="products">
+    <span class="prompt">root@syntheticm2m</span><span class="path">:~$</span>
+    <span class="cmd">ls -la /live/products/</span>
+  </div>
+  <div class="section-meta">total 3 processes — status: resident, running</div>
+
+  <div class="panel glitch-hover">
+    <span class="tag">LIVE // FREE</span>
+    <h3>marketplace_guardian.exe</h3>
+    <p>Scam check, listing help, and a negotiation assistant for online marketplace sellers and buyers. English + Spanish. Free to use, no account required.</p>
+    <div class="status-line"><span class="dot"></span>uptime: continuous &nbsp;|&nbsp; <a class="link" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">./launch marketplace-guardian &gt;&gt;</a></div>
+  </div>
+
+  <div class="panel glitch-hover">
+    <span class="tag">LIVE // FREE</span>
+    <h3>autocomps.exe</h3>
+    <p>Instant vehicle value report from a VIN. Paste the VIN, get a clean valuation back — built for anyone who needs a fast, defensible number.</p>
+    <div class="status-line"><span class="dot"></span>uptime: continuous &nbsp;|&nbsp; <a class="link" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">./launch autocomps &gt;&gt;</a></div>
+  </div>
+
+  <div class="panel">
+    <span class="tag internal">INTERNAL // NO PUBLIC ACCESS</span>
+    <h3>fleet_daemon [background]</h3>
+    <p>The internal automation fleet: an autonomous publisher, live dashboards, and a set of watcher processes that check on everything else so nothing quietly breaks. This is the same machinery behind every client build.</p>
+    <div class="status-line"><span class="dot"></span>process count: N &nbsp;|&nbsp; access: root only</div>
+  </div>
+
+  <div class="ascii-div">╔══════════════════════════════════════════════════════════════════╗
+║  SECTION 02                                                        ║
+╚══════════════════════════════════════════════════════════════════╝</div>
+
+  <div class="prompt-row">
+    <span class="prompt">root@syntheticm2m</span><span class="path">:~$</span>
+    <span class="cmd">man how_it_works</span>
+  </div>
+  <div class="section-meta">HOW-IT-WORKS(1) — build sequence</div>
+
+  <ul class="steps">
+    <li data-n="1"><b>You describe the chore.</b> <span class="small">The repetitive task you or your team does by hand — data entry, checking a site, chasing a status, formatting a report.</span></li>
+    <li data-n="2"><b>We build and demo it early.</b> <span class="small">Working version in your hands fast, before it's polished, so you can correct course before we go further.</span></li>
+    <li data-n="3"><b>It runs 24/7.</b> <span class="small">Once approved, it becomes a standing process — no manual restart, no per-run request, no waiting on a person.</span></li>
+  </ul>
+
+  <div class="ascii-div">╔══════════════════════════════════════════════════════════════════╗
+║  SECTION 03                                                        ║
+╚══════════════════════════════════════════════════════════════════╝</div>
+
+  <div class="prompt-row">
+    <span class="prompt">root@syntheticm2m</span><span class="path">:~$</span>
+    <span class="cmd">ls -la /usr/share/capabilities/</span>
+  </div>
+  <div class="section-meta">6 files, all executable</div>
+
+  <table class="filelist">
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">scrapers.bin</td><td class="desc">Scrapers &amp; data collection — pull structured data out of sites and feeds on a schedule.</td></tr>
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">integrations.bin</td><td class="desc">API integrations — connect the tools you already use so data moves between them on its own.</td></tr>
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">cleandash.bin</td><td class="desc">Data cleaning + dashboards — turn messy exports into a live view worth checking.</td></tr>
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">docauto.bin</td><td class="desc">Document automation — generate, fill, and route paperwork without retyping it.</td></tr>
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">watchdog.bin</td><td class="desc">Monitoring + alerts — get pinged the moment something needs a human, not before.</td></tr>
+    <tr><td class="perm">-rwxr-xr-x</td><td class="name">webapp.bin</td><td class="desc">Web apps &amp; MVPs — a working tool built for exactly one job, launched fast.</td></tr>
+  </table>
+
+  <div class="ascii-div">╔══════════════════════════════════════════════════════════════════╗
+║  SECTION 04                                                        ║
+╚══════════════════════════════════════════════════════════════════╝</div>
+
+  <div class="prompt-row">
+    <span class="prompt">root@syntheticm2m</span><span class="path">:~$</span>
+    <span class="cmd">./contact --init<span class="cursor"></span></span>
+  </div>
+
+  <div class="contact-box">
+    <p style="margin:0 0 10px; color:var(--green-dim);">// describe the chore, get a build plan back</p>
+    <a href="mailto:sales@syntheticm2m.com">sales@syntheticm2m.com</a>
+  </div>
+
+  <footer>
+    session log end. &nbsp;connection stable.&nbsp; SYNTHETIC-M2M © automation studio. &nbsp;type <span style="color:var(--green-bright)">exit</span> to close terminal.
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var el = document.getElementById('typeTarget');
+    var full = "Your busywork goes in. Finished work comes out.";
+    if(prefersReduced){
+      el.textContent = full;
+      el.style.borderRight = 'none';
+      return;
+    }
+    var i = 0;
+    function tick(){
+      if(i <= full.length){
+        el.textContent = full.slice(0, i);
+        i++;
+        setTimeout(tick, 32 + Math.random()*40);
+      }
+    }
+    tick();
+
+    // occasional random glitch flicker on a heading, subtle
+    var panels = document.querySelectorAll('.panel h3');
+    setInterval(function(){
+      var p = panels[Math.floor(Math.random()*panels.length)];
+      if(!p) return;
+      p.style.textShadow = '2px 0 #ffb000, -2px 0 #adffc4';
+      setTimeout(function(){ p.style.textShadow=''; }, 90);
+    }, 4500);
+  })();
+</script>

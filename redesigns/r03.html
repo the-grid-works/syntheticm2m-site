@@ -1,0 +1,377 @@
+<meta charset="UTF-8">
+<title>Synthetic M2M — Automation Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5E400;
+    --ink:#0B0B0B;
+    --white:#FDFDF5;
+    --pink:#FF5CA0;
+    --blue:#4D6BFE;
+    --green:#00D68F;
+    --orange:#FF7A1A;
+    --border:4px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:500;
+    line-height:1.4;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- generic brutal box ---------- */
+  .box{
+    background:var(--white);
+    border:var(--border) solid var(--ink);
+    box-shadow:8px 8px 0 var(--ink);
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-block;
+    font-family:inherit;
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--ink);
+    background:var(--green);
+    border:var(--border) solid var(--ink);
+    border-radius:14px;
+    padding:16px 30px;
+    box-shadow:6px 6px 0 var(--ink);
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink);}
+  .btn:active, .btn.pressed{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink);}
+  .btn.alt{background:var(--white);}
+  .btn.pink{background:var(--pink);}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--bg);
+    border-bottom:var(--border) solid var(--ink);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;
+  }
+  .logo{
+    font-weight:700; font-size:1.4rem;
+    letter-spacing:-0.5px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .dot{
+    width:16px;height:16px;background:var(--ink);border-radius:50%;
+    display:inline-block;
+  }
+  nav .links{display:flex; gap:22px; font-weight:600;}
+  nav .links a{
+    text-decoration:none; border-bottom:3px solid transparent;
+  }
+  nav .links a:hover{border-bottom:3px solid var(--ink);}
+  @media (max-width:640px){
+    nav .links{display:none;}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:80px 0 60px;
+    position:relative;
+  }
+  .hero .wrap{position:relative;}
+  h1{
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    font-weight:700;
+    letter-spacing:-1.5px;
+    line-height:1.05;
+    margin:0 0 24px;
+    max-width:900px;
+  }
+  h1 .hl{
+    background:var(--pink);
+    padding:0 10px;
+    border:var(--border) solid var(--ink);
+    box-shadow:6px 6px 0 var(--ink);
+    display:inline-block;
+    transform:rotate(-1deg);
+  }
+  .hero p.sub{
+    font-size:1.25rem;
+    max-width:560px;
+    margin:0 0 34px;
+    font-weight:500;
+  }
+  .sticker{
+    position:absolute;
+    background:var(--orange);
+    border:var(--border) solid var(--ink);
+    border-radius:50%;
+    width:130px;height:130px;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    font-weight:700;
+    font-size:.95rem;
+    transform:rotate(9deg);
+    box-shadow:6px 6px 0 var(--ink);
+    top:20px; right:24px;
+    animation:wiggle 5s ease-in-out infinite;
+  }
+  @keyframes wiggle{
+    0%,100%{transform:rotate(9deg);}
+    50%{transform:rotate(-6deg);}
+  }
+  @media (max-width:800px){
+    .sticker{position:static;margin:20px 0 0;transform:rotate(-4deg);}
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:70px 0;}
+  .section-title{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    font-weight:700;
+    margin:0 0 40px;
+    display:inline-block;
+    position:relative;
+  }
+  .section-title::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:-6px;
+    width:70px;height:8px;
+    background:var(--blue);
+    border:3px solid var(--ink);
+  }
+  .tag{
+    display:inline-block;
+    font-size:.8rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    background:var(--ink);
+    color:var(--bg);
+    padding:5px 12px;
+    border-radius:20px;
+    margin-bottom:14px;
+    transform:rotate(-2deg);
+  }
+
+  /* ---------- products ---------- */
+  .products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:28px;
+  }
+  .card{
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    position:relative;
+  }
+  .card:hover{
+    transform:translate(-4px,-8px) rotate(-1deg);
+    box-shadow:12px 14px 0 var(--ink);
+  }
+  .card h3{margin:0;font-size:1.4rem;font-weight:700;}
+  .card p{margin:0;flex-grow:1;}
+  .badge-live{
+    position:absolute; top:-14px; right:18px;
+    background:var(--green);
+    border:3px solid var(--ink);
+    border-radius:20px;
+    padding:4px 14px;
+    font-weight:700;
+    font-size:.8rem;
+    transform:rotate(4deg);
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .card a.btn{align-self:flex-start;}
+
+  /* ---------- how it works ---------- */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:28px;
+  }
+  .step{padding:26px;position:relative;}
+  .step .num{
+    font-size:2.6rem;
+    font-weight:700;
+    -webkit-text-stroke:2px var(--ink);
+    color:var(--bg);
+    line-height:1;
+    margin-bottom:10px;
+  }
+
+  /* ---------- capabilities ---------- */
+  .cap-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:22px;
+  }
+  .cap{
+    padding:22px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    cursor:default;
+  }
+  .cap .icon{
+    width:44px;height:44px;flex:0 0 44px;
+    border:3px solid var(--ink);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;
+    background:var(--blue);
+  }
+  .cap:nth-child(2n) .icon{background:var(--pink);}
+  .cap:nth-child(3n) .icon{background:var(--orange);}
+  .cap:nth-child(4n) .icon{background:var(--green);}
+  .cap:hover{transform:translateY(-4px);box-shadow:10px 10px 0 var(--ink);}
+
+  /* ---------- contact ---------- */
+  .contact-box{
+    padding:50px 40px;
+    text-align:center;
+    position:relative;
+  }
+  .contact-box h2{font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 18px;}
+  .contact-box p{font-size:1.15rem;margin:0 0 30px;}
+
+  footer{
+    padding:30px 0 50px;
+    text-align:center;
+    font-size:.9rem;
+    font-weight:600;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+</style>
+
+<header>
+  <div class="nav wrap">
+    <div class="logo"><span class="dot"></span>SYNTHETIC M2M</div>
+    <nav class="links">
+      <a href="#products">Products</a>
+      <a href="#how">How it works</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="sticker">100%<br>AUTOMATED</div>
+    <h1>Your busywork goes in.<br><span class="hl">Finished work</span> comes out.</h1>
+    <p class="sub">We build the scrapers, integrations, dashboards, and bots that quietly do your repetitive work — so your team doesn't have to.</p>
+    <a class="btn" id="cta-mail" href="mailto:sales@syntheticm2m.com">Tell us your chore →</a>
+  </div>
+</section>
+
+<section id="products">
+  <div class="wrap">
+    <div class="tag">Live right now</div>
+    <h2 class="section-title">Products</h2>
+    <div class="products">
+      <div class="card box">
+        <span class="badge-live">LIVE</span>
+        <h3>Marketplace Guardian</h3>
+        <p>Free scam-check, listing helper, and negotiation assistant for online marketplace sellers and buyers. Works in English and Spanish.</p>
+        <a class="btn" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Open the toolkit</a>
+      </div>
+      <div class="card box">
+        <span class="badge-live">LIVE</span>
+        <h3>AutoComps</h3>
+        <p>Paste a VIN, get an instant vehicle value report. No appraisal appointment, no waiting around.</p>
+        <a class="btn alt" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">Get a value report</a>
+      </div>
+      <div class="card box">
+        <span class="badge-live">RUNNING</span>
+        <h3>Internal automation fleet</h3>
+        <p>An autonomous publisher, live dashboards, and a fleet of watchers that keep our own operations running around the clock — built with the same tools we build for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="tag">Dead simple</div>
+    <h2 class="section-title">How it works</h2>
+    <div class="steps">
+      <div class="step box">
+        <div class="num">01</div>
+        <h3>Tell us the chore</h3>
+        <p>The report you copy-paste every Monday. The site you re-check by hand. The inbox nobody has time to sort. Just describe it.</p>
+      </div>
+      <div class="step box">
+        <div class="num">02</div>
+        <h3>We build it</h3>
+        <p>We build a small working piece fast so you can see it running against your real chore early — not a slide deck, an actual tool.</p>
+      </div>
+      <div class="step box">
+        <div class="num">03</div>
+        <h3>It runs 24/7</h3>
+        <p>Once it's right, it just runs. No babysitting, no manual re-runs — it keeps doing the job in the background.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities">
+  <div class="wrap">
+    <div class="tag">What we build</div>
+    <h2 class="section-title">Capabilities</h2>
+    <div class="cap-grid">
+      <div class="cap box"><span class="icon">◎</span>Scrapers &amp; data collection</div>
+      <div class="cap box"><span class="icon">⇄</span>API integrations</div>
+      <div class="cap box"><span class="icon">▦</span>Data cleaning &amp; dashboards</div>
+      <div class="cap box"><span class="icon">▤</span>Document automation</div>
+      <div class="cap box"><span class="icon">◈</span>Monitoring &amp; alerts</div>
+      <div class="cap box"><span class="icon">▣</span>Web apps &amp; MVPs</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box box">
+      <h2>Got a chore worth killing?</h2>
+      <p>Send it over. We'll tell you straight if it's automatable.</p>
+      <a class="btn pink" href="mailto:sales@syntheticm2m.com">sales@syntheticm2m.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Synthetic M2M — automation studio.
+</footer>
+
+<script>
+  document.querySelectorAll('.btn').forEach(function(btn){
+    btn.addEventListener('mousedown', function(){ this.classList.add('pressed'); });
+    btn.addEventListener('mouseup', function(){ this.classList.remove('pressed'); });
+    btn.addEventListener('mouseleave', function(){ this.classList.remove('pressed'); });
+    btn.addEventListener('touchstart', function(){ this.classList.add('pressed'); }, {passive:true});
+    btn.addEventListener('touchend', function(){ this.classList.remove('pressed'); });
+  });
+</script>

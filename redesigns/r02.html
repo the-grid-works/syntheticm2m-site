@@ -1,0 +1,462 @@
+<link rel="icon" href="/favicon.svg">
+<title>Synthetic M2M — Automation Studio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Synthetic M2M — an automation studio. Tell us the chore, we build the machine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#f6f1e7;
+    --cream-2:#efe8d8;
+    --ink:#221d16;
+    --ink-soft:#4a4238;
+    --gold:#a8823a;
+    --gold-deep:#8a6a2a;
+    --rule:rgba(34,29,22,0.18);
+    --card:#fbf8f1;
+    --serif:'Fraunces', 'Times New Roman', serif;
+    --sans:'Jost', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--gold); color:var(--cream);}
+
+  a{color:inherit;}
+
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 40px;
+  }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 1.1s ease, transform 1.1s ease;
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-line{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .reveal-line.in{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-line, .reveal.in, .reveal-line.in{
+      transition:none !important; opacity:1 !important; transform:none !important;
+    }
+    .parallax{transform:none !important;}
+  }
+
+  /* ---------- top nav ---------- */
+  header.nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(246,241,231,0.86);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-inner{
+    max-width:1100px; margin:0 auto; padding:20px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .wordmark{
+    font-family:var(--serif); font-style:italic; font-weight:500;
+    font-size:1.2rem; letter-spacing:0.02em;
+  }
+  .wordmark .dot{color:var(--gold);}
+  .nav-links{display:flex; gap:34px; font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase;}
+  .nav-links a{text-decoration:none; color:var(--ink-soft); position:relative; padding-bottom:4px;}
+  .nav-links a::after{
+    content:''; position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--gold);
+    transition:right .4s ease;
+  }
+  .nav-links a:hover::after{right:0;}
+  @media (max-width:720px){ .nav-links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:160px 0 100px;
+  }
+  .hero-eyebrow{
+    font-size:0.78rem; letter-spacing:0.32em; text-transform:uppercase;
+    color:var(--gold-deep); margin-bottom:34px; display:block;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2.6rem, 6.4vw, 5.4rem);
+    line-height:1.05;
+    margin:0 0 40px;
+    max-width:920px;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 .accent{ font-style:italic; color:var(--gold-deep); font-weight:400; }
+  .hero p.lede{
+    font-size:1.2rem; line-height:1.7; color:var(--ink-soft);
+    max-width:520px; margin:0 0 48px;
+  }
+  .cta-row{display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
+  .btn-gold{
+    font-family:var(--sans); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase;
+    background:var(--ink); color:var(--cream); text-decoration:none;
+    padding:18px 36px; border:1px solid var(--ink);
+    transition:background .35s ease, color .35s ease, transform .3s ease;
+    display:inline-block;
+  }
+  .btn-gold:hover{background:transparent; color:var(--ink); transform:translateY(-2px);}
+  .cta-sub{font-size:0.85rem; color:var(--ink-soft); font-style:italic; font-family:var(--serif);}
+
+  .hero-orn{
+    position:absolute; right:6%; top:24%;
+    width:280px; height:280px; border:1px solid var(--rule); border-radius:50%;
+    opacity:0.6;
+  }
+  .hero-orn::before{
+    content:''; position:absolute; inset:26px; border:1px solid var(--gold); border-radius:50%; opacity:0.5;
+  }
+  @media (max-width:900px){ .hero-orn{display:none;} }
+
+  .scroll-cue{
+    position:absolute; bottom:48px; left:40px;
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-soft);
+    display:flex; align-items:center; gap:14px;
+  }
+  .scroll-cue .line{width:34px; height:1px; background:var(--gold-deep); position:relative; overflow:hidden;}
+  .scroll-cue .line::after{
+    content:''; position:absolute; left:-100%; top:0; bottom:0; width:100%; background:var(--gold-deep);
+    animation:slide 2.6s ease-in-out infinite;
+  }
+  @keyframes slide{ 0%{left:-100%;} 50%{left:0;} 100%{left:100%;} }
+  @media (prefers-reduced-motion: reduce){ .scroll-cue .line::after{animation:none; left:0;} }
+
+  /* ---------- section shell ---------- */
+  section{ padding:140px 0; position:relative; }
+  .rule{ border:none; border-top:1px solid var(--rule); margin:0; }
+  .section-head{ margin-bottom:70px; }
+  .kicker{
+    font-size:0.78rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-deep);
+    display:block; margin-bottom:22px;
+  }
+  .section-head h2{
+    font-family:var(--serif); font-weight:400; font-size:clamp(2rem, 4vw, 3.2rem);
+    margin:0; letter-spacing:-0.01em;
+  }
+  .section-head h2 em{ color:var(--gold-deep); font-style:italic; }
+
+  /* drop cap */
+  .dropcap::first-letter{
+    font-family:var(--serif);
+    font-size:4.6rem;
+    float:left;
+    line-height:0.78;
+    padding:8px 12px 0 0;
+    color:var(--gold-deep);
+    font-weight:500;
+  }
+
+  /* ---------- products ---------- */
+  .product-list{ display:flex; flex-direction:column; }
+  .product{
+    display:grid; grid-template-columns:60px 1fr auto; gap:34px; align-items:start;
+    padding:48px 0; border-bottom:1px solid var(--rule);
+  }
+  .product:first-child{ border-top:1px solid var(--rule); }
+  .product-num{ font-family:var(--serif); font-style:italic; color:var(--gold-deep); font-size:1.3rem; }
+  .product h3{ font-family:var(--serif); font-weight:500; font-size:1.7rem; margin:0 0 10px; }
+  .product .tag{
+    font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--gold-deep); border:1px solid var(--gold-deep); padding:4px 10px; border-radius:2px;
+    margin-left:10px; vertical-align:middle;
+  }
+  .product p{ color:var(--ink-soft); line-height:1.7; max-width:560px; margin:0; font-size:1.02rem; }
+  .product-link{
+    align-self:center; text-decoration:none; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase;
+    white-space:nowrap; border-bottom:1px solid var(--gold-deep); padding-bottom:3px; color:var(--ink);
+    transition:opacity .3s ease;
+  }
+  .product-link:hover{ opacity:0.6; }
+  .product-static{
+    align-self:center; font-size:0.78rem; letter-spacing:0.08em; color:var(--ink-soft); font-style:italic;
+    font-family:var(--serif);
+  }
+  @media (max-width:720px){
+    .product{ grid-template-columns:1fr; gap:14px; }
+    .product-num{ display:none; }
+  }
+
+  /* ---------- how it works ---------- */
+  .how-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+  .how-step{ position:relative; padding-left:0; }
+  .how-step .roman{
+    font-family:var(--serif); font-style:italic; font-size:1rem; color:var(--gold-deep); margin-bottom:18px; display:block;
+  }
+  .how-step h3{ font-family:var(--serif); font-weight:500; font-size:1.6rem; margin:0 0 16px; }
+  .how-step p{ color:var(--ink-soft); line-height:1.75; margin:0; }
+  @media (max-width:720px){ .how-grid{ grid-template-columns:1fr; } }
+
+  .pull-quote{
+    margin:80px 0 0; padding:56px 0 0; border-top:1px solid var(--rule);
+    font-family:var(--serif); font-style:italic; font-size:clamp(1.4rem, 2.6vw, 2rem);
+    line-height:1.55; color:var(--ink); max-width:780px;
+  }
+  .pull-quote span{ color:var(--gold-deep); }
+
+  /* ---------- capabilities ---------- */
+  .cap-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--rule); border:1px solid var(--rule);
+  }
+  .cap-cell{
+    background:var(--cream); padding:44px 36px; transition:background .4s ease;
+  }
+  .cap-cell:hover{ background:var(--card); }
+  .cap-cell .num{ font-family:var(--serif); font-style:italic; color:var(--gold-deep); font-size:0.95rem; }
+  .cap-cell h4{ font-family:var(--serif); font-weight:500; font-size:1.25rem; margin:14px 0 12px; }
+  .cap-cell p{ color:var(--ink-soft); font-size:0.92rem; line-height:1.65; margin:0; }
+  @media (max-width:900px){ .cap-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:600px){ .cap-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- contact ---------- */
+  .contact{
+    background:var(--ink); color:var(--cream); padding:150px 0;
+  }
+  .contact .kicker{ color:var(--gold); }
+  .contact h2{
+    font-family:var(--serif); font-weight:400; font-size:clamp(2.2rem, 5vw, 4rem);
+    margin:0 0 40px; max-width:760px; letter-spacing:-0.01em;
+  }
+  .contact h2 em{ color:var(--gold); font-style:italic; }
+  .contact-email{
+    font-family:var(--serif); font-style:italic; font-size:clamp(1.5rem, 3vw, 2.2rem);
+    color:var(--cream); text-decoration:none; border-bottom:1px solid var(--gold);
+    padding-bottom:6px; display:inline-block; transition:color .3s ease, border-color .3s ease;
+  }
+  .contact-email:hover{ color:var(--gold); }
+
+  footer{
+    padding:40px 0; border-top:1px solid rgba(246,241,231,0.15);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:0.75rem; letter-spacing:0.08em; color:rgba(246,241,231,0.55);
+  }
+
+  /* parallax ornament */
+  .parallax{ transition:transform 0.05s linear; }
+</style>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="wordmark">Synthetic M2M<span class="dot">.</span></div>
+    <nav class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#how">Process</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap" style="position:relative;">
+      <div class="hero-orn parallax" data-speed="0.15"></div>
+      <span class="hero-eyebrow reveal">Synthetic M2M — An Automation Studio</span>
+      <h1 class="reveal">Your busywork goes in.<br>Finished work <span class="accent">comes out.</span></h1>
+      <p class="lede reveal">We build the quiet machinery behind a business — the scraping, the syncing, the reporting, the following-up — so the people running it can go back to running it.</p>
+      <div class="cta-row reveal">
+        <a class="btn-gold" href="mailto:sales@syntheticm2m.com">Tell Us the Chore</a>
+        <span class="cta-sub">a short reply, not a sales call</span>
+      </div>
+    </div>
+    <div class="scroll-cue reveal"><span class="line"></span> Scroll</div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="products">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Chapter One</span>
+        <h2>What's already <em>running</em></h2>
+      </div>
+
+      <div class="product-list">
+        <div class="product reveal">
+          <div class="product-num">01</div>
+          <div>
+            <h3>Marketplace Guardian <span class="tag">Free — EN / ES</span></h3>
+            <p>A free marketplace-safety toolkit — checks a listing or a message for the patterns of a scam before money changes hands. Built for buyers and sellers who just want a second opinion.</p>
+          </div>
+          <a class="product-link" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Open Tool &nbsp;→</a>
+        </div>
+
+        <div class="product reveal">
+          <div class="product-num">02</div>
+          <div>
+            <h3>AutoComps <span class="tag">Free</span></h3>
+            <p>Give it a VIN, get back an instant, plain-English vehicle value report — built for the moment before you buy or sell, not after.</p>
+          </div>
+          <a class="product-link" href="https://84pw8jx6dl.execute-api.us-east-1.amazonaws.com/value/" target="_blank" rel="noopener">Open Tool &nbsp;→</a>
+        </div>
+
+        <div class="product reveal">
+          <div class="product-num">03</div>
+          <div>
+            <h3>Internal Automation Fleet</h3>
+            <p>An autonomous publisher, a set of live dashboards, and a bench of quiet watchers — the kind of infrastructure that runs a workflow end to end without a hand on the wheel. This is the same craft we bring to client work.</p>
+          </div>
+          <div class="product-static">in-house / not for sale</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Chapter Two</span>
+        <h2>How it <em>works</em></h2>
+      </div>
+
+      <div class="how-grid">
+        <div class="how-step reveal">
+          <span class="roman">I.</span>
+          <h3>Tell us the chore</h3>
+          <p class="dropcap">Describe the task that eats your week — the copy-pasting, the manual checking, the report nobody has time to build. A short email is enough. No forms, no discovery calls, no jargon required on your end.</p>
+        </div>
+        <div class="how-step reveal">
+          <span class="roman">II.</span>
+          <h3>We build it, demo early</h3>
+          <p class="dropcap">We build the machine, show you a working version fast, and adjust before it ever touches production. Once it's right, it runs quietly in the background, twenty-four hours a day, so the work simply arrives finished.</p>
+        </div>
+      </div>
+
+      <p class="pull-quote reveal">"The goal was never a bigger to-do list. <span>It was an empty one</span> — with the work still getting done."</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="capabilities">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Chapter Three</span>
+        <h2>What we <em>build</em></h2>
+      </div>
+
+      <div class="cap-grid reveal">
+        <div class="cap-cell">
+          <span class="num">01</span>
+          <h4>Scrapers &amp; Data Collection</h4>
+          <p>Pulling structured information out of the places it currently hides — pages, PDFs, portals, feeds.</p>
+        </div>
+        <div class="cap-cell">
+          <span class="num">02</span>
+          <h4>API Integrations</h4>
+          <p>Wiring the tools you already use into each other, so information moves without a person carrying it.</p>
+        </div>
+        <div class="cap-cell">
+          <span class="num">03</span>
+          <h4>Data Cleaning &amp; Dashboards</h4>
+          <p>Turning a messy spreadsheet into a living view — the numbers that matter, always current.</p>
+        </div>
+        <div class="cap-cell">
+          <span class="num">04</span>
+          <h4>Document Automation</h4>
+          <p>Generating the contracts, reports, and filings that currently get assembled by hand, every single time.</p>
+        </div>
+        <div class="cap-cell">
+          <span class="num">05</span>
+          <h4>Monitoring &amp; Alerts</h4>
+          <p>A quiet watcher that tells you the moment something changes — a price, a status, a filing, a mention.</p>
+        </div>
+        <div class="cap-cell">
+          <span class="num">06</span>
+          <h4>Web Apps &amp; MVPs</h4>
+          <p>A small, focused tool built around one job — for your team, your customers, or a market you're testing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap reveal">
+      <span class="kicker">Chapter Four</span>
+      <h2>Ready when you are. <em>No call needed.</em></h2>
+      <a class="contact-email" href="mailto:sales@syntheticm2m.com">sales@syntheticm2m.com</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:12px;">
+    <span>Synthetic M2M — Automation Studio</span>
+    <span>Built quietly. Runs quietly.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reveal on scroll
+  var targets = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
+    targets.forEach(function(t){ io.observe(t); });
+  } else {
+    targets.forEach(function(t){ t.classList.add('in'); });
+  }
+
+  // Line-by-line reveal for hero headline
+  var h1 = document.querySelector('.hero h1');
+  if(h1 && !reduce){
+    var words = h1.innerHTML.split(' ');
+    h1.innerHTML = words.map(function(w, i){
+      return '<span class="reveal-line" style="transition-delay:' + (i*0.045) + 's">' + w + '</span>';
+    }).join(' ');
+    window.requestAnimationFrame(function(){
+      window.requestAnimationFrame(function(){
+        h1.querySelectorAll('.reveal-line').forEach(function(s){ s.classList.add('in'); });
+      });
+    });
+  }
+
+  // Subtle parallax on hero ornament
+  if(!reduce){
+    var orn = document.querySelector('.parallax');
+    window.addEventListener('scroll', function(){
+      if(!orn) return;
+      var y = window.scrollY;
+      orn.style.transform = 'translateY(' + (y * 0.15) + 'px) rotate(' + (y * 0.03) + 'deg)';
+    }, {passive:true});
+  }
+})();
+</script>
