@@ -60,7 +60,31 @@
   .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px #7c6cff80}
   .btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text)}
   .btn.ghost:hover{background:rgba(255,255,255,.07)}
-  @media(max-width:720px){.navlinks{display:none}}
+  /* mobile: keep the nav visible — it wraps under the logo instead of disappearing */
+  @media(max-width:720px){
+    nav{flex-wrap:wrap;justify-content:center;gap:8px;border-radius:20px;padding:10px 12px;top:10px}
+    .brand{font-size:15px}
+    .navlinks{order:3;width:100%;justify-content:space-between;gap:6px;flex-wrap:nowrap;
+      font-size:11.5px;padding-top:5px;margin-top:1px;border-top:1px solid var(--line)}
+    .navlinks a{color:var(--text);opacity:.85;white-space:nowrap;padding:7px 2px;display:inline-flex;align-items:center}
+    nav .btn.primary{padding:8px 15px;font-size:13px}
+  }
+  @media(max-width:400px){.navlinks{gap:4px;font-size:11px}}
+
+  /* ---- in-page section tabs: move the reader through the offer ---- */
+  .sectabs{position:sticky;top:86px;z-index:40;margin:0 auto;max-width:1120px;padding:0 24px}
+  .sectabs-inner{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+    background:rgba(10,12,20,.72);border:1px solid var(--line);border-radius:99px;padding:5px;
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .sectabs-inner::-webkit-scrollbar{display:none}
+  .sectab{flex:0 0 auto;font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 14px;
+    border-radius:99px;white-space:nowrap;transition:.2s;cursor:pointer}
+  .sectab:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .sectab.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
+  @media(max-width:720px){
+    .sectabs{top:126px;padding:0 12px}
+    .sectab{font-size:11.5px;padding:8px 11px}
+  }
 
   /* hero */
   header{padding:150px 0 40px;text-align:center}
@@ -180,10 +204,23 @@
 <nav>
   <a class="brand" href="/"><span class="dot"></span>Synthetic M2M</a>
   <div class="navlinks">
-    <a href="/#work">Live products</a><a href="/#how">How it works</a><a href="/5-hour-audit/">5-Hour Audit</a>
+    <a href="/">Home</a><a href="/#work">Live products</a><a href="/#capabilities">Capabilities</a><a href="/5-hour-audit/">5-Hour Audit</a>
   </div>
-  <a class="btn primary" href="#book">Book a audit</a>
+  <a class="btn primary" href="#book">Book an audit</a>
 </nav>
+
+<!-- in-page tabs: walk the reader from problem → proof → price → booking -->
+<div class="sectabs" id="sectabs">
+  <div class="sectabs-inner">
+    <a class="sectab" href="#problem">The problem</a>
+    <a class="sectab" href="#how">How it works</a>
+    <a class="sectab" href="#deliverable">What you get</a>
+    <a class="sectab" href="#book">Price</a>
+    <a class="sectab" href="#fit">Is it for me?</a>
+    <a class="sectab" href="#faq">FAQ</a>
+    <a class="sectab" href="/" style="color:var(--g2)">← Back home</a>
+  </div>
+</div>
 
 <header>
   <div class="wrap">
@@ -477,6 +514,50 @@ function submitBooking(){
   document.querySelectorAll(".rv").forEach((el,i)=>{
     el.style.transitionDelay=(i%4*60)+"ms";io.observe(el);
   });
+})();
+
+// in-page tabs: park them just under the nav at EVERY width (the nav changes
+// height as it wraps, so a hard-coded offset collides at in-between sizes)
+(function(){
+  var bar = document.getElementById('sectabs'), nav = document.querySelector('nav');
+  if (!bar || !nav) return;
+  function place(){
+    var h = nav.getBoundingClientRect().height;
+    var top = Math.round(h + (parseFloat(getComputedStyle(nav).top) || 16) + 8);
+    bar.style.top = top + 'px';
+    document.documentElement.style.scrollPaddingTop = (top + bar.getBoundingClientRect().height + 14) + 'px';
+  }
+  place();
+  addEventListener('resize', place);
+  addEventListener('orientationchange', function(){ setTimeout(place, 120); });
+})();
+
+// in-page tabs: highlight whichever section you're reading
+(function(){
+  var tabs = [].slice.call(document.querySelectorAll('.sectab[href^="#"]'));
+  if (!tabs.length) return;
+  var map = tabs.map(function(t){
+    return { tab: t, sec: document.querySelector(t.getAttribute('href')) };
+  }).filter(function(m){ return m.sec; });
+  if (!map.length) return;
+
+  function mark(el){ tabs.forEach(function(t){ t.classList.toggle('on', t === el); }); }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      // pick the entry nearest the top of the viewport that's on screen
+      var best = null;
+      map.forEach(function(m){
+        var r = m.sec.getBoundingClientRect();
+        if (r.top <= 180 && r.bottom > 140) { if (!best || r.top > best.top) best = {top: r.top, tab: m.tab}; }
+      });
+      if (best) mark(best.tab);
+    }, {rootMargin: '-140px 0px -60% 0px', threshold: [0, 0.2, 0.6]});
+    map.forEach(function(m){ io.observe(m.sec); });
+  }
+  // click gives instant feedback even before the scroll settles
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ if (t.getAttribute('href').charAt(0) === '#') mark(t); }); });
+  mark(map[0].tab);
 })();
 </script>
 </body>
