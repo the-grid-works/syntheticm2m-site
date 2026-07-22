@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI Check-Up — Synthetic M2M</title>
+<meta name="description" content="A 45-minute conversation, then a plain-English report prescribing the ready-made tools that give you back 5–10 hours a week. Find 5 hours or it's free.">
+<link rel="canonical" href="https://syntheticm2m.com/ai-checkup/">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0b0e17">
+<meta property="og:title" content="The AI Check-Up — Synthetic M2M">
+<meta property="og:description" content="Find 5+ hours in your week, or pay nothing.">
+<meta property="og:url" content="https://syntheticm2m.com/ai-checkup/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05060a; --text:#f4f6fb; --muted:#8b93a7; --line:rgba(255,255,255,.08);
+    --card:rgba(255,255,255,.028); --g1:#7c6cff; --g2:#4dd6c1; --g3:#f0739b; --cyan:#00dcff;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,sans-serif;font-size:16px;
+    line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:"JetBrains Mono",monospace}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* background */
+  .bgfx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+  .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;animation:drift 22s ease-in-out infinite alternate}
+  .orb.a{width:640px;height:640px;background:radial-gradient(circle,#7c6cff44,transparent 65%);top:-260px;left:-140px}
+  .orb.b{width:560px;height:560px;background:radial-gradient(circle,#4dd6c13d,transparent 65%);top:8%;right:-220px;animation-delay:-8s}
+  @keyframes drift{to{transform:translate(70px,50px) scale(1.08)}}
+  .grid-lines{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%);
+            mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%)}
+
+  /* nav */
+  nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;width:min(1120px,calc(100% - 32px));
+    display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 20px;border-radius:99px;
+    background:rgba(10,12,20,.55);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
+  .brand .dot{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 210deg,var(--g1),var(--g2),var(--g3),var(--g1));box-shadow:0 0 18px #7c6cff66}
+  .navlinks{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+  .navlinks a:hover{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:10px 20px;border-radius:99px;transition:.25s;cursor:pointer;border:none}
+  .btn.primary{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 4px 24px #7c6cff59}
+  .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px #7c6cff80}
+  .btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text)}
+  .btn.ghost:hover{background:rgba(255,255,255,.07)}
+  @media(max-width:720px){.navlinks{display:none}}
+
+  /* hero */
+  header{padding:150px 0 40px;text-align:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);
+    border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 16px;border-radius:99px;margin-bottom:26px}
+  .pill .pulse{width:7px;height:7px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 0 #4dd6c1aa;animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  h1{font-size:clamp(38px,6vw,66px);line-height:1.05;font-weight:800;letter-spacing:-.035em;max-width:880px;margin:0 auto 20px}
+  h1 .grad{background:linear-gradient(92deg,var(--cyan) 0%,var(--g2) 55%,var(--g1) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,220,255,.35))}
+  .sub{font-size:19px;color:var(--muted);max-width:580px;margin:0 auto 34px}
+  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .hero-ctas .btn{padding:14px 28px;font-size:15px}
+
+  section{padding:80px 0;position:relative}
+  .eyebrow{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    background:linear-gradient(92deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px}
+  h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
+  .lead{color:var(--muted);font-size:17px;max-width:580px;margin-bottom:46px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .stepc{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:26px;position:relative}
+  .stepc .num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--g2);display:block;margin-bottom:12px}
+  .stepc h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
+  .stepc p{color:var(--muted);font-size:14.5px}
+
+  /* deliverable list */
+  .deliv{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .dv{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px}
+  .dv b{display:block;font-size:15px;margin-bottom:5px}
+  .dv span{color:var(--muted);font-size:14px}
+
+  /* price */
+  .pricewrap{display:flex;justify-content:center}
+  .pricecard{max-width:520px;width:100%;border:1px solid rgba(124,108,255,.35);border-radius:26px;
+    background:linear-gradient(180deg,#0d1119 0%,#080a11 100%);padding:36px 32px;text-align:center;
+    box-shadow:0 24px 70px rgba(0,0,0,.5);position:relative;overflow:hidden}
+  .pricecard::before{content:"";position:absolute;top:-1px;left:18%;right:18%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--g1),var(--g2),transparent)}
+  .pricecard .amt{font-size:60px;font-weight:800;letter-spacing:-.04em;line-height:1;
+    background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pricecard .what{color:var(--muted);font-size:15px;margin:10px 0 24px}
+  .guarantee{border:1px solid rgba(77,214,193,.3);background:rgba(77,214,193,.08);border-radius:14px;
+    padding:16px;margin-bottom:26px;font-size:14.5px;line-height:1.6}
+  .guarantee b{color:var(--g2)}
+  .pricecard .btn{width:100%;justify-content:center;padding:15px;font-size:15.5px;margin-bottom:10px}
+  .finePrint{color:var(--muted);font-size:12.5px;margin-top:14px}
+
+  /* fit */
+  .fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .fitc{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:24px}
+  .fitc h4{font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;color:var(--muted)}
+  .fitc ul{list-style:none}
+  .fitc li{padding:8px 0 8px 26px;position:relative;font-size:14.5px;border-bottom:1px solid rgba(255,255,255,.05)}
+  .fitc li:last-child{border:none}
+  .fitc li::before{position:absolute;left:0;font-weight:700}
+  .fitc.yes li::before{content:"✓";color:var(--g2)}
+  .fitc.no li::before{content:"—";color:var(--g3)}
+
+  /* faq */
+  details.faq{border:1px solid var(--line);border-radius:16px;background:var(--card);margin-bottom:12px;overflow:hidden}
+  details.faq summary{padding:18px 22px;cursor:pointer;font-weight:600;font-size:15.5px;list-style:none;
+    display:flex;justify-content:space-between;gap:14px;align-items:center}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary::after{content:"+";color:var(--g2);font-size:22px;font-weight:400;flex:none}
+  details.faq[open] summary::after{content:"–"}
+  details.faq .a{padding:0 22px 20px;color:var(--muted);font-size:14.5px;line-height:1.7}
+
+  .cta-final{text-align:center;border:1px solid var(--line);border-radius:26px;background:var(--card);padding:52px 28px}
+  .cta-final h2{margin-bottom:12px}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="bgfx"><div class="orb a"></div><div class="orb b"></div></div>
+<div class="grid-lines"></div>
+
+<nav>
+  <a class="brand" href="/"><span class="dot"></span>Synthetic M2M</a>
+  <div class="navlinks">
+    <a href="/#work">Live products</a><a href="/#how">How it works</a><a href="/ai-checkup/">AI Check-Up</a>
+  </div>
+  <a class="btn primary" href="#book">Book a check-up</a>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="pill"><span class="pulse"></span>For owner-run businesses</div>
+    <h1>Find <span class="grad">5+ hours</span> in your week.<br>Or pay nothing.</h1>
+    <p class="sub">A 45-minute conversation about how you actually spend your day — then a plain-English
+      report telling you exactly which ready-made tools to use, and in what order.</p>
+    <div class="hero-ctas">
+      <a class="btn primary" href="#book">Book your check-up</a>
+      <a class="btn ghost" href="#how">See what you get</a>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap">
+    <span class="eyebrow rv">The situation</span>
+    <h2 class="rv">You know AI could help.<br>You don't have a weekend to find out how.</h2>
+    <p class="lead rv">There are thousands of tools out there and most of them are noise. Meanwhile the invoices,
+      the emails, the scheduling and the follow-ups still land on you. The problem was never the tools —
+      it's that nobody has time to work out which handful actually fit your business.</p>
+  </div>
+</section>
+
+<section id="how" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow rv">How it works</span>
+    <h2 class="rv">Three steps. About a week.</h2>
+    <p class="lead rv">You do almost nothing except talk for 45 minutes.</p>
+    <div class="steps">
+      <div class="stepc rv"><span class="num">01</span>
+        <h3>We talk for 45 minutes</h3>
+        <p>A structured conversation about where your week actually goes — what piles up, what you dread,
+          what you'd delete tomorrow if you could. In person or on a call.</p></div>
+      <div class="stepc rv"><span class="num">02</span>
+        <h3>We do the research</h3>
+        <p>We go away and work out which existing, off-the-shelf tools solve your specific bottlenecks —
+          then sanity-check every one against the size and shape of your business.</p></div>
+      <div class="stepc rv"><span class="num">03</span>
+        <h3>You get the report and a walkthrough</h3>
+        <p>A short, readable report plus a 30-minute call where we go through it together.
+          Everything is yours to keep and act on, with or without us.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="deliverable" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow rv">The deliverable</span>
+    <h2 class="rv">What's in the report</h2>
+    <p class="lead rv">Written to be understood in ten minutes, not filed away and forgotten.</p>
+    <div class="deliv">
+      <div class="dv rv"><b>Your biggest time drains</b><span>Named plainly, in your own words, with rough hours attached to each.</span></div>
+      <div class="dv rv"><b>The tools that fix them</b><span>Three to seven specific recommendations — what each costs, how long it takes to set up, and what it gives back.</span></div>
+      <div class="dv rv"><b>Quick wins first</b><span>Sorted so the easiest, highest-impact changes are at the top. No boiling the ocean.</span></div>
+      <div class="dv rv"><b>A four-day start plan</b><span>Ten minutes a day for four days. Follow it and you'll have most of the benefit by Thursday.</span></div>
+      <div class="dv rv"><b>The numbers</b><span>What the tools cost per month against the time they hand back, so you can judge it yourself.</span></div>
+      <div class="dv rv"><b>What's beyond quick fixes</b><span>Anything in your business that no ready-made tool solves — flagged honestly, no obligation.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="book">
+  <div class="wrap">
+    <span class="eyebrow rv" style="display:block;text-align:center">The offer</span>
+    <h2 class="rv" style="text-align:center">One price. One promise.</h2>
+    <p class="lead rv" style="text-align:center;margin:0 auto 46px">No subscription, no retainer, nothing to cancel.</p>
+    <div class="pricewrap rv">
+      <div class="pricecard">
+        <div class="amt">$999</div>
+        <div class="what">The AI Check-Up — conversation, research, report and walkthrough call.</div>
+        <div class="guarantee">
+          <b>The guarantee:</b> if we can't find you at least <b>5 hours a week</b> worth reclaiming,
+          you pay nothing. Full refund, no argument. Worst case you spent 45 minutes talking about your own business.
+        </div>
+        <a class="btn primary" id="payBtn" href="mailto:sales@syntheticm2m.com?subject=AI%20Check-Up%20booking">Book your check-up</a>
+        <a class="btn ghost" href="mailto:sales@syntheticm2m.com?subject=Question%20about%20the%20AI%20Check-Up">Ask a question first</a>
+        <div class="finePrint">Implementation help, if you want it afterwards, is quoted separately —
+          and it's always optional.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fit" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow rv">Fit</span>
+    <h2 class="rv">Who this is for</h2>
+    <p class="lead rv">We'd rather tell you now than take your money and disappoint you.</p>
+    <div class="fit">
+      <div class="fitc yes rv">
+        <h4>A good fit</h4>
+        <ul>
+          <li>Owner-run businesses, roughly 2–20 people</li>
+          <li>You're still personally doing admin at 9pm</li>
+          <li>Service businesses — trades, professional, health, property, hospitality</li>
+          <li>You use ChatGPT occasionally, or nothing at all</li>
+        </ul>
+      </div>
+      <div class="fitc no rv">
+        <h4>Probably not for you</h4>
+        <ul>
+          <li>Solo, with no team and nothing repetitive to hand off</li>
+          <li>Large companies with an IT department and a procurement process</li>
+          <li>You already have specialist tools dialled in across the business</li>
+          <li>You want someone to build custom software from scratch — that's a different conversation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow rv">Questions</span>
+    <h2 class="rv">The things people ask</h2>
+    <p class="lead rv"></p>
+    <details class="faq rv"><summary>Do you set the tools up for me?</summary>
+      <div class="a">Not as part of the check-up. The $999 buys the diagnosis and the prescription — the report
+        tells you exactly what to use and how to start, and most of it you can do yourself in minutes.
+        If you'd rather we set things up for you, that's separate work we'll quote once we both know
+        what's actually needed. It's never a condition.</div></details>
+    <details class="faq rv"><summary>What does the software itself cost?</summary>
+      <div class="a">That depends on what you need, but we deliberately favour inexpensive, off-the-shelf tools —
+        typically a few dollars to a few tens of dollars a month each. The report lists the real price
+        next to every recommendation so there are no surprises.</div></details>
+    <details class="faq rv"><summary>Is this all just AI chatbots?</summary>
+      <div class="a">No. A good share of what we recommend isn't AI at all — it's ordinary software that
+        solves your problem and that you simply hadn't come across. We recommend whatever actually works,
+        not whatever is fashionable.</div></details>
+    <details class="faq rv"><summary>Will this replace my staff?</summary>
+      <div class="a">That's not what it's for. The point is to remove the repetitive admin nobody enjoys —
+        the chasing, the retyping, the copy-paste — so the people you have can spend their time on customers
+        instead of paperwork.</div></details>
+    <details class="faq rv"><summary>What if I could just work this out myself?</summary>
+      <div class="a">You genuinely could — none of these tools are secret. You'd spend a good few weekends
+        testing things that don't fit. You're paying to skip the research and the dead ends, and to get
+        an answer shaped around your business rather than a generic listicle.</div></details>
+    <details class="faq rv"><summary>How do I actually claim the refund?</summary>
+      <div class="a">You tell us. If the report doesn't identify at least five hours a week worth reclaiming,
+        email us and we refund the full amount. We're not going to make you argue for it — a guarantee
+        you have to fight over isn't a guarantee.</div></details>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="cta-final rv">
+      <h2>Worst case, you lose 45 minutes.</h2>
+      <p class="lead" style="margin:0 auto 28px;text-align:center">Best case, you get a chunk of your week back —
+        every week, from here on.</p>
+      <a class="btn primary" style="padding:15px 34px;font-size:15.5px" href="mailto:sales@syntheticm2m.com?subject=AI%20Check-Up%20booking">Book your check-up</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="/"><span class="dot" style="width:20px;height:20px;border-radius:6px"></span>Synthetic M2M</a>
+    <span>© 2026 Synthetic M2M · Remote, worldwide</span>
+  </div>
+</footer>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   PAYMENT LINK — paste your Stripe/Square payment link below.
+   Leave it empty and the button falls back to booking by email.
+   ───────────────────────────────────────────────────────────── */
+const PAY_LINK = "";
+
+(function(){
+  if(PAY_LINK){
+    const b=document.getElementById("payBtn");
+    b.href=PAY_LINK;
+    b.textContent="Book and pay — $999";
+    b.rel="noopener";
+  }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}
+  }),{threshold:.12});
+  document.querySelectorAll(".rv").forEach((el,i)=>{
+    el.style.transitionDelay=(i%4*60)+"ms";io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
