@@ -54,7 +54,18 @@
   .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px #7c6cff80}
   .btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.03)}
   .btn.ghost:hover{background:rgba(255,255,255,.07)}
-  @media(max-width:720px){.navlinks{display:none}}
+  /* mobile: keep the nav visible — it wraps under the logo instead of disappearing */
+  @media(max-width:720px){
+    nav{flex-wrap:wrap;justify-content:center;gap:8px;border-radius:20px;padding:10px 12px;top:10px}
+    .brand{font-size:15px}
+    .navlinks{order:3;width:100%;justify-content:space-between;gap:6px;flex-wrap:nowrap;
+      font-size:11.5px;padding-top:5px;margin-top:1px;border-top:1px solid var(--line)}
+    /* tall enough to tap, tight enough to stay on one row */
+    .navlinks a{color:var(--text);opacity:.85;white-space:nowrap;padding:7px 2px;display:inline-flex;align-items:center}
+    nav .btn.primary{padding:8px 15px;font-size:13px}
+    header{padding:150px 0 40px}
+  }
+  @media(max-width:400px){.navlinks{gap:10px;font-size:11.5px}}
 
   /* ---- hero ---- */
   header{padding:170px 0 60px;text-align:center;position:relative;overflow:hidden}
@@ -357,13 +368,6 @@
     <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
     <div class="cards">
       <div class="card rv">
-        <span class="tag"><span class="pulse"></span>Live</span>
-        <h3>Marketplace Guardian</h3>
-        <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish — also packaged as a Chrome extension.</p>
-        <a class="go" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Try it live
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="card rv">
         <span class="tag"><span class="pulse"></span>Live preview</span>
         <h3>VinBaba</h3>
         <p>Instant used-car value report from a VIN — pricing snapshot, comparable listings, and a clean shareable report. Built end-to-end: lookup, valuation logic, report rendering, payment flow.</p>
@@ -382,6 +386,13 @@
         <h3>Autonomous Publisher</h3>
         <p>An always-on publisher for an AI-agent social network: writes fresh, on-brand posts, publishes daily, and engages with replies — fully hands-off since launch. Not one post has needed a human.</p>
         <a class="go" href="https://www.moltbook.com/u/syntheticm2m" target="_blank" rel="noopener">See the live profile
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card rv">
+        <span class="tag"><span class="pulse"></span>Live</span>
+        <h3>Marketplace Guardian</h3>
+        <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish — also packaged as a Chrome extension.</p>
+        <a class="go" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener">Try it live
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="card rv">
