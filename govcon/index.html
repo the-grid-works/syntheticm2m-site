@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Federal contract renewals and incumbent exposure, refreshed daily.">
+<link rel="icon" href="https://syntheticm2m.com/favicon.ico">
+<title>GovCon Award Feed — Synthetic M2M (preview)</title>
+<style>
+  :root{
+    --bg:#f1f5f9; --panel:#ffffff; --panel2:#f8fafc; --ink:#0f172a; --muted:#64748b;
+    --line:#e2e8f0; --brand:#1e3a5f; --brand2:#27496d; --accent:#2563eb;
+    --pursue:#e11d48; --watch:#f59e0b; --monitor:#64748b; --ok:#16a34a;
+    --shadow:0 1px 3px rgba(15,23,42,.08),0 1px 2px rgba(15,23,42,.04);
+    --shadow2:0 10px 30px rgba(15,23,42,.12); --r:14px;
+  }
+  [data-theme="dark"]{
+    --bg:#0b1220; --panel:#121a2b; --panel2:#0f1626; --ink:#e8eef7; --muted:#94a3b8;
+    --line:#1f2a3d; --brand:#0d1830; --brand2:#16233d; --accent:#60a5fa;
+    --shadow:0 1px 3px rgba(0,0,0,.4); --shadow2:0 12px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);
+       display:flex;min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+
+  /* Sidebar */
+  .side{width:248px;flex-shrink:0;background:linear-gradient(180deg,var(--brand),var(--brand2));
+        color:#dbe6f3;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .brand{padding:22px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .brand .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;letter-spacing:.2px}
+  .brand .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#22d3ee);
+              display:flex;align-items:center;justify-content:center;font-size:14px}
+  .brand .tag{font-size:11px;color:#9fb3cd;margin-top:6px}
+  .nav{padding:12px 10px;flex:1;overflow:auto}
+  .nav button{width:100%;display:flex;align-items:center;gap:11px;padding:10px 12px;margin:2px 0;border:0;
+              background:transparent;color:#cdd9ea;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;text-align:left}
+  .nav button:hover{background:rgba(255,255,255,.07);color:#fff}
+  .nav button.active{background:rgba(255,255,255,.14);color:#fff}
+  .nav button svg{width:17px;height:17px;flex-shrink:0;opacity:.9}
+  .nav .pill{margin-left:auto;background:rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:700;
+             padding:1px 8px;border-radius:999px}
+  .nav .soon{margin-left:auto;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:#8aa0bd}
+  .side .foot{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#8aa0bd}
+
+  /* Main */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .topbar{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);
+          padding:14px 26px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)}
+  .topbar h2{margin:0;font-size:18px;font-weight:800}
+  .topbar .sub{font-size:12px;color:var(--muted)}
+  .topbar .spacer{flex:1}
+  .search{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);
+          border-radius:10px;padding:8px 12px;min-width:230px}
+  .search input{border:0;background:transparent;outline:none;color:var(--ink);font-size:13px;width:100%}
+  .iconbtn{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;
+           width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .content{padding:24px 26px 60px;max-width:1180px;width:100%}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:22px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .kpi .v{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:6px}
+  .kpi .ic{float:right;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+  .kpi.red .v{color:var(--pursue)} .kpi.red .ic{background:#fee2e2;color:var(--pursue)}
+  .kpi.green .v{color:var(--ok)} .kpi.green .ic{background:#dcfce7;color:var(--ok)}
+  .kpi.blue .ic{background:#dbeafe;color:var(--accent)}
+  .kpi.amber .ic{background:#fef3c7;color:var(--watch)}
+
+  .grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+  @media(max-width:880px){.grid2{grid-template-columns:1fr}.side{display:none}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:18px}
+  .panel h3{margin:0 0 14px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+  /* charts */
+  .bars{display:flex;gap:16px;align-items:flex-end;height:140px;padding-top:10px}
+  .bars .b{flex:1;text-align:center;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+  .bars .col{background:linear-gradient(180deg,#3b82f6,#1d4ed8);border-radius:6px 6px 0 0;margin:0 auto;width:46px;transition:.3s}
+  .bars .fy{font-size:11px;color:var(--muted)} .bars .am{font-size:12px;font-weight:700}
+  .hbar{margin:9px 0}
+  .hbar .row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+  .hbar .row b{color:var(--muted);font-weight:600}
+  .hbar .track{height:8px;background:var(--panel2);border-radius:999px;overflow:hidden}
+  .hbar .fill{height:100%;background:linear-gradient(90deg,#2563eb,#22d3ee);border-radius:999px}
+
+  /* cards */
+  .card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+        border-radius:var(--r);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow);position:relative}
+  .card.PURSUE{border-left-color:var(--pursue)} .card.WATCH{border-left-color:var(--watch)} .card.MONITOR{border-left-color:var(--monitor)}
+  .card .top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .badge{font-size:10px;font-weight:800;padding:3px 9px;border-radius:6px;color:#fff;letter-spacing:.05em}
+  .badge.PURSUE{background:var(--pursue)} .badge.WATCH{background:var(--watch)} .badge.MONITOR{background:var(--monitor)}
+  .card h4{margin:0;font-size:15.5px;font-weight:700;flex:1}
+  .star{cursor:pointer;border:0;background:transparent;font-size:19px;line-height:1;color:#cbd5e1}
+  .star.on{color:#f59e0b}
+  .meta{font-size:12.5px;color:var(--muted);margin:5px 0}
+  .summary{font-size:13px;font-style:italic;color:var(--ink);opacity:.85;margin:7px 0}
+  .action{font-size:13px;font-weight:700;margin:8px 0 2px}
+  .action.PURSUE{color:var(--pursue)} .action.WATCH{color:#b7791f} .action.MONITOR{color:var(--muted)}
+  .il{font-size:12.5px;color:var(--muted);margin:4px 0}
+  .ok{color:var(--ok);font-weight:600;font-size:12.5px;margin:4px 0}
+  .bad{color:var(--pursue);font-weight:700;font-size:12.5px;margin:4px 0}
+  .verify{font-size:12px;margin-top:6px}
+
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .chip{padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:var(--panel);cursor:pointer;
+        font-size:12px;font-weight:600;color:var(--muted)}
+  .chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+  table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+  th{background:var(--panel2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:11px 13px;text-align:left}
+  td{padding:11px 13px;border-top:1px solid var(--line);font-size:13px}
+  tr:hover td{background:var(--panel2)}
+
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:var(--r);padding:48px 24px;text-align:center;color:var(--muted)}
+  .empty .big{font-size:34px;margin-bottom:10px}
+  .road{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .road .ic{width:34px;height:34px;border-radius:9px;background:var(--panel2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .road .t{font-weight:700;font-size:13.5px} .road .n{font-size:12.5px;color:var(--muted)}
+  .tagp{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px;background:var(--panel2);color:var(--muted);height:fit-content}
+  .kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .kv b{color:var(--muted);font-weight:600}
+  .banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:12px;padding:11px 15px;font-size:12.5px;margin-bottom:18px}
+  [data-theme="dark"] .banner{background:#2a1c0c;border-color:#7c2d12;color:#fdba74}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div id="m2m-preview-bar" style="position:sticky;top:0;z-index:9999;display:flex;flex-wrap:wrap;
+ align-items:center;justify-content:center;gap:10px 18px;padding:9px 14px;
+ background:linear-gradient(90deg,#7c6cff,#4dd6c1);color:#fff;
+ font:600 13px/1.4 Inter,system-ui,-apple-system,'Segoe UI',sans-serif;text-align:center">
+ <span>&#9881;&#65039; Working preview &mdash; GovCon Award Feed is built but not launched yet.</span>
+ <a href="https://syntheticm2m.com/" style="color:#fff;text-decoration:underline;white-space:nowrap">&larr; Back to Synthetic M2M</a>
+ <a href="mailto:sales@syntheticm2m.com?subject=GovCon%20Award%20Feed" style="color:#fff;text-decoration:underline;white-space:nowrap">Ask about early access</a>
+</div>
+
+  <aside class="side">
+    <div class="brand">
+      <div class="logo"><span class="dot">★</span> Contract Intel</div>
+      <div class="tag" id="brandTag"></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot" id="sideFoot"></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h2 id="pageTitle">Overview</h2>
+        <div class="sub" id="pageSub"></div>
+      </div>
+      <div class="spacer"></div>
+      <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" placeholder="Search contractor or agency…"></div>
+      <button class="iconbtn" id="themeBtn" title="Toggle light/dark">🌙</button>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+
+<script>
+const DATA = {"generated_at": "Jul 22, 2026 \u00b7 11:32 UTC", "naics": "541512", "naics_label": "Computer Systems Design Services (IT staffing / systems integration)", "median": 1639973.4, "min_award": 500000, "max_award": 10000000, "trend": [{"fy": 2023, "amount": 30519376237.21}, {"fy": 2024, "amount": 33358218128.94}, {"fy": 2025, "amount": 31676182019.98}], "awards": [{"id": "efa9f96a59ae40d4938e228f990618fe", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "sub": "", "start": "", "end": "2026-07-06", "summary": "The Department of Defense, specifically the Department of the Navy, is responsible for procuring, operating, and maintaining the Navy's ships, aircraft, and weapons systems. This contract involves technical work related to the maintenance and support of the Navy's weapon systems.", "url": "https://www.usaspending.gov/award/efa9f96a59ae40d4938e228f990618fe", "vuln_label": "MONITOR", "vuln_reason": "Expired 16d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}, {"id": "fac1e801f5ff4330be9544ca8fa9edfd", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "sub": "", "start": "", "end": "2026-07-06", "summary": "The awarding agency, DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT, supports the Department of Defense's naval supply and logistics functions. This contract involves technical work related to the maintenance and support of various weapon systems.", "url": "https://www.usaspending.gov/award/fac1e801f5ff4330be9544ca8fa9edfd", "vuln_label": "MONITOR", "vuln_reason": "Expired 16d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}, {"id": "df3284bcf1a443f8b9722ca595986a58", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "sub": "", "start": "", "end": "2026-07-02", "summary": "The Department of Defense, specifically the Department of the Navy, is responsible for procuring, operating, and maintaining the Navy's ships, aircraft, and weapons systems. This contract involves technical work related to the maintenance and support of various weapon systems.", "url": "https://www.usaspending.gov/award/df3284bcf1a443f8b9722ca595986a58", "vuln_label": "MONITOR", "vuln_reason": "Expired 20d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}, {"id": "f9ba41592aef4b32be4fd671a349a0a2", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DLA MARITIME.DLA MARITIME MECHANICSBURG.SPRMM1 DLA MECHANICSBURG", "sub": "", "start": "", "end": "2026-07-02", "summary": "The Defense Logistics Agency (DLA) Maritime, a component of the Department of Defense, manages the storage and distribution of military supplies. This contract involves technical work related to the maintenance and repair of ships and other maritime equipment.", "url": "https://www.usaspending.gov/award/f9ba41592aef4b32be4fd671a349a0a2", "vuln_label": "MONITOR", "vuln_reason": "Expired 20d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}, {"id": "CONT_AWD_89243423FEE000261_8900_89303019AIM000005_8900", "recipient": "ACCENTURE FEDERAL SERVICES LLC", "amount": 9875493.21, "agency": "Department of Energy", "sub": "Department of Energy", "start": "2023-06-30", "end": "2026-06-30", "summary": "The Department of Energy, specifically the Energy Efficiency and Renewable Energy (EERE) office, supports the development and use of energy-efficient and renewable energy technologies. This contract involves providing information technology support services for the CBOSS program, specifically for the ITSO and General Dynamics Information Technology office.", "url": "https://www.usaspending.gov/award/CONT_AWD_89243423FEE000261_8900_89303019AIM000005_8900", "vuln_label": "MONITOR", "vuln_reason": "Expired 22d ago \u2014 likely extended or re-solicited; hunt the follow-on. Incumbent ~3 yrs in \u2014 an established requirement, not a one-off.", "competitor": {"count": 50, "total": 13050798740.109995, "next": {"date": "2026-07-31", "agency": "Department of Energy", "amount": 185610393.81}}, "partners": ["PLANET TECHNOLOGIES, INC.", "DIGITAL STRATEGY LLC", "QUALITY SYSTEMS APPLICATIONS INC"], "ratio": 6.021739870902785, "exclusion": {"excluded": false, "count": 0}, "bucket": "urgent"}, {"id": "CONT_AWD_15F06724F0000198_1549_GS35F316AA_4732", "recipient": "TRIDEA WORKS, LLC", "amount": 9118125.38, "agency": "Department of Justice", "sub": "Federal Bureau of Investigation", "start": "2024-03-01", "end": "2026-06-30", "summary": "The Department of Justice is responsible for enforcing federal laws and protecting the rights of all Americans. This contract involves providing technology sharing and training support services for the National Drug Court Advisory Committee (NDCAC).", "url": "https://www.usaspending.gov/award/CONT_AWD_15F06724F0000198_1549_GS35F316AA_4732", "vuln_label": "MONITOR", "vuln_reason": "Expired 22d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": {"count": 2, "total": 48914835.650000006, "next": null}, "partners": [], "ratio": 5.559922728014979, "exclusion": {"excluded": false, "count": 0}, "bucket": "urgent"}, {"id": "f6177d86fb1f4795b0cbb1c30324ed05", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSEA.NAVSEA WARFARE CENTER.NSWC CRANE", "sub": "", "start": "", "end": "2026-06-29", "summary": "The awarding agency, DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSEA.NAVSEA WARFARE CENTER.NSWC CRANE, is responsible for the research, development, testing, and evaluation of naval warfare systems and technologies. This contract involves technical work related to the development and testing of naval warfare systems and technologies.", "url": "https://www.usaspending.gov/award/f6177d86fb1f4795b0cbb1c30324ed05", "vuln_label": "MONITOR", "vuln_reason": "Expired 23d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}, {"id": "ede5ba84d05f42699316424eec9e80f2", "recipient": "Unknown contractor", "amount": 0.0, "agency": "DEPT OF DEFENSE.DEFENSE HEALTH AGENCY (DHA).DEFENSE HEALTH AGENCY HCD WEST", "sub": "", "start": "", "end": "2026-06-22", "summary": "The Defense Health Agency (DHA) is responsible for healthcare management and readiness for the US military. This contract involves technical work related to the development and implementation of a healthcare information technology system.", "url": "https://www.usaspending.gov/award/ede5ba84d05f42699316424eec9e80f2", "vuln_label": "MONITOR", "vuln_reason": "Expired 30d ago \u2014 likely extended or re-solicited; hunt the follow-on.", "competitor": null, "partners": [], "ratio": null, "exclusion": null, "bucket": "urgent"}], "calendar": [{"recipient": "SAGE PURSUITS, INC", "amount": 9475145.5, "agency": "Department of Health and Human Services", "end_date": "2026-07-22", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75D30124F00001_7523_75D30124D19332_7523"}, {"recipient": "GENERAL DYNAMICS INFORMATION TECHNOLOGY, INC.", "amount": 9931740.77, "agency": "Department of Health and Human Services", "end_date": "2026-07-28", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N97024F00002_7529_HHSN316201200023W_7529"}, {"recipient": "ACCENTURE FEDERAL SERVICES LLC", "amount": 8942289.92, "agency": "Department of Energy", "end_date": "2026-07-30", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_89233124FNA000152_8900_89303019AIM000005_8900"}, {"recipient": "INTERNATIONAL BUSINESS MACHINES CORPORATION", "amount": 9866933.98, "agency": "General Services Administration", "end_date": "2026-07-31", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_47QFLA25F0017_4732_47QTCK18D0014_4732"}, {"recipient": "ICF INCORPORATED, L.L.C.", "amount": 9707156.88, "agency": "Department of Health and Human Services", "end_date": "2026-07-31", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75D30122F14646_7523_HHSN316201200028W_7529"}, {"recipient": "DECISIONPOINT CORPORATION", "amount": 9585755.69, "agency": "Department of Defense", "end_date": "2026-08-12", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_FA877325F0040_9700_47QTCH18D0013_4732"}, {"recipient": "BOOZ ALLEN HAMILTON INC", "amount": 9736260.18, "agency": "Department of Veterans Affairs", "end_date": "2026-08-14", "months_left": 0, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_36C10B24N10070025_3600_VA11816D1007_3600"}, {"recipient": "MANTECH ADVANCED SYSTEMS INTERNATIONAL, INC.", "amount": 9995048.69, "agency": "Department of Defense", "end_date": "2026-08-23", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_HT003825FE002_9700_HT003823D0001_9700"}, {"recipient": "DELOITTE CONSULTING LLP", "amount": 9181312.05, "agency": "Department of Labor", "end_date": "2026-08-30", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_1605TA24F00014_1605_1605DC19A0016_1605"}, {"recipient": "CONCEPT PLUS, LLC", "amount": 9833719.64, "agency": "Department of Commerce", "end_date": "2026-08-31", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_1305M323FNFFK0160_1330_47QTCB21D0178_4732"}, {"recipient": "COMPUTER WORLD SERVICES, CORP.", "amount": 9161334.19, "agency": "Department of Homeland Security", "end_date": "2026-08-31", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_70B04C21F00000223_7014_HHSN316201300001W_7529"}, {"recipient": "EMPOWER AI, INC.", "amount": 9142991.97, "agency": "Executive Office of the President", "end_date": "2026-08-31", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_11316022F0007OMB_1100_HHSN316201200035W_7529"}, {"recipient": "SOLDIERPOINT DIGITAL HEALTH, LLC", "amount": 8806500.0, "agency": "Department of Veterans Affairs", "end_date": "2026-09-06", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_36C10G25N0096_3600_36C10G24D0048_3600"}, {"recipient": "TUKNIK GOVERNMENT SERVICES LLC", "amount": 8813745.59, "agency": "Department of Defense", "end_date": "2026-09-09", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_W519TC23F0435_9700_W52P1J21D0050_9700"}, {"recipient": "ADG-REI TECHNOLOGY VENTURES, LLC", "amount": 9863384.39, "agency": "Department of Health and Human Services", "end_date": "2026-09-14", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N98124F00001_7529_75N98120D00031_7529"}, {"recipient": "C&T TECHNOLOGIES LLC", "amount": 9197671.51, "agency": "Department of Health and Human Services", "end_date": "2026-09-16", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N98125F00001_7529_75N98120D00136_7529"}, {"recipient": "MICROSOFT CORPORATION", "amount": 9754418.2, "agency": "Department of Defense", "end_date": "2026-09-19", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_HC102824F1413_9700_HC102817D0001_9700"}, {"recipient": "GLOBAL ALLIANT INC", "amount": 9469604.21, "agency": "National Labor Relations Board", "end_date": "2026-09-19", "months_left": 1, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_63NLRB23F0062_6300_47QTCB21D0056_4732"}, {"recipient": "ACCENTURE FEDERAL SERVICES LLC", "amount": 9660790.22, "agency": "Department of the Treasury", "end_date": "2026-09-21", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_205AE925F00007_2050_2032H523A00001_2050"}, {"recipient": "DEXTERITECH SOLUTIONS, LLC", "amount": 9396839.16, "agency": "Department of Veterans Affairs", "end_date": "2026-09-21", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_36C10B23N10340007_3600_36C10B21D1034_3600"}, {"recipient": "EASTPORT ANALYTICS, INC", "amount": 8862355.95, "agency": "Department of the Treasury", "end_date": "2026-09-24", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_2032H823F00193_2050_47QTCA21D00DU_4732"}, {"recipient": "AVANTGARDE LLC", "amount": 9837926.48, "agency": "Department of Justice", "end_date": "2026-09-28", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_15JA0523F00000372_1501_47QTCB22D0381_4732"}, {"recipient": "TIBER CREEK CONSULTING INC", "amount": 9830035.6, "agency": "Department of Defense", "end_date": "2026-09-28", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_HC102823F2001_9700_HC104719D2040_9700"}, {"recipient": "ARCH SYSTEMS LLC", "amount": 9824980.03, "agency": "Department of Commerce", "end_date": "2026-09-28", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_1305M224F0258_1330_75N98119D00086_7529"}, {"recipient": "MACKSON CONSULTING, LLC", "amount": 9175041.97, "agency": "Department of Health and Human Services", "end_date": "2026-09-28", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N98123F00001_7529_75N98121D00006_7529"}, {"recipient": "STEAMPUNK, INC.", "amount": 9973944.29, "agency": "Department of Justice", "end_date": "2026-09-29", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_15DDHQ24F00000918_1524_15DDHQ22A00000010_1524"}, {"recipient": "ELLUMEN, INC.", "amount": 9503203.36, "agency": "Department of Homeland Security", "end_date": "2026-09-29", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_70Z02322F93330002_7008_HHSN316201200132W_7529"}, {"recipient": "DYNANET CORPORATION", "amount": 9355127.6, "agency": "Department of Health and Human Services", "end_date": "2026-09-29", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N98125F00001_7529_75N98120D00212_7529"}, {"recipient": "UNIVERSITY OF MARYLAND, BALTIMORE", "amount": 9161697.0, "agency": "Department of Health and Human Services", "end_date": "2026-09-29", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N93023C00046_7529_-NONE-_-NONE-"}, {"recipient": "JOHNSON CONTROLS BUILDING AUTOMATION SYSTEMS, LLC", "amount": 9119377.34, "agency": "Department of Defense", "end_date": "2026-09-29", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_W912DY23F0406_9700_W912DY20D0041_9700"}, {"recipient": "PENBAY TECHNOLOGY GROUP LLC", "amount": 9962209.61, "agency": "National Science Foundation", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_49100423F0244_4900_47QTCH18D0050_4732"}, {"recipient": "UNCOMN LLC", "amount": 9946031.72, "agency": "Department of Defense", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_HTC71125FD031_9700_GS35F217AA_4732"}, {"recipient": "UNIVERSITY OF MONTANA", "amount": 9566206.0, "agency": "Department of Health and Human Services", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_75N93023C00047_7529_-NONE-_-NONE-"}, {"recipient": "LEIDOS, INC.", "amount": 9102757.68, "agency": "Department of Defense", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_N0003925F7473_9700_N0003920D0054_9700"}, {"recipient": "INNOVATIVE MANAGEMENT CONCEPTS, INC", "amount": 8873878.52, "agency": "Department of Homeland Security", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_70RCSA21FR0000044_7001_47QTCH18D0028_4732"}, {"recipient": "LEIDOS, INC.", "amount": 8844998.88, "agency": "Department of Defense", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_N0003925F7470_9700_N0003920D0054_9700"}, {"recipient": "SPECTRUM SOLUTIONS INC", "amount": 8844871.65, "agency": "Department of Defense", "end_date": "2026-09-30", "months_left": 2, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_W912DY20F0419_9700_W912DY20D0039_9700"}, {"recipient": "DECISIVEINSTINCTS, LLC", "amount": 9775476.53, "agency": "Department of Defense", "end_date": "2026-10-31", "months_left": 3, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_M6785424F4940_9700_M6785424D4936_9700"}, {"recipient": "DNI EMERGING TECHNOLOGIES, LLC", "amount": 8896475.91, "agency": "Department of Defense", "end_date": "2026-10-31", "months_left": 3, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_FA875125C0001_9700_-NONE-_-NONE-"}, {"recipient": "IT DATA CONSULTING LLC", "amount": 9100287.33, "agency": "Department of Defense", "end_date": "2026-11-26", "months_left": 4, "vuln_label": "PURSUE", "url": "https://www.usaspending.gov/award/CONT_AWD_HQ051624F0002_9700_47QTCB21D0358_4732"}], "opportunities": [{"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fd0522566bcf4946a029d890220fc8d6", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSEA.NAVSEA WARFARE CENTER.NSWC PHILADELPHIA DIV", "deadline": "2026-08-24T16:00:00-04:00", "url": "https://sam.gov/opp/fd0522566bcf4946a029d890220fc8d6/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fca4cdb27f904053ade27cbc89d29bbd", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVAIR.NAVAIR NAWC AD.NAVAL AIR WARFARE CENTER AIR DIV", "deadline": "2026-08-05T23:59:00-04:00", "url": "https://sam.gov/opp/fca4cdb27f904053ade27cbc89d29bbd/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fc1b4f46a22f4af6ba2afcd54bd98404", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-21T16:30:00-04:00", "url": "https://sam.gov/opp/fc1b4f46a22f4af6ba2afcd54bd98404/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fbf9a16b30b743a4857b69b1599c21b2", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-07T16:30:00-04:00", "url": "https://sam.gov/opp/fbf9a16b30b743a4857b69b1599c21b2/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=fac046f7ab76486a9639cdda846803ea", "agency": "STATE, DEPARTMENT OF.STATE, DEPARTMENT OF.AMERICAN EMBASSY CHIANG MAI", "deadline": "2026-07-31T16:00:00+07:00", "url": "https://sam.gov/opp/fac046f7ab76486a9639cdda846803ea/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f5368b0285b6471c91fa104441bad9af", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-07-29T16:30:00-04:00", "url": "https://sam.gov/opp/f5368b0285b6471c91fa104441bad9af/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f429b90254584eca8dfd7d58fc204e90", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-17T16:30:00-04:00", "url": "https://sam.gov/opp/f429b90254584eca8dfd7d58fc204e90/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f3db963b18f849d08dfd4d439c8d1ce4", "agency": "DEPT OF DEFENSE.DEPT OF THE AIR FORCE.U.S. AIR FORCES IN EUROPE.FA5682 31 CONS (UNIT 6102)", "deadline": "2026-08-01T16:00:00+02:00", "url": "https://sam.gov/opp/f3db963b18f849d08dfd4d439c8d1ce4/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f3570b4f27cc4e08ba23f9c295cc8570", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-07-29T16:30:00-04:00", "url": "https://sam.gov/opp/f3570b4f27cc4e08ba23f9c295cc8570/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f2ccdbe3bd9d4a9493ad72ee01ea3a1c", "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DLA AVIATION.DLA AVIATION PHILADELPHIA.DLA AVIATION AT PHILADELPHIA, PA", "deadline": "2026-08-03T16:30:00-04:00", "url": "https://sam.gov/opp/f2ccdbe3bd9d4a9493ad72ee01ea3a1c/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=f0103588bfb84e72a41686666cab6b7c", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-21T16:30:00-04:00", "url": "https://sam.gov/opp/f0103588bfb84e72a41686666cab6b7c/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=ef70b88db9b74398952b716cfee24bac", "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DLA AVIATION.DLA AV RICHMOND.DLA AVIATION", "deadline": "2026-07-30", "url": "https://sam.gov/opp/ef70b88db9b74398952b716cfee24bac/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=ee746bcd3801404eba1c1404cfa7b5f8", "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DEFENSE LOGISTICS AGENCY", "deadline": "2026-08-27T16:00:00-04:00", "url": "https://sam.gov/opp/ee746bcd3801404eba1c1404cfa7b5f8/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=ede00f307a3240d6b10e15ffc2a5f83a", "agency": "DEPT OF DEFENSE.DEPT OF THE ARMY.AMC.ACC.ACC-OO.409TH CSB.0409 AQ HQ     CONTRACT", "deadline": "2026-07-31T14:00:00+01:00", "url": "https://sam.gov/opp/ede00f307a3240d6b10e15ffc2a5f83a/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=ea2e446fcd81452298e73032568687b0", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-21T16:30:00-04:00", "url": "https://sam.gov/opp/ea2e446fcd81452298e73032568687b0/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e87727c7914642fd9b965bd96b357e9a", "agency": "STATE, DEPARTMENT OF.STATE, DEPARTMENT OF.US EMBASSY BANGKOK", "deadline": "2026-07-27T16:00:00+07:00", "url": "https://sam.gov/opp/e87727c7914642fd9b965bd96b357e9a/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e856371376ec4210ad013d11277c7171", "agency": "HEALTH AND HUMAN SERVICES, DEPARTMENT OF.NATIONAL INSTITUTES OF HEALTH.NATIONAL INSTITUTES OF HEALTH OLAO", "deadline": "2026-07-29T14:00:00-04:00", "url": "https://sam.gov/opp/e856371376ec4210ad013d11277c7171/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e5d25839b49e42bb83375c088fc72a89", "agency": "DEPT OF DEFENSE.DEFENSE LOGISTICS AGENCY.DLA MARITIME.DLA MARITIME MECHANICSBURG.SPRMM1 DLA MECHANICSBURG", "deadline": "2026-09-08T16:30:00-04:00", "url": "https://sam.gov/opp/e5d25839b49e42bb83375c088fc72a89/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e437ded539944df0b62a7948f6e5786d", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-21T16:30:00-04:00", "url": "https://sam.gov/opp/e437ded539944df0b62a7948f6e5786d/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e408bf58526440acaec8c7a464057f66", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-28T16:30:00-04:00", "url": "https://sam.gov/opp/e408bf58526440acaec8c7a464057f66/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e3802a952d2e4f2db8781afd8d61d8a7", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-03T16:30:00-04:00", "url": "https://sam.gov/opp/e3802a952d2e4f2db8781afd8d61d8a7/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e1147c4aef2e4176827886c57062f889", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS MECHANICSBURG.NAVSUP WEAPON SYSTEMS SUPPORT MECH", "deadline": "2026-08-04T16:30:00-04:00", "url": "https://sam.gov/opp/e1147c4aef2e4176827886c57062f889/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e0bd9e682d204e9fa38daa8f3bd5a973", "agency": "VETERANS AFFAIRS, DEPARTMENT OF.VETERANS AFFAIRS, DEPARTMENT OF.245-NETWORK CONTRACT OFFICE 5 (36C245)", "deadline": "2026-08-14T10:00:00-04:00", "url": "https://sam.gov/opp/e0bd9e682d204e9fa38daa8f3bd5a973/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=e0aef974c29c418ba284b86148f95384", "agency": "DEPT OF DEFENSE.DEPT OF THE ARMY.AMC.ACC.ACC-OO.409TH CSB.0409 AQ HQ     CONTRACT", "deadline": "2026-07-30T14:00:00+02:00", "url": "https://sam.gov/opp/e0aef974c29c418ba284b86148f95384/view"}, {"title": "https://api.sam.gov/prod/opportunities/v1/noticedesc?noticeid=de00b801295b4fc29ba2a768261fd11e", "agency": "DEPT OF DEFENSE.DEPT OF THE NAVY.NAVSUP.NAVSUP WEAPON SYSTEMS SUPPORT.NAVSUP WSS PHILADELPHIA.NAVSUP WEAPON SYSTEMS SUPPORT", "deadline": "2026-08-06T14:00:00-04:00", "url": "https://sam.gov/opp/de00b801295b4fc29ba2a768261fd11e/view"}], "roadmap": [{"title": "Saved searches & email alerts", "note": "Get pinged the moment a contract in a saved filter changes.", "status": "planned"}, {"title": "Multi-sector view", "note": "Track several NAICS codes side by side.", "status": "planned"}, {"title": "Agency procurement forecasts", "note": "Pre-RFP pipeline 6\u201318 months out (Phase 3).", "status": "planned"}, {"title": "Bid-protest signals", "note": "GAO protest outcomes that flag a vulnerable incumbent (Phase 3).", "status": "planned"}, {"title": "One-page incumbent dossier", "note": "Click any contractor for a full competitive profile.", "status": "planned"}, {"title": "Export to CSV / PDF", "note": "Hand a polished pipeline report to your team.", "status": "planned"}, {"title": "Capability-statement matching", "note": "Score each opportunity against your firm's strengths.", "status": "idea"}], "kpi": {"pursue": 0, "tracked": 8, "calendar": 40, "opportunities": 25, "total_value": 18993618.590000004, "sam_key_set": true}, "from_email": "sales@syntheticm2m.com"};
+const $ = s => document.querySelector(s);
+const money = n => { if(n==null||isNaN(n))return"n/a"; n=+n;
+  if(n>=1e9)return"$"+(n/1e9).toFixed(1)+"B"; if(n>=1e6)return"$"+(n/1e6).toFixed(1)+"M";
+  if(n>=1e3)return"$"+Math.round(n/1e3)+"K"; return"$"+n.toLocaleString(); };
+const esc = s => (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const ICONS={
+  overview:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+  recompetes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s5 4 5 9a5 5 0 0 1-10 0c0-2 1-3 1-3s4 2 4-6z"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+  opportunities:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+  competitors:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><path d="M2 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"/><circle cx="18" cy="8" r="2.5"/></svg>',
+  watchlist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 17-6 4 2-7-5-4 7-1 2-6 2 6 7 1-5 4 2 7z"/></svg>',
+  settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1L14.5 2h-4l-.4 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5L4 11a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5a7 7 0 0 0 .1-1z"/></svg>',
+};
+const NAV=[
+  {k:'overview',label:'Overview'},
+  {k:'recompetes',label:'Recompetes Now',count:()=>DATA.awards.length},
+  {k:'calendar',label:'Recompete Calendar',count:()=>DATA.calendar.length},
+  {k:'opportunities',label:'Opportunities',count:()=>DATA.opportunities.length},
+  {k:'competitors',label:'Competitors',count:()=>uniqueCompetitors().length},
+  {k:'watchlist',label:'Watchlist',count:()=>wl().length},
+  {k:'settings',label:'Settings'},
+];
+const TITLES={overview:'Overview',recompetes:'Recompetes Now',calendar:'Recompete Calendar (next 18 months)',
+  opportunities:'Open Opportunities (pre-award)',competitors:'Competitors',watchlist:'Your Watchlist',settings:'Settings & Roadmap'};
+
+let state={view:'overview',search:'',vuln:'ALL'};
+
+/* watchlist via localStorage */
+const WLKEY='govcon_watchlist';
+function wl(){try{return JSON.parse(localStorage.getItem(WLKEY)||'[]')}catch(e){return[]}}
+function wlHas(id){return wl().includes(id)}
+function wlToggle(id){let a=wl();a.includes(id)?a=a.filter(x=>x!==id):a.push(id);localStorage.setItem(WLKEY,JSON.stringify(a));render();}
+
+function uniqueCompetitors(){
+  const m={};
+  DATA.awards.forEach(a=>{const c=a.competitor; if(!m[a.recipient])m[a.recipient]={name:a.recipient,count:c?c.count:0,total:c?c.total:0,agencies:new Set()};
+    m[a.recipient].agencies.add(a.agency);});
+  return Object.values(m).sort((x,y)=>(y.total||0)-(x.total||0));
+}
+
+function matchSearch(txt){const q=state.search.trim().toLowerCase();return !q||txt.toLowerCase().includes(q);}
+
+/* ---------- renderers ---------- */
+function awardCard(a){
+  const star=`<button class="star ${wlHas(a.id)?'on':''}" onclick="wlToggle('${esc(a.id)}')" title="Save to watchlist">★</button>`;
+  const comp=a.competitor?`<p class="il">📊 Holds <b>${a.competitor.count}</b> other contract(s) ~${money(a.competitor.total)}.`+
+    (a.competitor.next?` Next expires <b>${a.competitor.next.date}</b> (${esc(a.competitor.next.agency)}, ${money(a.competitor.next.amount)}).`:'')+`</p>`:'';
+  const partners=(a.partners&&a.partners.length)?`<p class="il">🤝 Subcontracts to: ${a.partners.slice(0,4).map(esc).join(', ')}${a.partners.length>4?' …':''} <em>(teaming leads)</em></p>`:'';
+  let price='';if(a.ratio){let t=a.ratio>=1.5?`~${a.ratio.toFixed(1)}× the typical award (${money(DATA.median)} median) — larger than usual.`:a.ratio<=.67?`below the typical award size (${money(DATA.median)} median).`:`about the typical award size (${money(DATA.median)} median).`;price=`<p class="il">💲 ${t}</p>`;}
+  let excl='';if(a.exclusion)excl=a.exclusion.excluded?`<p class="bad">⛔ ACTIVE FEDERAL EXCLUSION — verify before teaming.</p>`:`<p class="ok">✓ No active federal exclusions (clear to team).</p>`;
+  const summary=a.summary?`<p class="summary">${esc(a.summary)}</p>`:'';
+  return `<div class="card ${a.vuln_label}">
+    <div class="top"><span class="badge ${a.vuln_label}">${a.vuln_label}</span><h4>${esc(a.recipient)}</h4>${star}</div>
+    <p class="meta">${esc(a.agency)}${a.sub?' · '+esc(a.sub):''}</p>
+    <p class="meta">Amount <b>${money(a.amount)}</b> &nbsp;·&nbsp; Performance ${a.start||'?'} → ${a.end||'?'}</p>
+    ${summary}<p class="action ${a.vuln_label}">${a.vuln_label} — ${esc(a.vuln_reason)}</p>
+    ${comp}${partners}${price}${excl}
+    <p class="verify"><a href="${a.url}" target="_blank">Verify on USAspending →</a></p></div>`;
+}
+
+function viewOverview(){
+  const k=DATA.kpi; let trendPct='—';
+  if(DATA.trend.length>=2){const f=DATA.trend[0].amount,l=DATA.trend[DATA.trend.length-1].amount;if(f>0){const p=(l-f)/f*100;trendPct=(p>=0?'+':'')+p.toFixed(0)+'%';}}
+  const kpis=`<div class="kpis">
+    <div class="kpi red"><div class="ic">${ICONS.recompetes}</div><div class="v">${k.pursue}</div><div class="l">To Pursue Now</div></div>
+    <div class="kpi blue"><div class="ic">${ICONS.overview}</div><div class="v">${k.tracked}</div><div class="l">Contracts Tracked</div></div>
+    <div class="kpi green"><div class="ic">${ICONS.calendar}</div><div class="v">${trendPct}</div><div class="l">Sector Trend (3yr)</div></div>
+    <div class="kpi amber"><div class="ic">${ICONS.opportunities}</div><div class="v">${money(DATA.median)}</div><div class="l">Median Award</div></div>
+  </div>`;
+  const max=Math.max(...DATA.trend.map(t=>t.amount),1);
+  const bars=DATA.trend.map(t=>`<div class="b"><div class="am">${money(t.amount)}</div><div class="col" style="height:${Math.max(10,t.amount/max*100)}px"></div><div class="fy">FY${t.fy}</div></div>`).join('');
+  /* agency breakdown */
+  const ag={};DATA.awards.forEach(a=>{ag[a.agency]=(ag[a.agency]||0)+a.amount;});
+  const agArr=Object.entries(ag).sort((a,b)=>b[1]-a[1]).slice(0,6);const agMax=Math.max(...agArr.map(x=>x[1]),1);
+  const agency=agArr.map(([n,v])=>`<div class="hbar"><div class="row"><span>${esc(n)}</span><b>${money(v)}</b></div><div class="track"><div class="fill" style="width:${v/agMax*100}%"></div></div></div>`).join('');
+  const top=DATA.awards.filter(a=>a.vuln_label==='PURSUE').slice(0,5).map(a=>`<div class="kv"><span>${esc(a.recipient)}</span><b>${a.end}</b></div>`).join('')||'<p class="meta">None right now.</p>';
+  return kpis+`<div class="grid2">
+    <div><div class="panel"><h3>Sector momentum — NAICS ${DATA.naics}</h3><div class="bars">${bars}</div></div>
+      <div class="panel"><h3>Where the money is — top agencies (tracked)</h3>${agency||'<p class="meta">No data.</p>'}</div></div>
+    <div><div class="panel"><h3>Top recompetes to pursue</h3>${top}</div>
+      <div class="panel"><h3>At a glance</h3>
+        <div class="kv"><span>Open opportunities (pre-award)</span><b>${k.opportunities}</b></div>
+        <div class="kv"><span>Recompetes in next 18 mo</span><b>${k.calendar}</b></div>
+        <div class="kv"><span>Total tracked contract value</span><b>${money(k.total_value)}</b></div>
+        <div class="kv"><span>Debarment screening</span><b>${k.sam_key_set?'Active':'Off'}</b></div>
+      </div></div></div>`;
+}
+
+function viewRecompetes(){
+  const chips=['ALL','PURSUE','WATCH','MONITOR'].map(v=>`<span class="chip ${state.vuln===v?'active':''}" onclick="state.vuln='${v}';render()">${v}</span>`).join('');
+  let list=DATA.awards.filter(a=>state.vuln==='ALL'||a.vuln_label===state.vuln).filter(a=>matchSearch(a.recipient+' '+a.agency+' '+a.sub));
+  return `<div class="chips">${chips}</div>`+(list.length?list.map(awardCard).join(''):`<div class="empty"><div class="big">🔍</div>No contracts match this filter.</div>`);
+}
+
+function viewCalendar(){
+  let rows=DATA.calendar.filter(r=>matchSearch(r.recipient+' '+r.agency));
+  if(!rows.length)return `<div class="empty"><div class="big">📅</div>No contracts expiring in the next 18 months match.</div>`;
+  return `<table><thead><tr><th></th><th>Expires</th><th>In</th><th>Call</th><th>Incumbent</th><th>Value</th><th>Agency</th><th></th></tr></thead><tbody>`+
+    rows.map(r=>{const id=r.url;return `<tr>
+      <td><button class="star ${wlHas(id)?'on':''}" onclick="wlToggle('${esc(id)}')">★</button></td>
+      <td><b>${r.end_date}</b></td><td>${r.months_left} mo</td>
+      <td><span class="badge ${r.vuln_label}">${r.vuln_label}</span></td>
+      <td>${esc(r.recipient)}</td><td>${money(r.amount)}</td><td>${esc(r.agency)}</td>
+      <td><a href="${r.url}" target="_blank">Verify →</a></td></tr>`;}).join('')+`</tbody></table>`;
+}
+
+function viewOpportunities(){
+  let ops=DATA.opportunities.filter(o=>matchSearch((o.title||'')+' '+(o.agency||'')));
+  if(!ops.length)return `<div class="empty"><div class="big">📡</div><b>No open opportunities loaded yet.</b><p>Your SAM.gov feed is connected — pre-award solicitations appear here as they post. (Refreshes daily; quota-limited keys fill in over time.)</p></div>`;
+  return ops.map(o=>`<div class="card"><div class="top"><span class="badge" style="background:var(--accent)">OPEN</span><h4>${esc(o.title)}</h4></div>
+    <p class="meta">${esc(o.agency)||'Agency n/a'}</p><p class="meta">Response deadline: <b>${esc(o.deadline)||'see notice'}</b></p>
+    <p class="verify"><a href="${o.url}" target="_blank">View on SAM.gov →</a></p></div>`).join('');
+}
+
+function viewCompetitors(){
+  let cs=uniqueCompetitors().filter(c=>matchSearch(c.name));
+  if(!cs.length)return `<div class="empty"><div class="big">👥</div>No competitors match.</div>`;
+  return cs.map(c=>`<div class="card"><div class="top"><h4>${esc(c.name)}</h4></div>
+    <p class="meta">Active in: ${[...c.agencies].slice(0,3).map(esc).join(', ')}</p>
+    <p class="il">📊 Federal footprint: <b>${c.count}</b> contract(s) worth ~${money(c.total)} (sampled).</p></div>`).join('');
+}
+
+function viewWatchlist(){
+  const ids=wl();const aw=DATA.awards.filter(a=>ids.includes(a.id));
+  const cal=DATA.calendar.filter(r=>ids.includes(r.url));
+  if(!aw.length&&!cal.length)return `<div class="empty"><div class="big">⭐</div><b>Your watchlist is empty.</b><p>Click the ★ on any contract to pin it here. Saved in your browser.</p></div>`;
+  let html=aw.map(awardCard).join('');
+  if(cal.length)html+=`<div class="panel"><h3>From the calendar</h3>`+cal.map(r=>`<div class="kv"><span>${esc(r.recipient)} — ${esc(r.agency)}</span><b>${r.end_date}</b></div>`).join('')+`</div>`;
+  return html;
+}
+
+function viewSettings(){
+  const k=DATA.kpi;
+  const cfg=`<div class="panel"><h3>Current configuration</h3>
+    <div class="kv"><span>Sector (NAICS)</span><b>${DATA.naics} — ${esc(DATA.naics_label)}</b></div>
+    <div class="kv"><span>Award size band</span><b>${money(DATA.min_award)} – ${money(DATA.max_award)}</b></div>
+    <div class="kv"><span>Debarment screening (SAM key)</span><b>${k.sam_key_set?'✓ Active':'Off'}</b></div>
+    <div class="kv"><span>Last refreshed</span><b>${esc(DATA.generated_at)}</b></div>
+    <p class="meta" style="margin-top:12px">To change the sector or thresholds, just ask your assistant — these are one-line settings.</p></div>`;
+  const road=`<div class="panel"><h3>Roadmap — what's coming</h3>`+DATA.roadmap.map(r=>`<div class="road"><div class="ic">🚀</div>
+     <div><div class="t">${esc(r.title)}</div><div class="n">${esc(r.note)}</div></div><span class="tagp">${esc(r.status)}</span></div>`).join('')+`</div>`;
+  return cfg+road;
+}
+
+const VIEWS={overview:viewOverview,recompetes:viewRecompetes,calendar:viewCalendar,opportunities:viewOpportunities,competitors:viewCompetitors,watchlist:viewWatchlist,settings:viewSettings};
+
+function renderNav(){
+  $('#nav').innerHTML=NAV.map(n=>{let c=n.count?n.count():null;
+    return `<button class="${state.view===n.k?'active':''}" onclick="state.view='${n.k}';state.vuln='ALL';render()">${ICONS[n.k]}<span>${n.label}</span>${c!=null?`<span class="pill">${c}</span>`:''}</button>`;}).join('');
+}
+function render(){
+  renderNav();
+  $('#pageTitle').textContent=TITLES[state.view];
+  $('#pageSub').textContent=`NAICS ${DATA.naics} · ${DATA.naics_label} · updated ${DATA.generated_at}`;
+  $('#brandTag').textContent='Federal contract intelligence';
+  $('#sideFoot').innerHTML=`Built by Synthetic M2M<br>${esc(DATA.from_email)}`;
+  let html=VIEWS[state.view]();
+  if(state.view==='overview'&&!DATA.kpi.sam_key_set)html=`<div class="banner">💡 Debarment screening is built-in and switches on once a free SAM.gov key is added.</div>`+html;
+  $('#content').innerHTML=html;
+}
+
+$('#search').addEventListener('input',e=>{state.search=e.target.value;render();
+  const s=$('#search');s.focus();});
+$('#themeBtn').addEventListener('click',()=>{const h=document.documentElement;
+  const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');
+  $('#themeBtn').textContent=d?'🌙':'☀️';localStorage.setItem('govcon_theme',d?'light':'dark');});
+if(localStorage.getItem('govcon_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');$('#themeBtn').textContent='☀️';}
+render();
+</script>
+</body>
+</html>
