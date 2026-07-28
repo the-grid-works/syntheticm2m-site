@@ -57,14 +57,16 @@ document.getElementById("f").addEventListener("submit", async e => {
     btn.disabled = false;
   }
 });
-(async () => {
+async function autoUnlock(){
   const saved = localStorage.getItem("mywork_k");
   if (!saved) return;
   try {
     const key = await crypto.subtle.importKey("raw", b(saved), {name:"AES-GCM"}, false, ["decrypt"]);
     await unlockWithKey(key);
   } catch(_) { localStorage.removeItem("mywork_k"); }
-})();
+}
+if (document.readyState === "complete") autoUnlock();
+else window.addEventListener("load", autoUnlock);
 </script>
 </body>
 </html>
