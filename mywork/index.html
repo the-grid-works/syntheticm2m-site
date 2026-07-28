@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Work</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#05060a">
+<style>
+  :root{
+    --bg:#05060a; --text:#f4f6fb; --muted:#8b93a7; --line:rgba(255,255,255,.08);
+    --card:rgba(255,255,255,.028); --g1:#7c6cff; --g2:#4dd6c1; --g3:#f0739b; --cyan:#00dcff;
+    --blue:#4d8dff; --amber:#fbbf24; --dead:#8b6270;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  .bgfx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+  .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;animation:drift 22s ease-in-out infinite alternate}
+  .orb.a{width:560px;height:560px;background:radial-gradient(circle,#7c6cff44,transparent 65%);top:-240px;left:-140px}
+  .orb.b{width:480px;height:480px;background:radial-gradient(circle,#4dd6c13d,transparent 65%);top:6%;right:-200px;animation-delay:-8s}
+  @keyframes drift{to{transform:translate(60px,40px) scale(1.08)}}
+  .grid-lines{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%);
+            mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%)}
+
+  header{padding:56px 0 30px;position:relative}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:15px;color:var(--muted);margin-bottom:22px}
+  .brand .dot{width:20px;height:20px;border-radius:7px;background:conic-gradient(from 210deg,var(--g1),var(--g2),var(--g3),var(--g1));box-shadow:0 0 14px #7c6cff55}
+  h1{font-size:clamp(32px,6vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:10px}
+  .sub{color:var(--muted);font-size:16px;max-width:560px;margin-bottom:22px}
+  .metabar{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:13.5px;color:var(--muted);margin-bottom:26px}
+  .metabar b{color:var(--text);font-weight:700}
+  .metabar .sep{width:4px;height:4px;border-radius:50%;background:var(--line)}
+
+  .filterbox{position:relative;max-width:420px;margin-bottom:6px}
+  .filterbox input{width:100%;padding:12px 16px 12px 40px;border-radius:99px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);color:var(--text);font-size:14px;outline:none;transition:.2s}
+  .filterbox input:focus{border-color:rgba(77,214,193,.5);background:rgba(255,255,255,.05)}
+  .filterbox input::placeholder{color:var(--muted)}
+  .filterbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5;pointer-events:none}
+  .filter-count{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+
+  section{padding:34px 0}
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  .sec-head h2{font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .sec-head .count{font-size:12.5px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);
+    padding:2px 10px;border-radius:99px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+
+  .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:18px 20px;
+    position:relative;overflow:hidden;transition:border-color .25s,transform .25s;display:flex;flex-direction:column;gap:8px}
+  .card:hover{border-color:rgba(255,255,255,.16);transform:translateY(-2px)}
+  .card h3{font-size:15.5px;font-weight:700;letter-spacing:-.005em}
+  .card p{color:var(--muted);font-size:13px;line-height:1.55;flex:1}
+  .card .go{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--g2);margin-top:2px}
+  .card .go.plain{color:var(--muted)}
+  .card .go svg{transition:transform .2s}
+  .card .go:hover svg{transform:translateX(3px)}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;padding:4px 10px;border-radius:99px;align-self:flex-start}
+  .badge .pulse{width:5px;height:5px;border-radius:50%}
+  .badge.live{color:var(--g2);background:rgba(77,214,193,.1);border:1px solid rgba(77,214,193,.35)}
+  .badge.live .pulse{background:var(--g2);box-shadow:0 0 0 0 #4dd6c1aa;animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .badge.built{color:var(--blue);background:rgba(77,141,255,.1);border:1px solid rgba(77,141,255,.35)}
+  .badge.local{color:var(--g1);background:rgba(124,108,255,.12);border:1px solid rgba(124,108,255,.35)}
+  .badge.parked{color:var(--amber);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35)}
+  .badge.killed{color:var(--dead);background:rgba(139,98,112,.1);border:1px solid rgba(139,98,112,.3)}
+
+  .card.dead{opacity:.55;padding:14px 18px}
+  .card.dead:hover{transform:none;border-color:var(--line)}
+  .card.dead h3{font-size:14px}
+  .card.dead p{font-size:12px}
+  .dead-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+
+  footer{padding:44px 0 60px;text-align:center}
+  footer p{color:var(--muted);font-size:12.5px;opacity:.6}
+
+  .hidden{display:none!important}
+
+  @media(max-width:640px){
+    header{padding:40px 0 20px}
+    .wrap{padding:0 18px}
+    section{padding:26px 0}
+    .grid,.dead-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="bgfx"><div class="orb a"></div><div class="orb b"></div></div>
+<div class="grid-lines"></div>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#"><span class="dot"></span>Synthetic M2M</a>
+    <h1>My Work</h1>
+    <p class="sub">Everything built to date, in one place. Products, dashboards, and automations, live and retired.</p>
+    <div class="metabar">
+      <span><b id="totalCount">0</b> projects tracked</span>
+      <span class="sep"></span>
+      <span>Last updated <b>July 28, 2026</b></span>
+    </div>
+    <div class="filterbox">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="filterInput" type="text" placeholder="Find a project or status…" autocomplete="off">
+    </div>
+    <p class="filter-count" id="filterCount"></p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section data-section>
+    <div class="sec-head"><h2>Live websites &amp; pages</h2><span class="count"></span></div>
+    <div class="grid">
+      <div class="card" data-name="Synthetic M2M portfolio site live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Synthetic M2M portfolio site</h3>
+        <p>The main portfolio and product site. Dark, animated hero, living dashboard mockups.</p>
+        <a class="go" href="https://syntheticm2m.com" target="_blank" rel="noopener">syntheticm2m.com
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="The 5-Hour Audit live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>The 5-Hour Audit</h3>
+        <p>Standalone offer page for a fixed-scope automation audit.</p>
+        <a class="go" href="https://syntheticm2m.com/5-hour-audit" target="_blank" rel="noopener">/5-hour-audit
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="Disaster-Recovery Money Feed preview live">
+        <span class="badge live"><span class="pulse"></span>Live preview</span>
+        <h3>Disaster-Recovery Money Feed</h3>
+        <p>Tracks federal disaster-relief dollars by county for recovery contractors chasing rebuild work.</p>
+        <a class="go" href="https://syntheticm2m.com/disaster-feed" target="_blank" rel="noopener">/disaster-feed
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="GovCon Award Feed preview live">
+        <span class="badge live"><span class="pulse"></span>Live preview</span>
+        <h3>GovCon Award Feed</h3>
+        <p>Daily digest of upcoming federal contract renewals and which incumbents look vulnerable.</p>
+        <a class="go" href="https://syntheticm2m.com/govcon" target="_blank" rel="noopener">/govcon
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="10 design directions live redesigns">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>10 design directions</h3>
+        <p>Design exploration gallery, ten different visual takes on the same site.</p>
+        <a class="go" href="https://syntheticm2m.com/redesigns" target="_blank" rel="noopener">/redesigns
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="Hero variants demo live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Hero variants demo</h3>
+        <p>Six switchable hero animation styles, side by side.</p>
+        <a class="go" href="https://syntheticm2m.com/variants.html" target="_blank" rel="noopener">/variants.html
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="VinBaba parked">
+        <span class="badge parked">Parked</span>
+        <h3>VinBaba</h3>
+        <p>Consumer pay-per-VIN vehicle valuation tool. Live and free, but promotion is paused.</p>
+        <a class="go" href="https://vinbaba.com" target="_blank" rel="noopener">vinbaba.com
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="IBC al dia landing live colombia">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>IBC al día landing</h3>
+        <p>Validation landing page and waitlist form for a Colombia benefits copilot idea.</p>
+        <a class="go" href="https://the-grid-works.github.io/ibc-al-dia" target="_blank" rel="noopener">ibc-al-dia
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="Marketplace Guardian parked on hold">
+        <span class="badge parked">Parked</span>
+        <h3>Marketplace Guardian</h3>
+        <p>Marketplace listing safety toolkit. Infra is live, but promotion is on hold, this is a test build.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section>
+    <div class="sec-head"><h2>Products built, not yet deployed</h2><span class="count"></span></div>
+    <div class="grid">
+      <div class="card" data-name="Arbitration Desk built">
+        <span class="badge built">Built</span>
+        <h3>Arbitration Desk</h3>
+        <p>Auction arbitration rebuttal tool for used-car dealers. Case wizard, smart intake, unlimited follow-up rounds, full test suite green. Waiting on a payment dry run before launch.</p>
+      </div>
+      <div class="card" data-name="SEC Filing Alert API paused">
+        <span class="badge parked">Paused</span>
+        <h3>SEC Filing Alert API</h3>
+        <p>Filing-alert engine for regulatory events, built end to end. Held behind a validation and compliance gate.</p>
+      </div>
+      <div class="card" data-name="GovCon Award Intelligence Feed paused">
+        <span class="badge parked">Paused</span>
+        <h3>GovCon Award Intelligence Feed</h3>
+        <p>Paid-digest concept for government contract awards. Paused at the demand-validation gate.</p>
+      </div>
+      <div class="card" data-name="Alt-Data Signal Hub live private">
+        <span class="badge live"><span class="pulse"></span>Live, private</span>
+        <h3>Alt-Data Signal Hub</h3>
+        <p>Eighteen free alt-data feeds collected into a database and dashboard, refreshed on its own.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section>
+    <div class="sec-head"><h2>Local dashboards &amp; tools</h2><span class="count"></span></div>
+    <div class="grid">
+      <div class="card" data-name="Strategy Backtest Scoreboard local">
+        <span class="badge local">Local</span>
+        <h3>Strategy Backtest Scoreboard</h3>
+        <p>Every backtest verdict in one table, on this machine.</p>
+        <a class="go plain" href="http://localhost:8761" target="_blank" rel="noopener">localhost:8761
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="ACV Deal Desk local">
+        <span class="badge local">Local</span>
+        <h3>ACV Deal Desk</h3>
+        <p>Wholesale-arbitrage valuation desk for buying inventory. Also reachable from a phone when the tunnel is up.</p>
+        <a class="go plain" href="http://localhost:8733" target="_blank" rel="noopener">localhost:8733
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="AI Company Owner Dashboard local">
+        <span class="badge local">Local</span>
+        <h3>AI Company + Owner Dashboard</h3>
+        <p>An agent organization with an Owner's Inbox that gates anything money-related or external.</p>
+      </div>
+      <div class="card" data-name="Synthetic Capital local">
+        <span class="badge local">Local</span>
+        <h3>Synthetic Capital</h3>
+        <p>A recommendation-only paper trading fund with a daily morning memo.</p>
+      </div>
+      <div class="card" data-name="Backtesting Engine local">
+        <span class="badge local">Local</span>
+        <h3>Backtesting Engine</h3>
+        <p>A large local backtesting toolset with a full US-market symbol database.</p>
+        <a class="go plain" href="http://localhost:8003" target="_blank" rel="noopener">localhost:8003
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="card" data-name="triad-trader local built">
+        <span class="badge local">Local, built</span>
+        <h3>triad-trader</h3>
+        <p>A three-layer market analysis pipeline. Recommendation-only.</p>
+      </div>
+      <div class="card" data-name="Chart Copilot local built">
+        <span class="badge local">Local, built</span>
+        <h3>Chart Copilot</h3>
+        <p>A private charting side-panel browser extension, built as a safer alternative to a third-party clone.</p>
+      </div>
+      <div class="card" data-name="DuoGate local habit">
+        <span class="badge local">Local</span>
+        <h3>DuoGate</h3>
+        <p>A small vocabulary matching game used as a daily habit gate.</p>
+      </div>
+      <div class="card" data-name="Second Brain local notes">
+        <span class="badge local">Local</span>
+        <h3>Second Brain</h3>
+        <p>A searchable archive of past work and conversations, refreshed daily.</p>
+      </div>
+      <div class="card" data-name="Succession Manual Rehearsal Room local">
+        <span class="badge local">Local</span>
+        <h3>Succession Manual + Rehearsal Room</h3>
+        <p>A living runbook covering every automation that runs on its own.</p>
+      </div>
+      <div class="card" data-name="Nervous System local">
+        <span class="badge local">Local</span>
+        <h3>Nervous System</h3>
+        <p>A claims ledger, a daily grading pass, and a standing devil's-advocate reviewer.</p>
+      </div>
+      <div class="card" data-name="Immune System local watchdog">
+        <span class="badge local">Local</span>
+        <h3>Immune System</h3>
+        <p>A daily watchdog over every scheduled automation, with a two-strike phone alert before anything gets flagged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section>
+    <div class="sec-head"><h2>Always-on automations</h2><span class="count"></span></div>
+    <div class="grid">
+      <div class="card" data-name="Moltbook poster engage loop live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Autonomous social poster</h3>
+        <p>Writes and publishes posts daily and engages with replies, fully hands-off, on a schedule.</p>
+      </div>
+      <div class="card" data-name="Reddit inbox watcher live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Reddit inbox watcher</h3>
+        <p>Checks an inbox every ten minutes and sends a phone alert on anything new.</p>
+      </div>
+      <div class="card" data-name="Alt-data collectors live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Alt-data collectors</h3>
+        <p>Eighteen data feeds collected nightly, all green.</p>
+      </div>
+      <div class="card" data-name="Daily lead outreach live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Daily lead outreach</h3>
+        <p>Scans for new dealership leads each morning and sends a first-touch response.</p>
+      </div>
+      <div class="card" data-name="Weekly backup live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Weekly backup</h3>
+        <p>Mirrors the full workspace weekly, with a copy kept off this machine.</p>
+      </div>
+      <div class="card" data-name="Daily memo board meeting brain refresh live">
+        <span class="badge live"><span class="pulse"></span>Live</span>
+        <h3>Daily memo, board meeting, brain refresh</h3>
+        <p>A set of scheduled tasks: a daily memo, a monthly review meeting, and a nightly notes refresh.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section>
+    <div class="sec-head"><h2>Dealer ops toolkit</h2><span class="count"></span></div>
+    <div class="grid">
+      <div class="card" data-name="Lead follow-up draft and hold built">
+        <span class="badge built">Built</span>
+        <h3>Lead follow-up (draft and hold)</h3>
+        <p>Scans the dealership's leads and drafts a first response in the house voice. Holds for a human to approve and send.</p>
+      </div>
+      <div class="card" data-name="Vehicle posting built">
+        <span class="badge built">Built</span>
+        <h3>Vehicle posting</h3>
+        <p>Builds fresh Craigslist and Facebook Marketplace listings straight from the dealership's own records.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-section>
+    <div class="sec-head"><h2>Graveyard</h2><span class="count"></span>
+      <span style="font-size:12.5px;color:var(--muted)">built, tested, killed on evidence</span>
+    </div>
+    <div class="dead-grid">
+      <div class="card dead" data-name="Clip Factory killed repost clipping">
+        <span class="badge killed">Killed</span>
+        <h3>Clip Factory (repost clipping)</h3>
+        <p>Killed same day. The payout was a lottery, not a reliable return.</p>
+      </div>
+      <div class="card dead" data-name="Image dataset business killed">
+        <span class="badge killed">Killed</span>
+        <h3>Image-dataset business</h3>
+        <p>Killed on the premise before it was built. The buyers would not have paid.</p>
+      </div>
+      <div class="card dead" data-name="Claude usage widget killed">
+        <span class="badge killed">Killed</span>
+        <h3>Usage widget</h3>
+        <p>Killed. The source it depended on could not be polled reliably.</p>
+      </div>
+      <div class="card dead" data-name="Karen ORB VPS trading bots decommissioned">
+        <span class="badge killed">Killed</span>
+        <h3>VPS trading bots</h3>
+        <p>Decommissioned. Lessons kept, servers wiped.</p>
+      </div>
+      <div class="card dead" data-name="HoneyDrip options flow copying tested failed">
+        <span class="badge killed">Killed</span>
+        <h3>Options-flow copying</h3>
+        <p>Tested end to end. It failed.</p>
+      </div>
+      <div class="card dead" data-name="Freelancer copilot vehicle tramites killed validation">
+        <span class="badge killed">Killed</span>
+        <h3>Freelancer copilot / vehicle paperwork copilot</h3>
+        <p>Both killed at the validation stage before any real build.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>unlisted page, not linked anywhere on the site</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var sections = document.querySelectorAll('[data-section]');
+    var allCards = document.querySelectorAll('.card');
+    document.getElementById('totalCount').textContent = allCards.length;
+
+    sections.forEach(function(sec){
+      var n = sec.querySelectorAll('.card').length;
+      var c = sec.querySelector('.count');
+      if (c) c.textContent = n + (n === 1 ? ' item' : ' items');
+    });
+
+    var input = document.getElementById('filterInput');
+    var filterCount = document.getElementById('filterCount');
+    input.addEventListener('input', function(){
+      var q = input.value.trim().toLowerCase();
+      var shown = 0;
+      sections.forEach(function(sec){
+        var visibleInSec = 0;
+        sec.querySelectorAll('.card').forEach(function(card){
+          var hay = (card.dataset.name || '') + ' ' + card.textContent;
+          var match = q === '' || hay.toLowerCase().indexOf(q) !== -1;
+          card.classList.toggle('hidden', !match);
+          if (match) { visibleInSec++; shown++; }
+        });
+        sec.classList.toggle('hidden', visibleInSec === 0);
+      });
+      filterCount.textContent = q === '' ? '' : (shown + ' match' + (shown === 1 ? '' : 'es'));
+    });
+  })();
+</script>
+</body>
+</html>
