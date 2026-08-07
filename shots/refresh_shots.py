@@ -15,16 +15,22 @@ from PIL import Image
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-# name -> (url, list of innerText prefixes for third-party banners to dismiss)
+# name -> (url, banner innerText prefixes to dismiss, capture width)
+# Capture width only changes how much page fits in frame; every shot is written
+# at 1280x820 so the cards crop identically. Narrow it for pages that center a
+# skinny column in a wide window, otherwise the content reads too small.
 TARGETS = {
-    "arbitration-desk": ("https://vinbaba.com", []),
-    "altdata-hub":      ("https://kfr6jaqvl6.execute-api.us-east-1.amazonaws.com/", []),
+    "arbitration-desk": ("https://vinbaba.com", [], 1280),
+    "altdata-hub":      ("https://kfr6jaqvl6.execute-api.us-east-1.amazonaws.com/", [], 1280),
     "publisher":        ("https://www.moltbook.com/u/syntheticm2m",
-                         ["We've updated our Terms of Service"]),
-    "guardian":         ("https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/", []),
-    "govcon":           ("https://syntheticm2m.com/govcon/", []),
-    "disaster-feed":    ("https://syntheticm2m.com/disaster-feed/", []),
+                         ["We've updated our Terms of Service"], 1280),
+    "guardian":         ("https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/", [], 1280),
+    "vocab-match":      ("https://vocab-match.disco-seat.workers.dev", [], 900),
+    "govcon":           ("https://syntheticm2m.com/govcon/", [], 1280),
+    "disaster-feed":    ("https://syntheticm2m.com/disaster-feed/", [], 1280),
 }
+
+ASPECT = 1280 / 820
 
 DISMISS = """(prefixes) => {
     let n = 0;
@@ -39,10 +45,11 @@ DISMISS = """(prefixes) => {
 def shoot(names):
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        ctx = browser.new_context(viewport={"width": 1280, "height": 820},
-                                  device_scale_factor=2, reduced_motion="reduce")
         for name in names:
-            url, banners = TARGETS[name]
+            url, banners, cap_w = TARGETS[name]
+            ctx = browser.new_context(
+                viewport={"width": cap_w, "height": round(cap_w / ASPECT)},
+                device_scale_factor=2, reduced_motion="reduce")
             page = ctx.new_page()
             try:
                 page.goto(url, wait_until="networkidle", timeout=45000)
@@ -56,8 +63,9 @@ def shoot(names):
             img = img.resize((1280, 820), Image.LANCZOS)
             path = os.path.join(OUT, name + ".webp")
             img.save(path, "WEBP", quality=82, method=6)
-            print("%-18s %4d KB  %s" % (name, os.path.getsize(path) // 1024, url))
+            print("%-18s %4d KB  @%dpx  %s" % (name, os.path.getsize(path) // 1024, cap_w, url))
             page.close()
+            ctx.close()
         browser.close()
 
 
