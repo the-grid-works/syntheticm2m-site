@@ -250,6 +250,36 @@
   .card .go svg{transition:transform .25s}
   .card .go:hover svg{transform:translateX(4px)}
 
+  /* live screenshot window inside a product card */
+  .win{display:block;position:relative;z-index:1;margin:-30px -30px 22px;
+    border-bottom:1px solid var(--line);background:#0a0d13;overflow:hidden}
+  .wbar{display:flex;align-items:center;gap:6px;padding:9px 13px;background:#141824;
+    border-bottom:1px solid rgba(255,255,255,.06)}
+  .wbar i{width:10px;height:10px;border-radius:50%;flex:none;font-style:normal}
+  .wbar .r{background:#ff5f57}.wbar .y{background:#febc2e}.wbar .g{background:#28c840}
+  .wbar .u{flex:1;margin-left:8px;min-width:0;background:#0a0d13;border:1px solid rgba(255,255,255,.07);
+    border-radius:99px;padding:3px 11px;font-size:10.5px;line-height:1.5;color:#8b93a7;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .wview{display:block;position:relative;height:200px;background:#05070b;overflow:hidden}
+  .wview img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
+    transition:transform .45s ease}
+  a.win:hover .wview img{transform:scale(1.045)}
+  .wview::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,transparent 62%,rgba(5,6,10,.55));transition:opacity .3s}
+  a.win:hover .wview::after{opacity:.4}
+  /* cover tile for products with no public page */
+  .wview.cv{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:0 22px;
+    background:linear-gradient(158deg,#151a29,#090c14)}
+  .wview.cv b{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.02em;
+    color:#9aa3b5;display:flex;align-items:center;gap:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wview.cv b s{width:6px;height:6px;border-radius:50%;background:var(--g2);flex:none;
+    box-shadow:0 0 8px rgba(77,214,193,.8)}
+  .wview.cv b.d s{background:#fbbf24;box-shadow:0 0 8px rgba(245,158,11,.7)}
+  @media (max-width:520px){ .wview{height:168px} }
+  @media (prefers-reduced-motion:reduce){
+    .wview img,a.win:hover .wview img{transition:none;transform:none}
+  }
+
   ul.svc{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
   ul.svc li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:15px}
   ul.svc li b{display:block;margin-bottom:3px}
@@ -368,6 +398,10 @@
     <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
     <div class="cards">
       <div class="card rv">
+        <a class="win" href="https://vinbaba.com" target="_blank" rel="noopener" aria-label="Open Arbitration Desk">
+          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">vinbaba.com</span></span>
+          <span class="wview"><img src="/shots/arbitration-desk.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Arbitration Desk case-check page"></span>
+        </a>
         <span class="tag"><span class="pulse"></span>Live</span>
         <h3>Arbitration Desk</h3>
         <p>For used-car dealers fighting lowball wholesale-auction arbitration offers. Drop in the paperwork on a deal and it checks the offer against the auction's own published policy — the version that governed the sale date — then writes a ready-to-send rebuttal letter, in English and Spanish, citing their rules back at them. Free case check, no sign-up.</p>
@@ -375,6 +409,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="card rv">
+        <a class="win" href="https://kfr6jaqvl6.execute-api.us-east-1.amazonaws.com/" target="_blank" rel="noopener" aria-label="Open the Alt-Data Signal Hub dashboard">
+          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">Alt-Data Signal Hub</span></span>
+          <span class="wview"><img src="/shots/altdata-hub.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Alt-Data Signal Hub overview dashboard"></span>
+        </a>
         <span class="tag"><span class="pulse"></span>Live</span>
         <h3>Alt-Data Signal Hub</h3>
         <p>A market-signals dashboard that fuses alternative data — insider buying clusters, federal contract awards, short-volume trends, severe-weather alerts, and news — into ranked setups across 350+ tickers. Strictly data, no advice; refreshes itself daily with zero hands on it.</p>
@@ -382,6 +420,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="card rv">
+        <a class="win" href="https://www.moltbook.com/u/syntheticm2m" target="_blank" rel="noopener" aria-label="Open the Autonomous Publisher profile">
+          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">moltbook.com/u/syntheticm2m</span></span>
+          <span class="wview"><img src="/shots/publisher.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Live publisher profile with daily posts"></span>
+        </a>
         <span class="tag"><span class="pulse"></span>Live</span>
         <h3>Autonomous Publisher</h3>
         <p>An always-on publisher for an AI-agent social network: writes fresh, on-brand posts, publishes daily, and engages with replies — fully hands-off since launch. Not one post has needed a human.</p>
@@ -389,6 +431,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="card rv">
+        <a class="win" href="https://pu92fb49vg.execute-api.us-east-1.amazonaws.com/app/" target="_blank" rel="noopener" aria-label="Open Marketplace Guardian">
+          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">Marketplace Guardian</span></span>
+          <span class="wview"><img src="/shots/guardian.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Marketplace Guardian scam-check tool"></span>
+        </a>
         <span class="tag"><span class="pulse"></span>Live</span>
         <h3>Marketplace Guardian</h3>
         <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish — also packaged as a Chrome extension.</p>
@@ -396,6 +442,15 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="card rv">
+        <div class="win">
+          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">internal fleet, private</span></span>
+          <div class="wview cv">
+            <b><s></s>cloud watchers &middot; alerting</b>
+            <b><s></s>scheduled data pipelines</b>
+            <b><s></s>uptime monitors</b>
+            <b><s></s>browser automation, posting and filing</b>
+          </div>
+        </div>
         <span class="tag"><span class="pulse"></span>In production</span>
         <h3>Internal automation fleet</h3>
         <p>Systems we run for our own operations: cloud watchers that ping a phone within minutes of an event, scheduled data pipelines, uptime monitors, and browser automation that posts, files, and reconciles — no human in the loop.</p>
@@ -407,6 +462,10 @@
       <p class="lead rv" style="margin-bottom:24px">Built and working — launching after validation. The point: the engine that builds these is repeatable.</p>
       <div class="cards">
         <div class="card rv">
+          <a class="win" href="/govcon/" aria-label="Open the GovCon Award Feed preview">
+            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">syntheticm2m.com/govcon</span></span>
+            <span class="wview"><img src="/shots/govcon.webp" width="1280" height="820" loading="lazy" decoding="async" alt="GovCon Award Feed working preview"></span>
+          </a>
           <span class="tag dev">⚙ In development</span>
           <h3>GovCon Award Feed</h3>
           <p>A daily intelligence digest that tells government contractors which federal contracts are coming up for renewal — and which incumbents look vulnerable. Pipeline, dashboard, and checkout built end-to-end.</p>
@@ -414,6 +473,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="card rv">
+          <a class="win" href="/disaster-feed/" aria-label="Open the Disaster-Recovery Money Feed preview">
+            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">syntheticm2m.com/disaster-feed</span></span>
+            <span class="wview"><img src="/shots/disaster-feed.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Disaster-Recovery Money Feed working preview"></span>
+          </a>
           <span class="tag dev">⚙ In development</span>
           <h3>Disaster-Recovery Money Feed</h3>
           <p>Tracks federal disaster-relief dollars county-by-county as they're awarded, for recovery contractors chasing rebuild work. Same engine as the GovCon feed — ported to a new vertical in a day.</p>
@@ -421,6 +484,15 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="card rv">
+          <div class="win">
+            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">gated on compliance review</span></span>
+            <div class="wview cv">
+              <b class="d"><s></s>filings watched in real time</b>
+              <b class="d"><s></s>insider buying clusters</b>
+              <b class="d"><s></s>activist stakes</b>
+              <b class="d"><s></s>plain-English alerts out</b>
+            </div>
+          </div>
           <span class="tag dev">⚙ In development</span>
           <h3>Filing Anomaly Alerts</h3>
           <p>Watches regulatory filings in real time and turns material events — insider buying clusters, activist stakes — into plain-English alerts for small investment firms. Built end-to-end; launch deliberately gated on a compliance review.</p>
