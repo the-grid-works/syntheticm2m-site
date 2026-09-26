@@ -303,6 +303,36 @@
     .toast{opacity:1;transform:none}
     .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
   }
+
+  /* ---- brand film ---- */
+  .film-card{position:relative;max-width:1080px;margin:0 auto;border-radius:var(--radius);border:1px solid var(--line);
+    aspect-ratio:16/9;overflow:hidden;background:#000;
+    box-shadow:0 32px 90px rgba(0,0,0,.55),0 0 90px -20px rgba(124,108,255,.35)}
+  .film-card video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+  .film-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;padding:0;border:2px solid transparent;
+    background:linear-gradient(rgba(10,12,20,.55),rgba(10,12,20,.55)) padding-box,
+      linear-gradient(135deg,var(--g1),var(--g2),var(--g3)) border-box;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 0 40px rgba(124,108,255,.4);cursor:pointer;color:#fff;transition:transform .25s,box-shadow .25s}
+  .film-play:hover{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 56px rgba(124,108,255,.6)}
+  .film-play[hidden]{display:none}
+  .film-card.playing .film-caption{display:none}
+  .film-card.ended .film-play{top:auto;left:auto;right:16px;bottom:16px;transform:none;width:52px;height:52px}
+  .film-card.ended .film-play:hover{transform:scale(1.08)}
+  .film-card.ended .film-play svg{width:22px;height:22px}
+  .film-play:focus-visible{outline:2px solid var(--g2);outline-offset:4px}
+  .film-play svg{margin-left:3px;pointer-events:none}
+  @media(max-width:640px){.film-play{width:72px;height:72px}}
+  .film-caption{position:absolute;left:16px;bottom:16px;font-size:11.5px;color:var(--text);
+    background:rgba(5,6,10,.6);border:1px solid var(--line);border-radius:99px;padding:5px 12px;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none}
+  .film-error{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:12.5px;color:var(--text);
+    background:rgba(5,6,10,.8);border:1px solid var(--line);border-radius:10px;padding:8px 14px;max-width:80%;text-align:center}
+  @media(prefers-reduced-motion:reduce){
+    .film-play,.film-play:hover{transition:none;transform:translate(-50%,-50%);box-shadow:0 0 40px rgba(124,108,255,.4)}
+    .film-card.ended .film-play,.film-card.ended .film-play:hover{transform:none}
+  }
 </style>
 </head>
 <body>
@@ -390,6 +420,25 @@
     </div>
   </div>
 </header>
+
+<section id="film">
+  <div class="wrap">
+    <span class="eyebrow rv">See it in motion</span>
+    <h2 class="rv">15 seconds. The whole idea.</h2>
+    <p class="lead rv">Busywork goes in, our software runs it, finished work comes out.</p>
+    <div class="film-card rv" id="filmCard">
+      <video id="filmVideo" preload="none" playsinline poster="media/m2m-film-poster.jpg">
+        <source src="media/m2m-film.webm" type="video/webm">
+        <source src="media/m2m-film.mp4" type="video/mp4">
+      </video>
+      <button type="button" id="filmPlayBtn" class="film-play" aria-label="Play the 15 second film">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <span class="film-caption mono">0:15</span>
+      <p class="film-error" id="filmError" role="alert" hidden>Video could not load. Try again later.</p>
+    </div>
+  </div>
+</section>
 
 <section id="work">
   <div class="wrap">
@@ -788,6 +837,78 @@
     c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
     c.style.setProperty('--my', (e.clientY - r.top) + 'px');
   }));
+
+  // brand film player
+  (() => {
+    const video = document.getElementById('filmVideo');
+    const btn = document.getElementById('filmPlayBtn');
+    const errMsg = document.getElementById('filmError');
+    const card = document.getElementById('filmCard');
+    if (!video || !btn) return;
+
+    const PLAY_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    const REPLAY_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
+
+    let starting = false;
+
+    const showOverlay = (replay) => {
+      btn.hidden = false;
+      btn.setAttribute('aria-label', replay ? 'Replay the film' : 'Play the 15 second film');
+      btn.innerHTML = replay ? REPLAY_ICON : PLAY_ICON;
+    };
+    const hideOverlay = () => { btn.hidden = true; };
+
+    const startPlay = () => {
+      if (starting || !video.paused) return;
+      starting = true;
+      if (video.ended) video.currentTime = 0;
+      hideOverlay();
+      card && card.classList.remove('ended');
+      card && card.classList.add('playing');
+      if (errMsg) errMsg.hidden = true;
+      video.controls = true;
+      const p = video.play();
+      if (p && p.catch) {
+        p.then(() => { starting = false; }).catch(() => {
+          starting = false;
+          video.controls = false;
+          card && card.classList.remove('playing');
+          showOverlay(false);
+        });
+      } else {
+        starting = false;
+      }
+    };
+
+    btn.addEventListener('click', startPlay);
+    // clicking the poster itself also starts the film (native controls take over once playing)
+    video.addEventListener('click', () => { if (!video.controls) startPlay(); });
+
+    // at the end: keep the end card clean, offer replay from a corner button
+    video.addEventListener('ended', () => {
+      video.controls = false;
+      card && card.classList.add('ended');
+      showOverlay(true);
+    });
+
+    // with <source> children a failed load fires 'error' on the last <source>, not on <video>
+    const sources = video.querySelectorAll('source');
+    const lastSource = sources[sources.length - 1];
+    const onLoadError = () => {
+      starting = false;
+      video.controls = false;
+      showOverlay(false);
+      card && card.classList.remove('playing');
+      if (errMsg) errMsg.hidden = false;
+    };
+    if (lastSource) lastSource.addEventListener('error', onLoadError);
+    video.addEventListener('error', () => {
+      starting = false;
+      video.controls = false;
+      showOverlay(false);
+      if (errMsg) errMsg.hidden = false;
+    });
+  })();
 </script>
 </body>
 </html>
