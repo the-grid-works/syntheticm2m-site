@@ -304,35 +304,25 @@
     .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
   }
 
-  /* ---- brand film ---- */
-  .film-card{position:relative;max-width:1080px;margin:0 auto;border-radius:var(--radius);border:1px solid var(--line);
-    aspect-ratio:16/9;overflow:hidden;background:#000;
+  /* ---- hero brand film ---- */
+  .film-card{position:relative;max-width:1000px;margin:34px auto 0;border-radius:var(--radius);border:1px solid var(--line);
+    aspect-ratio:16/9;overflow:hidden;background:#05060a;
     box-shadow:0 32px 90px rgba(0,0,0,.55),0 0 90px -20px rgba(124,108,255,.35)}
-  .film-card video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
-  .film-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;padding:0;border:2px solid transparent;
-    background:linear-gradient(rgba(10,12,20,.55),rgba(10,12,20,.55)) padding-box,
-      linear-gradient(135deg,var(--g1),var(--g2),var(--g3)) border-box;
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    box-shadow:0 0 40px rgba(124,108,255,.4);cursor:pointer;color:#fff;transition:transform .25s,box-shadow .25s}
-  .film-play:hover{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 0 56px rgba(124,108,255,.6)}
-  .film-play[hidden]{display:none}
-  .film-card.playing .film-caption{display:none}
-  .film-card.ended .film-play{top:auto;left:auto;right:16px;bottom:16px;transform:none;width:52px;height:52px}
-  .film-card.ended .film-play:hover{transform:scale(1.08)}
-  .film-card.ended .film-play svg{width:22px;height:22px}
-  .film-play:focus-visible{outline:2px solid var(--g2);outline-offset:4px}
-  .film-play svg{margin-left:3px;pointer-events:none}
-  @media(max-width:640px){.film-play{width:72px;height:72px}}
-  .film-caption{position:absolute;left:16px;bottom:16px;font-size:11.5px;color:var(--text);
-    background:rgba(5,6,10,.6);border:1px solid var(--line);border-radius:99px;padding:5px 12px;
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);pointer-events:none}
+  .film-card::before{content:"";position:absolute;top:-1px;left:20%;right:20%;height:1px;z-index:1;
+    background:linear-gradient(90deg,transparent,var(--g2),transparent)}
+  .film-card video{display:block;width:100%;height:100%;object-fit:cover;background:#05060a}
+  .film-toggle{position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;padding:0;
+    display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;border:1px solid var(--line);
+    background:rgba(5,6,10,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:.7;transition:opacity .2s,transform .2s}
+  .film-toggle:hover,.film-toggle:focus-visible{opacity:1;transform:scale(1.06)}
+  .film-toggle:focus-visible{outline:2px solid var(--g2);outline-offset:3px}
+  .film-toggle svg{pointer-events:none}
+  .film-toggle[hidden]{display:none}
   .film-error{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:12.5px;color:var(--text);
     background:rgba(5,6,10,.8);border:1px solid var(--line);border-radius:10px;padding:8px 14px;max-width:80%;text-align:center}
-  @media(prefers-reduced-motion:reduce){
-    .film-play,.film-play:hover{transition:none;transform:translate(-50%,-50%);box-shadow:0 0 40px rgba(124,108,255,.4)}
-    .film-card.ended .film-play,.film-card.ended .film-play:hover{transform:none}
-  }
+  @media(max-width:640px){.film-card{margin-top:26px;border-radius:14px}.film-toggle{width:36px;height:36px;right:10px;bottom:10px}}
+  @media(prefers-reduced-motion:reduce){.film-toggle,.film-toggle:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -361,84 +351,18 @@
       </a>
     </div>
 
-    <!-- animated pipeline explainer -->
-    <div class="pipeline-box rv" aria-label="Animation: messy inputs flow into the automation core and come out as finished results">
-      <svg viewBox="0 0 900 380" width="100%" role="img" aria-hidden="true">
-        <defs>
-          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#f0739b"/><stop offset="50%" stop-color="#4dd6c1"/><stop offset="100%" stop-color="#00dcff"/>
-          </linearGradient>
-          <radialGradient id="coreg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#4dd6c1" stop-opacity=".55"/><stop offset="100%" stop-color="#4dd6c1" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <!-- flow paths -->
-        <path id="pIn1" d="M120,110 C240,110 300,170 375,182" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
-        <path id="pIn2" d="M120,190 C230,190 300,190 372,190" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
-        <path id="pIn3" d="M120,270 C240,270 300,210 375,198" fill="none" stroke="rgba(240,115,155,.35)" stroke-width="1.5" class="flowline"/>
-        <path id="pOut1" d="M525,182 C600,170 660,110 780,110" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
-        <path id="pOut2" d="M528,190 C600,190 670,190 780,190" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
-        <path id="pOut3" d="M525,198 C600,210 660,270 780,270" fill="none" stroke="rgba(0,220,255,.35)" stroke-width="1.5" class="flowline"/>
-
-        <!-- input tokens: messy docs -->
-        <g opacity=".95">
-          <g><rect x="-14" y="-10" width="28" height="20" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-14 -10 L0 2 L14 -10" fill="none" stroke="#f0739b" stroke-width="1.2"/>
-            <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#pIn1"/></animateMotion></g>
-          <g><rect x="-13" y="-13" width="26" height="26" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-13 -4 h26 M-13 5 h26 M-4 -13 v26" stroke="#f0739b" stroke-width="1" opacity=".8"/>
-            <animateMotion dur="5s" begin="1.6s" repeatCount="indefinite"><mpath href="#pIn2"/></animateMotion></g>
-          <g><rect x="-11" y="-14" width="22" height="28" rx="4" fill="#181322" stroke="#f0739b" stroke-width="1.2"/><path d="M-5 -7 h10 M-5 -1 h10 M-5 5 h7" stroke="#f0739b" stroke-width="1.2"/>
-            <animateMotion dur="5s" begin="3.2s" repeatCount="indefinite"><mpath href="#pIn3"/></animateMotion></g>
-        </g>
-
-        <!-- core -->
-        <circle cx="450" cy="190" r="86" fill="url(#coreg)" class="core-glow"/>
-        <g class="core-ring"><circle cx="450" cy="190" r="62" fill="none" stroke="rgba(124,108,255,.5)" stroke-width="1.4" stroke-dasharray="10 7"/></g>
-        <g class="core-ring r2"><circle cx="450" cy="190" r="48" fill="none" stroke="rgba(77,214,193,.55)" stroke-width="1.4" stroke-dasharray="4 6"/></g>
-        <circle cx="450" cy="190" r="34" fill="#0b0e17" stroke="url(#lg)" stroke-width="1.6"/>
-        <text x="450" y="186" text-anchor="middle" font-size="11" font-weight="700" fill="#f4f6fb" letter-spacing="1">M2M</text>
-        <text x="450" y="200" text-anchor="middle" font-size="7.5" fill="#8b93a7" letter-spacing="1.5">AUTOMATION</text>
-        <text x="450" y="286" text-anchor="middle" font-size="11" fill="#4dd6c1" font-weight="600" letter-spacing="2">RUNS 24/7</text>
-
-        <!-- output tokens: clean results -->
-        <g opacity=".95">
-          <g><rect x="-14" y="-11" width="28" height="22" rx="4" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><path d="M-8 0 l4 4 l8 -9" fill="none" stroke="#00dcff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            <animateMotion dur="5s" begin=".8s" repeatCount="indefinite"><mpath href="#pOut1"/></animateMotion></g>
-          <g><rect x="-14" y="-12" width="28" height="24" rx="4" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><path d="M-8 6 v-6 M-2 6 v-11 M4 6 v-4 M9 6 v-8" stroke="#00dcff" stroke-width="1.8" stroke-linecap="round"/>
-            <animateMotion dur="5s" begin="2.4s" repeatCount="indefinite"><mpath href="#pOut2"/></animateMotion></g>
-          <g><path d="M0,-11 c6,0 9,5 9,10 l3,5 h-24 l3,-5 c0,-5 3,-10 9,-10 z" fill="#0d1a1c" stroke="#00dcff" stroke-width="1.2"/><circle cx="0" cy="8" r="2.4" fill="#00dcff"/>
-            <animateMotion dur="5s" begin="4s" repeatCount="indefinite"><mpath href="#pOut3"/></animateMotion></g>
-        </g>
-
-        <!-- end labels -->
-        <text x="120" y="70" text-anchor="middle" font-size="10.5" fill="#8b93a7">emails · PDFs · spreadsheets</text>
-        <text x="780" y="70" text-anchor="middle" font-size="10.5" fill="#8b93a7">reports · dashboards · alerts</text>
-      </svg>
-      <div class="pipe-caption">
-        <span class="in">① Busywork in</span><span class="mid">② Software does it</span><span class="out">③ Results out</span>
-      </div>
-    </div>
-  </div>
-</header>
-
-<section id="film">
-  <div class="wrap">
-    <span class="eyebrow rv">See it in motion</span>
-    <h2 class="rv">15 seconds. The whole idea.</h2>
-    <p class="lead rv">Busywork goes in, our software runs it, finished work comes out.</p>
+    <!-- brand film: silent autoplay loop, pausable -->
     <div class="film-card rv" id="filmCard">
-      <video id="filmVideo" preload="none" playsinline poster="media/m2m-film-poster.jpg">
+      <video id="filmVideo" autoplay muted loop playsinline preload="auto" poster="media/m2m-film-poster.jpg"
+        aria-label="15 second film: busywork goes in, our software runs it, finished work comes out">
         <source src="media/m2m-film.webm" type="video/webm">
         <source src="media/m2m-film.mp4" type="video/mp4">
       </video>
-      <button type="button" id="filmPlayBtn" class="film-play" aria-label="Play the 15 second film">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <span class="film-caption mono">0:15</span>
+      <button type="button" id="filmToggle" class="film-toggle" aria-label="Pause the film"></button>
       <p class="film-error" id="filmError" role="alert" hidden>Video could not load. Try again later.</p>
     </div>
   </div>
-</section>
+</header>
 
 <section id="work">
   <div class="wrap">
@@ -838,76 +762,52 @@
     c.style.setProperty('--my', (e.clientY - r.top) + 'px');
   }));
 
-  // brand film player
+  // hero brand film: silent loop with a pause control; honours reduced motion; pauses off-screen
   (() => {
     const video = document.getElementById('filmVideo');
-    const btn = document.getElementById('filmPlayBtn');
+    const btn = document.getElementById('filmToggle');
     const errMsg = document.getElementById('filmError');
-    const card = document.getElementById('filmCard');
     if (!video || !btn) return;
 
-    const PLAY_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-    const REPLAY_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
+    const PAUSE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
+    const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userPaused = reduced; // reduced motion: stay on the poster until the visitor presses play
+    let onScreen = true;
 
-    let starting = false;
-
-    const showOverlay = (replay) => {
-      btn.hidden = false;
-      btn.setAttribute('aria-label', replay ? 'Replay the film' : 'Play the 15 second film');
-      btn.innerHTML = replay ? REPLAY_ICON : PLAY_ICON;
+    const render = () => {
+      const playing = !video.paused;
+      btn.innerHTML = playing ? PAUSE_ICON : PLAY_ICON;
+      btn.setAttribute('aria-label', playing ? 'Pause the film' : 'Play the film');
     };
-    const hideOverlay = () => { btn.hidden = true; };
-
-    const startPlay = () => {
-      if (starting || !video.paused) return;
-      starting = true;
-      if (video.ended) video.currentTime = 0;
-      hideOverlay();
-      card && card.classList.remove('ended');
-      card && card.classList.add('playing');
-      if (errMsg) errMsg.hidden = true;
-      video.controls = true;
+    const tryPlay = () => {
       const p = video.play();
-      if (p && p.catch) {
-        p.then(() => { starting = false; }).catch(() => {
-          starting = false;
-          video.controls = false;
-          card && card.classList.remove('playing');
-          showOverlay(false);
-        });
-      } else {
-        starting = false;
-      }
+      if (p && p.catch) p.catch(() => render()); // autoplay refused (e.g. low power mode): show the play button
     };
 
-    btn.addEventListener('click', startPlay);
-    // clicking the poster itself also starts the film (native controls take over once playing)
-    video.addEventListener('click', () => { if (!video.controls) startPlay(); });
+    if (reduced) { video.removeAttribute('autoplay'); video.pause(); }
+    render();
 
-    // at the end: keep the end card clean, offer replay from a corner button
-    video.addEventListener('ended', () => {
-      video.controls = false;
-      card && card.classList.add('ended');
-      showOverlay(true);
+    btn.addEventListener('click', () => {
+      if (video.paused) { userPaused = false; tryPlay(); }
+      else { userPaused = true; video.pause(); }
     });
+    video.addEventListener('play', render);
+    video.addEventListener('pause', render);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(es => es.forEach(e => {
+        onScreen = e.isIntersecting;
+        if (!onScreen && !video.paused) video.pause();
+        else if (onScreen && video.paused && !userPaused) tryPlay();
+      }), { threshold: .15 }).observe(video);
+    }
 
     // with <source> children a failed load fires 'error' on the last <source>, not on <video>
     const sources = video.querySelectorAll('source');
-    const lastSource = sources[sources.length - 1];
-    const onLoadError = () => {
-      starting = false;
-      video.controls = false;
-      showOverlay(false);
-      card && card.classList.remove('playing');
-      if (errMsg) errMsg.hidden = false;
-    };
-    if (lastSource) lastSource.addEventListener('error', onLoadError);
-    video.addEventListener('error', () => {
-      starting = false;
-      video.controls = false;
-      showOverlay(false);
-      if (errMsg) errMsg.hidden = false;
-    });
+    const onLoadError = () => { btn.hidden = true; if (errMsg) errMsg.hidden = false; };
+    if (sources.length) sources[sources.length - 1].addEventListener('error', onLoadError);
+    video.addEventListener('error', onLoadError);
   })();
 </script>
 </body>
