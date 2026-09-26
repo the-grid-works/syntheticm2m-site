@@ -805,7 +805,22 @@
 
     // with <source> children a failed load fires 'error' on the last <source>, not on <video>
     const sources = video.querySelectorAll('source');
-    const onLoadError = () => { btn.hidden = true; if (errMsg) errMsg.hidden = false; };
+    // if the WebM fails to decode (some browsers), retry once with the MP4 before giving up
+    let triedMp4 = false;
+    const fallbackToMp4 = () => {
+      const mp4 = [...sources].find(el => /\.mp4$/.test(el.src));
+      if (triedMp4 || !mp4 || video.currentSrc === mp4.src) return false;
+      triedMp4 = true;
+      video.src = mp4.src;
+      video.load();
+      if (!userPaused && onScreen) tryPlay();
+      return true;
+    };
+    const onLoadError = () => {
+      if (fallbackToMp4()) return;
+      btn.hidden = true;
+      if (errMsg) errMsg.hidden = false;
+    };
     if (sources.length) sources[sources.length - 1].addEventListener('error', onLoadError);
     video.addEventListener('error', onLoadError);
   })();
