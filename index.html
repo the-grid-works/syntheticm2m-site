@@ -1,829 +1,1277 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-look="d">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Synthetic M2M — Automation Studio</title>
-<meta name="description" content="Synthetic M2M builds software that does your busywork: scrapers, integrations, data pipelines, and web products — fixed scope, delivered working.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Synthetic M2M | Apps, automations and data tools for your business</title>
+<meta name="description" content="Synthetic M2M is a small product and automation studio. We build the apps, automations and data tools your business runs on, and run nine live products of our own.">
 <link rel="canonical" href="https://syntheticm2m.com/">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0b0e17">
+<meta name="theme-color" content="#0c0f16">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://syntheticm2m.com/">
+<meta property="og:title" content="Synthetic M2M | Apps, automations and data tools for your business">
+<meta property="og:description" content="Synthetic M2M is a small product and automation studio. We build the apps, automations and data tools your business runs on, and run nine live products of our own.">
+<meta property="og:image" content="https://syntheticm2m.com/media/m2m-film-30-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#05060a; --text:#f4f6fb; --muted:#8b93a7; --line:rgba(255,255,255,.08);
-    --card:rgba(255,255,255,.028); --g1:#7c6cff; --g2:#4dd6c1; --g3:#f0739b; --cyan:#00dcff;
-    --radius:20px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-  .mono{font-family:"JetBrains Mono",monospace}
-
-  /* ---- background ---- */
-  .bgfx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
-  .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;animation:drift 22s ease-in-out infinite alternate}
-  .orb.a{width:640px;height:640px;background:radial-gradient(circle,#7c6cff44,transparent 65%);top:-260px;left:-140px}
-  .orb.b{width:560px;height:560px;background:radial-gradient(circle,#4dd6c13d,transparent 65%);top:8%;right:-220px;animation-delay:-8s}
-  .orb.c{width:700px;height:700px;background:radial-gradient(circle,#f0739b26,transparent 65%);bottom:-320px;left:28%;animation-delay:-15s}
-  @keyframes drift{to{transform:translate(70px,50px) scale(1.08)}}
-  .grid-lines{position:fixed;inset:0;z-index:-1;pointer-events:none;
-    background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-    background-size:56px 56px;
-    -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%);
-            mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 55%,transparent 100%)}
-
-  /* ---- nav ---- */
-  nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;width:min(1120px,calc(100% - 32px));
-    display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 20px;border-radius:99px;
-    background:rgba(10,12,20,.55);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
-  .brand .dot{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 210deg,var(--g1),var(--g2),var(--g3),var(--g1));box-shadow:0 0 18px #7c6cff66}
-  .navlinks{display:flex;gap:26px;font-size:14px;color:var(--muted)}
-  .navlinks a:hover{color:var(--text)}
-  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:10px 20px;border-radius:99px;transition:.25s}
-  .btn.primary{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 4px 24px #7c6cff59}
-  .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px #7c6cff80}
-  .btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.03)}
-  .btn.ghost:hover{background:rgba(255,255,255,.07)}
-  /* mobile: keep the nav visible — it wraps under the logo instead of disappearing */
-  @media(max-width:720px){
-    nav{flex-wrap:wrap;justify-content:center;gap:8px;border-radius:20px;padding:10px 12px;top:10px}
-    .brand{font-size:15px}
-    .navlinks{order:3;width:100%;justify-content:space-between;gap:6px;flex-wrap:nowrap;
-      font-size:11.5px;padding-top:5px;margin-top:1px;border-top:1px solid var(--line)}
-    /* tall enough to tap, tight enough to stay on one row */
-    .navlinks a{color:var(--text);opacity:.85;white-space:nowrap;padding:7px 2px;display:inline-flex;align-items:center}
-    nav .btn.primary{padding:8px 15px;font-size:13px}
-    header{padding:150px 0 40px}
-  }
-  @media(max-width:400px){.navlinks{gap:10px;font-size:11.5px}}
-
-  /* ---- hero ---- */
-  header{padding:170px 0 60px;text-align:center;position:relative;overflow:hidden}
-  #synapse{position:absolute;inset:0;width:100%;height:100%;z-index:0;
-    -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%);
-            mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%)}
-  header .wrap{position:relative;z-index:2}
-
-  /* living bento */
-  .bento{display:grid;grid-template-columns:repeat(4,minmax(120px,170px));gap:12px;justify-content:center;margin:44px auto 0}
-  .tile{border:1px solid var(--line);border-radius:16px;background:rgba(10,13,20,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    padding:14px;text-align:left;position:relative;overflow:hidden;min-height:104px;transition:border-color .3s,transform .3s}
-  .tile:hover{border-color:rgba(0,220,255,.35);transform:translateY(-2px)}
-  .tile h4{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .tile.wide{grid-column:span 2}
-  @media(max-width:640px){.bento{grid-template-columns:repeat(2,minmax(130px,1fr))}}
-  .bars{display:flex;gap:5px;align-items:flex-end;height:48px}
-  .bars b{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--g2),rgba(77,214,193,.25));transform-origin:bottom;animation:bargrow 2.4s ease-in-out infinite alternate}
-  .bars b:nth-child(1){height:40%}.bars b:nth-child(2){height:70%;animation-delay:.2s}
-  .bars b:nth-child(3){height:52%;animation-delay:.4s}.bars b:nth-child(4){height:88%;animation-delay:.6s}
-  .bars b:nth-child(5){height:64%;animation-delay:.8s}.bars b:nth-child(6){height:97%;animation-delay:1s}
-  @keyframes bargrow{to{transform:scaleY(.55)}}
-  .toast{font-size:11px;background:rgba(77,214,193,.1);border:1px solid rgba(77,214,193,.3);border-radius:8px;padding:6px 9px;margin-bottom:6px;opacity:0;animation:toastcycle 6.6s infinite}
-  .toast:nth-child(3){animation-delay:2.2s}.toast:nth-child(4){animation-delay:4.4s}
-  @keyframes toastcycle{5%,28%{opacity:1;transform:none}0%,33%,100%{opacity:0;transform:translateY(8px)}}
-  .bignum{font-size:28px;font-weight:800;background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .ring{width:50px;height:50px;border-radius:50%;border:3px solid rgba(255,255,255,.08);border-top-color:var(--g1);border-right-color:var(--g2);animation:ringspin 1.6s linear infinite;margin:4px auto}
-  @keyframes ringspin{to{transform:rotate(360deg)}}
-  .gearrow{font-size:22px;display:flex;gap:10px;justify-content:center;margin-top:8px}
-  .gearrow span{display:inline-block;animation:ringspin 7s linear infinite}
-  .gearrow span:nth-child(2){animation-direction:reverse;animation-duration:5s}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);
-    border:1px solid var(--line);background:rgba(255,255,255,.03);padding:6px 16px;border-radius:99px;margin-bottom:28px}
-  .pill .pulse{width:7px;height:7px;border-radius:50%;background:var(--g2);box-shadow:0 0 0 0 #4dd6c1aa;animation:pulse 2s infinite}
-  @keyframes pulse{70%{box-shadow:0 0 0 9px transparent}100%{box-shadow:0 0 0 0 transparent}}
-  h1{font-size:clamp(40px,6.5vw,72px);line-height:1.05;font-weight:800;letter-spacing:-.035em;max-width:880px;margin:0 auto 22px}
-  h1 .grad{background:linear-gradient(92deg,var(--cyan) 0%,var(--g2) 55%,var(--g1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,220,255,.35))}
-  .sub{font-size:19px;color:var(--muted);max-width:600px;margin:0 auto 36px}
-  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
-  .hero-ctas .btn{padding:14px 28px;font-size:15px}
-
-  /* ---- pipeline explainer ---- */
-  .pipeline-box{max-width:980px;margin:30px auto 0;border:1px solid var(--line);border-radius:24px;
-    background:linear-gradient(180deg,#0c1018 0%,#080a11 100%);box-shadow:0 24px 70px rgba(0,0,0,.5);
-    padding:26px 18px 10px;position:relative;overflow:hidden}
-  .pipeline-box::before{content:"";position:absolute;top:-1px;left:20%;right:20%;height:1px;
-    background:linear-gradient(90deg,transparent,var(--g1),var(--g2),transparent)}
-  .pipe-caption{display:flex;justify-content:space-between;max-width:860px;margin:0 auto;padding:0 30px 14px;
-    font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .pipe-caption .in{color:var(--g3)} .pipe-caption .mid{color:var(--g2)} .pipe-caption .out{color:var(--cyan)}
-  svg text{font-family:"Inter",system-ui,sans-serif}
-  .flowline{stroke-dasharray:6 8;animation:flow 1.2s linear infinite}
-  @keyframes flow{to{stroke-dashoffset:-14}}
-  .core-ring{transform-origin:450px 190px;animation:spin 14s linear infinite}
-  .core-ring.r2{animation-duration:22s;animation-direction:reverse}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .core-glow{animation:coreglow 2.6s ease-in-out infinite}
-  @keyframes coreglow{0%,100%{opacity:.55}50%{opacity:1}}
-
-  /* ---- sections ---- */
-  section{padding:96px 0;position:relative}
-  .eyebrow{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-    background:linear-gradient(92deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px}
-  h2{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px}
-  .lead{color:var(--muted);font-size:17px;max-width:560px;margin-bottom:52px}
-
-  /* ---- how it works (animated steps) ---- */
-  .hiw{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-  .hiw-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:26px;position:relative;overflow:hidden}
-  .hiw-card .num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--g2);display:block;margin-bottom:12px}
-  .hiw-card h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
-  .hiw-card p{color:var(--muted);font-size:14.5px;margin-bottom:20px}
-  .stage{height:150px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.25);position:relative;overflow:hidden;padding:14px}
-
-  /* step 1: chat typing */
-  .bubble{max-width:85%;padding:9px 13px;border-radius:12px;font-size:12.5px;line-height:1.45;opacity:0;transform:translateY(8px)}
-  .bubble.user{background:rgba(124,108,255,.16);border:1px solid rgba(124,108,255,.35);border-bottom-left-radius:4px;margin-bottom:8px}
-  .bubble.reply{background:rgba(77,214,193,.12);border:1px solid rgba(77,214,193,.3);border-bottom-right-radius:4px;margin-left:auto}
-  .play .bubble.user{animation:bubbin .5s ease forwards .2s}
-  .play .bubble.reply{animation:bubbin .5s ease forwards 1.6s}
-  @keyframes bubbin{to{opacity:1;transform:none}}
-  .dots{display:inline-flex;gap:4px;margin-left:2px}
-  .dots i{width:5px;height:5px;border-radius:50%;background:var(--g2);opacity:.3;animation:dot 1s infinite}
-  .dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
-  @keyframes dot{40%{opacity:1}}
-
-  /* step 2: build progress */
-  .blocks{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px}
-  .blocks b{height:26px;border-radius:6px;background:linear-gradient(135deg,rgba(124,108,255,.35),rgba(77,214,193,.3));
-    border:1px solid rgba(124,108,255,.4);opacity:0;transform:scale(.6)}
-  .play .blocks b{animation:blockin .4s cubic-bezier(.2,1.4,.4,1) forwards}
-  .play .blocks b:nth-child(1){animation-delay:.1s}.play .blocks b:nth-child(2){animation-delay:.25s}
-  .play .blocks b:nth-child(3){animation-delay:.4s}.play .blocks b:nth-child(4){animation-delay:.55s}
-  .play .blocks b:nth-child(5){animation-delay:.7s}.play .blocks b:nth-child(6){animation-delay:.85s}
-  .play .blocks b:nth-child(7){animation-delay:1s}.play .blocks b:nth-child(8){animation-delay:1.15s}
-  .play .blocks b:nth-child(9){animation-delay:1.3s}.play .blocks b:nth-child(10){animation-delay:1.45s}
-  .play .blocks b:nth-child(11){animation-delay:1.6s}.play .blocks b:nth-child(12){animation-delay:1.75s}
-  @keyframes blockin{to{opacity:1;transform:none}}
-  .pbar{height:8px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-  .pbar span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--g1),var(--g2))}
-  .play .pbar span{animation:fill 2.2s ease forwards .2s}
-  @keyframes fill{to{width:100%}}
-  .pdone{font-size:11.5px;color:var(--g2);margin-top:8px;font-family:"JetBrains Mono",monospace;opacity:0}
-  .play .pdone{animation:bubbin .4s ease forwards 2.3s}
-
-  /* step 3: notifications while sleeping */
-  .notif{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);
-    border-radius:11px;padding:8px 11px;font-size:12px;margin-bottom:8px;opacity:0;transform:translateX(30px)}
-  .notif .ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;
-    background:linear-gradient(135deg,rgba(124,108,255,.25),rgba(77,214,193,.2))}
-  .play .notif:nth-child(1){animation:notifin .45s ease forwards .3s}
-  .play .notif:nth-child(2){animation:notifin .45s ease forwards 1s}
-  .play .notif:nth-child(3){animation:notifin .45s ease forwards 1.7s}
-  @keyframes notifin{to{opacity:1;transform:none}}
-  .moon{position:absolute;top:10px;right:12px;font-size:16px;opacity:.7;animation:bob 3s ease-in-out infinite}
-  @keyframes bob{50%{transform:translateY(-4px)}}
-
-  /* ---- capabilities marquee ---- */
-  .marq{overflow:hidden;position:relative;margin:8px 0;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-            mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-  .marq .track{display:flex;gap:12px;width:max-content;animation:marq 46s linear infinite;padding:4px 0}
-  .marq.rev .track{animation-direction:reverse;animation-duration:52s}
-  .marq:hover .track{animation-play-state:paused}
-  @keyframes marq{to{transform:translateX(-50%)}}
-  .chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text);
-    border:1px solid var(--line);background:rgba(255,255,255,.035);padding:9px 16px;border-radius:99px;white-space:nowrap;transition:.25s}
-  .chip:hover{border-color:rgba(77,214,193,.5);background:rgba(77,214,193,.08)}
-  .chip .em{font-size:14px}
-
-  /* capability cards + animated icons */
-  .capgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:38px}
-  .cap{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:24px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
-  .cap:hover{border-color:rgba(255,255,255,.16);transform:translateY(-3px)}
-  .cap h3{font-size:16.5px;margin:14px 0 6px;letter-spacing:-.01em}
-  .cap p{color:var(--muted);font-size:13.5px}
-  .cap .ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,rgba(124,108,255,.18),rgba(77,214,193,.14));border:1px solid var(--line);font-size:19px}
-  .cap:hover .ico{animation:icopop .5s cubic-bezier(.2,1.6,.4,1)}
-  @keyframes icopop{40%{transform:scale(1.25) rotate(-8deg)}}
-  .cap .ico.spin{animation:slowspin 9s linear infinite}
-  .cap .ico.bob{animation:bob 3.2s ease-in-out infinite}
-  .cap .ico.pulse2{animation:coreglow 2.8s ease-in-out infinite}
-  @keyframes slowspin{to{transform:rotate(360deg)}}
-
-  /* count-up stats */
-  .bigstats{display:flex;gap:0;justify-content:center;margin-top:52px;border:1px solid var(--line);border-radius:var(--radius);
-    background:rgba(255,255,255,.02);max-width:860px;margin-left:auto;margin-right:auto;overflow:hidden;flex-wrap:wrap}
-  .bstat{flex:1 1 190px;padding:26px 14px;border-left:1px solid var(--line);text-align:center}
-  .bstat:first-child{border-left:0}
-  .bstat b{display:block;font-size:32px;font-weight:800;letter-spacing:-.02em;
-    background:linear-gradient(92deg,var(--cyan),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .bstat span{font-size:12.5px;color:var(--muted)}
-
-  /* sweeping beam on CTA band */
-  .band .beam{position:absolute;top:-1px;height:1px;width:220px;left:-220px;
-    background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:beam 4.5s linear infinite}
-  @keyframes beam{to{left:100%}}
-
-  /* services hover life */
-  ul.svc li{transition:transform .25s,border-color .25s}
-  ul.svc li:hover{transform:translateY(-3px);border-color:rgba(124,108,255,.45)}
-  ul.svc li b{position:relative;display:inline-block}
-  ul.svc li b::after{content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;border-radius:2px;
-    background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .35s}
-  ul.svc li:hover b::after{width:100%}
-
-  /* spotlight cards */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-  .card{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:30px;overflow:hidden;transition:border-color .3s,transform .3s}
-  .card:hover{border-color:rgba(255,255,255,.16);transform:translateY(-3px)}
-  .card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .35s;pointer-events:none;
-    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(124,108,255,.13),transparent 60%)}
-  .card:hover::before{opacity:1}
-  .tag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-    padding:5px 12px;border-radius:99px;margin-bottom:18px;border:1px solid rgba(77,214,193,.35);color:var(--g2);background:rgba(77,214,193,.08)}
-  .tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--g2);animation:pulse 2s infinite}
-  .tag.dev{border-color:rgba(245,158,11,.4);color:#fbbf24;background:rgba(245,158,11,.08)}
-  .card h3{font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
-  .card p{color:var(--muted);font-size:14.5px}
-  .card .go{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:14px;font-weight:600;color:var(--g2)}
-  .card .go svg{transition:transform .25s}
-  .card .go:hover svg{transform:translateX(4px)}
-
-  /* live screenshot window inside a product card */
-  .win{display:block;position:relative;z-index:1;margin:-30px -30px 22px;
-    border-bottom:1px solid var(--line);background:#0a0d13;overflow:hidden}
-  .wbar{display:flex;align-items:center;gap:6px;padding:9px 13px;background:#141824;
-    border-bottom:1px solid rgba(255,255,255,.06)}
-  .wbar i{width:10px;height:10px;border-radius:50%;flex:none;font-style:normal}
-  .wbar .r{background:#ff5f57}.wbar .y{background:#febc2e}.wbar .g{background:#28c840}
-  .wbar .u{flex:1;margin-left:8px;min-width:0;background:#0a0d13;border:1px solid rgba(255,255,255,.07);
-    border-radius:99px;padding:3px 11px;font-size:10.5px;line-height:1.5;color:#8b93a7;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .wview{display:block;position:relative;height:200px;background:#05070b;overflow:hidden}
-  .wview img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
-    transition:transform .45s ease}
-  a.win:hover .wview img{transform:scale(1.045)}
-  .wview::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,transparent 62%,rgba(5,6,10,.55));transition:opacity .3s}
-  a.win:hover .wview::after{opacity:.4}
-  /* cover tile for products with no public page */
-  .wview.cv{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:0 22px;
-    background:linear-gradient(158deg,#151a29,#090c14)}
-  .wview.cv b{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.02em;
-    color:#9aa3b5;display:flex;align-items:center;gap:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .wview.cv b s{width:6px;height:6px;border-radius:50%;background:var(--g2);flex:none;
-    box-shadow:0 0 8px rgba(77,214,193,.8)}
-  .wview.cv b.d s{background:#fbbf24;box-shadow:0 0 8px rgba(245,158,11,.7)}
-  @media (max-width:520px){ .wview{height:168px} }
-  @media (prefers-reduced-motion:reduce){
-    .wview img,a.win:hover .wview img{transition:none;transform:none}
-  }
-
-  ul.svc{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-  ul.svc li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:15px}
-  ul.svc li b{display:block;margin-bottom:3px}
-  ul.svc li span{color:var(--muted);font-size:13.5px}
-
-  .band{border:1px solid var(--line);border-radius:28px;padding:72px 32px;text-align:center;position:relative;overflow:hidden;
-    background:linear-gradient(180deg,rgba(124,108,255,.10),rgba(77,214,193,.05) 60%,transparent)}
-  .band::before{content:"";position:absolute;top:-1px;left:15%;right:15%;height:1px;
-    background:linear-gradient(90deg,transparent,var(--g1),var(--g2),transparent)}
-  .band h2{margin-bottom:12px}
-  .band p{color:var(--muted);margin-bottom:34px}
-
-  footer{padding:52px 0 64px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
-  .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-
-  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-  .rv.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){
-    .rv{opacity:1;transform:none}
-    .orb,.flowline,.core-ring,.core-glow,.moon,.dots i,.marq .track,.band .beam,.cap .ico,.bars b,.toast,.ring,.gearrow span{animation:none!important}
-    .toast{opacity:1;transform:none}
-    .play .bubble,.play .blocks b,.play .pbar span,.play .pdone,.play .notif{animation:none!important;opacity:1!important;transform:none!important;width:100%!important}
-  }
-
-  /* ---- hero brand film ---- */
-  .film-card{position:relative;max-width:1000px;margin:34px auto 0;border-radius:var(--radius);border:1px solid var(--line);
-    aspect-ratio:16/9;overflow:hidden;background:#05060a;
-    box-shadow:0 32px 90px rgba(0,0,0,.55),0 0 90px -20px rgba(124,108,255,.35)}
-  .film-card::before{content:"";position:absolute;top:-1px;left:20%;right:20%;height:1px;z-index:1;
-    background:linear-gradient(90deg,transparent,var(--g2),transparent)}
-  .film-card video{display:block;width:100%;height:100%;object-fit:cover;background:#05060a}
-  .film-toggle{position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;padding:0;
-    display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;border:1px solid var(--line);
-    background:rgba(5,6,10,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    opacity:.7;transition:opacity .2s,transform .2s}
-  .film-toggle:hover,.film-toggle:focus-visible{opacity:1;transform:scale(1.06)}
-  .film-toggle:focus-visible{outline:2px solid var(--g2);outline-offset:3px}
-  .film-toggle svg{pointer-events:none}
-  .film-toggle[hidden]{display:none}
-  .film-error{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:12.5px;color:var(--text);
-    background:rgba(5,6,10,.8);border:1px solid var(--line);border-radius:10px;padding:8px 14px;max-width:80%;text-align:center}
-  @media(max-width:640px){.film-card{margin-top:26px;border-radius:14px}.film-toggle{width:36px;height:36px;right:10px;bottom:10px}}
-  @media(prefers-reduced-motion:reduce){.film-toggle,.film-toggle:hover{transition:none;transform:none}}
+html{scroll-behavior:smooth;background:#0c0f16}
+body{margin:0;background:#0c0f16}
+img{max-width:100%}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
+<div class="look" id="look-d">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400;100,500;100,600;112,800;125,800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+.lk-d{--ink:#0c0f16;--ink2:#0a0d13;--surface:#131826;--raised:#1a2133;--line:#263049;--text:#e9edf6;--muted:#8e98b3;--cobalt:#4d7cff;--coral:#ff6a55;--teal:#22d3b0;--sun:#ffc53d;--font-d:'Archivo',system-ui,sans-serif;--font-b:'Archivo',system-ui,sans-serif;--font-m:'JetBrains Mono',ui-monospace,monospace;--gut:20px;--maxw:1180px;display:block;position:relative;isolation:isolate;overflow-x:clip;background:var(--ink);color:var(--text);font-family:var(--font-b);font-weight:400;font-variation-settings:'wdth' 100;font-size:16px;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased;padding-bottom:104px}
+.lk-d,.lk-d *,.lk-d *::before,.lk-d *::after{box-sizing:border-box}
+.lk-d a{color:inherit}
+.lk-d h1,.lk-d h2,.lk-d h3,.lk-d p,.lk-d ul,.lk-d figure{margin:0}
+.lk-d ul{padding:0;list-style:none}
+.lk-d button{font:inherit;color:inherit}
+.lk-d svg text{font-family:var(--font-m);fill:var(--text)}
+.lk-d .d-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lk-d .d-wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+.lk-d .d-eyebrow{font-family:var(--font-m);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cobalt)}
+.lk-d h1,.lk-d h2,.lk-d h3{font-family:var(--font-d);font-weight:800;color:var(--text)}
+.lk-d .d-h2{font-size:clamp(26px,4vw,40px);font-variation-settings:'wdth' 118;letter-spacing:-.01em;margin-top:10px}
+.lk-d .d-h3{font-size:19px;font-variation-settings:'wdth' 112}
+.lk-d .d-sub{color:var(--muted);font-size:16px;max-width:52ch;margin-top:12px}
+.lk-d .d-section{padding:76px 0;position:relative}
+.lk-d .d-section--deep{background:var(--ink2)}
+.lk-d .d-head{max-width:720px;margin-bottom:44px}
+/* grain + glows */
+.lk-d .d-grainsvg{position:absolute;width:0;height:0}
+.lk-d .d-grain{position:absolute;inset:0;filter:url(#d-grain);pointer-events:none;z-index:0}
+.lk-d .d-glow{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;opacity:.35}
+/* buttons */
+.lk-d .d-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.lk-d .d-btn--solid{background:var(--cobalt);color:#fff;box-shadow:0 8px 24px rgba(77,124,255,.35)}
+.lk-d .d-btn--solid:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(77,124,255,.45)}
+.lk-d .d-btn--ghost{background:rgba(255,255,255,.02);border-color:var(--line);color:var(--text)}
+.lk-d .d-btn--ghost:hover{background:rgba(255,255,255,.06)}
+.lk-d .d-btn:focus-visible,.lk-d a:focus-visible,.lk-d button:focus-visible,.lk-d [tabindex]:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px;border-radius:6px}
+/* nav */
+.lk-d .d-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(12,15,22,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.lk-d .d-nav__row{display:flex;align-items:center;justify-content:space-between;padding:14px var(--gut);max-width:var(--maxw);margin:0 auto;gap:16px}
+.lk-d .d-brand{font-family:var(--font-d);font-weight:800;font-variation-settings:'wdth' 118;font-size:18px;letter-spacing:-.01em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.lk-d .d-brand i{width:9px;height:9px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 10px 2px rgba(77,124,255,.7);display:inline-block}
+.lk-d .d-navlinks{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.lk-d .d-navlinks a{font-size:14.5px;font-weight:500;text-decoration:none;color:var(--muted)}
+.lk-d .d-navlinks a:hover{color:var(--text)}
+.lk-d .d-nav__right{display:flex;align-items:center;gap:14px}
+.lk-d .d-navtoggle{display:none;background:transparent;border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+.lk-d .d-navtoggle span,.lk-d .d-navtoggle span::before,.lk-d .d-navtoggle span::after{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;position:relative}
+.lk-d .d-navtoggle span::before,.lk-d .d-navtoggle span::after{content:'';position:absolute;left:0}
+.lk-d .d-navtoggle span::before{top:-6px}
+.lk-d .d-navtoggle span::after{top:6px}
+.lk-d .d-navpanel{border-top:1px solid var(--line);padding:14px var(--gut) 20px;display:flex;flex-direction:column;gap:6px}
+.lk-d .d-navpanel a{padding:12px 4px;text-decoration:none;color:var(--text);font-weight:500;border-bottom:1px solid var(--line)}
+.lk-d .d-navpanel .d-btn{margin-top:8px;justify-content:center}
+/* hero */
+.lk-d .d-hero{padding:56px 0 70px;position:relative;overflow:hidden}
+.lk-d .d-hero__bg{position:absolute;inset:0;z-index:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;opacity:.16;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+.lk-d .d-hero__grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.lk-d .d-hero h1{font-size:clamp(32px,5vw,54px);font-variation-settings:'wdth' 125;letter-spacing:-.02em;line-height:1.06}
+.lk-d .d-hero .d-sub{font-size:17.5px;max-width:44ch}
+.lk-d .d-hero__actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.lk-d .d-hero__visual{position:relative;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,var(--surface),var(--ink2));min-height:360px;overflow:hidden}
+.lk-d .d-hero__visual canvas{display:block;width:100%;height:360px}
+.lk-d .d-hero__cap{position:absolute;left:16px;bottom:12px;font-family:var(--font-m);font-size:11px;color:var(--muted);letter-spacing:.04em}
+/* proof strip */
+.lk-d .d-proof{padding:36px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink2)}
+.lk-d .d-proof__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;text-align:center}
+.lk-d .d-proof__n{font-family:var(--font-m);font-weight:500;font-size:clamp(24px,3.4vw,34px);color:var(--text)}
+.lk-d .d-proof__l{color:var(--muted);font-size:12.5px;margin-top:4px}
+/* bento services */
+.lk-d .d-bento{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.lk-d .d-card{grid-column:span 2;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:14px;position:relative}
+.lk-d .d-card--sm{grid-column:span 2}
+@media (min-width:900px){.lk-d .d-card--sm{grid-column:span 1}}
+.lk-d .d-icontile{width:52px;height:52px;border-radius:12px;background:var(--raised);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative}
+.lk-d .d-icontile::after{content:'';position:absolute;inset:-10px;border-radius:18px;background:radial-gradient(circle,rgba(77,124,255,.35),transparent 70%);z-index:-1;opacity:.7}
+.lk-d .d-icontile svg{width:26px;height:26px;color:var(--cobalt)}
+.lk-d .d-card ul{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+.lk-d .d-card li{padding-left:16px;position:relative}
+.lk-d .d-card li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--cobalt)}
+.lk-d .d-proofline{font-family:var(--font-m);font-size:12.5px;color:var(--teal);border-top:1px dashed var(--line);padding-top:12px;margin-top:auto;display:flex;flex-wrap:wrap;gap:8px}
+.lk-d .d-proofline a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(34,211,176,.4)}
+.lk-d .d-proofline a:hover{border-color:var(--teal)}
+/* service map */
+.lk-d .d-map-wrap{overflow-x:auto;padding-bottom:4px}
+.lk-d .d-map-svg{min-width:640px;width:100%;height:auto;display:block}
+.lk-d .d-pill rect{fill:var(--raised);stroke:var(--line);transition:fill .18s ease,stroke .18s ease}
+.lk-d .d-pill text{font-size:11px;fill:var(--text);pointer-events:none}
+.lk-d .d-pill{cursor:pointer}
+.lk-d .d-pill.is-active rect{stroke:var(--cobalt);fill:#1c2540}
+.lk-d .d-pill.is-dim{opacity:.35}
+.lk-d .d-link{fill:none;stroke:var(--line);stroke-width:1.4;transition:stroke .18s ease,opacity .18s ease}
+.lk-d .d-link.is-active{stroke:var(--cobalt);stroke-width:2.2}
+.lk-d .d-link.is-dim{opacity:.12}
+/* work / case studies */
+.lk-d .d-case{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center;padding:40px 0;border-top:1px solid var(--line)}
+.lk-d .d-case:first-of-type{border-top:none}
+.lk-d .d-case--rev .d-case__text{order:2}
+.lk-d .d-case--rev .d-case__mock{order:1}
+.lk-d .d-tag{font-family:var(--font-m);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.lk-d .d-case h3{font-size:24px;font-variation-settings:'wdth' 118;margin-top:6px}
+.lk-d .d-case dl{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.lk-d .d-case dt{font-family:var(--font-m);font-size:11.5px;color:var(--cobalt);text-transform:uppercase;letter-spacing:.06em}
+.lk-d .d-case dd{margin:2px 0 0;color:var(--muted);font-size:15px}
+.lk-d .d-case__links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.lk-d .d-case__links a{font-size:13.5px;color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
+.lk-d .d-case__links a:hover{border-color:var(--cobalt)}
+.lk-d .d-case__mock{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.lk-d .d-mock{width:100%;height:auto;display:block}
+.lk-d .d-mocklbl{font-size:10px}
+.lk-d .d-shipped{margin-top:52px}
+.lk-d .d-shipped h3{font-size:15px;color:var(--muted);font-weight:600;font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em}
+.lk-d .d-shipgrid{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.lk-d .d-shipitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.lk-d .d-shipitem b{font-size:14.5px;font-weight:600}
+.lk-d .d-badges{display:flex;flex-wrap:wrap;gap:6px}
+.lk-d .d-badge{font-family:var(--font-m);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 7px;text-decoration:none}
+.lk-d .d-badge:hover{color:var(--text);border-color:var(--cobalt)}
+.lk-d .d-badge--wip{color:var(--sun);border-color:rgba(255,197,61,.4)}
+/* numbers / charts */
+.lk-d .d-numgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.lk-d .d-chart{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}
+.lk-d .d-chart--wide{grid-column:1/-1}
+.lk-d .d-chart h3{font-size:16.5px;font-variation-settings:'wdth' 112}
+.lk-d .d-chart__wrap{overflow-x:auto;margin-top:16px}
+.lk-d .d-chart__wrap svg{display:block}
+.lk-d .d-chart figcaption{color:var(--muted);font-size:13px;margin-top:12px}
+.lk-d .d-mark{cursor:pointer}
+.lk-d .d-tip{position:fixed;transform:translate(-50%,-100%);background:#05070c;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:var(--font-m);font-size:12px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease;z-index:999;margin-top:-8px}
+.lk-d .d-tip.is-on{opacity:1}
+.lk-d .d-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+.lk-d .d-legend span{display:inline-flex;align-items:center;gap:6px}
+.lk-d .d-legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.lk-d .d-ringlbl{font-size:9.5px;fill:var(--muted)}
+.lk-d .d-gaugewrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.lk-d .d-chips-row{display:flex;flex-wrap:wrap;gap:8px}
+.lk-d .d-chip-stat{font-family:var(--font-m);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--text)}
+/* process */
+.lk-d .d-pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:8px}
+.lk-d .d-pipeline::before{content:'';position:absolute;top:20px;left:5%;right:5%;height:2px;background:var(--line);z-index:0}
+.lk-d .d-pipeline__pulse{position:absolute;top:19px;width:4px;height:4px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 8px 2px rgba(77,124,255,.8);animation:lkd-pulserun 5s linear infinite}
+.lk-d .d-step{position:relative;z-index:1;padding:0 10px;text-align:left}
+.lk-d .d-step__n{width:40px;height:40px;border-radius:50%;background:var(--raised);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);color:var(--cobalt);font-weight:500}
+.lk-d .d-step h3{font-size:15px;margin-top:14px}
+.lk-d .d-step p{color:var(--muted);font-size:13.5px;margin-top:6px}
+.lk-d .d-step--gauge{grid-column:span 1}
+/* industries */
+.lk-d .d-indgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lk-d .d-indtile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.lk-d .d-indtile svg{width:26px;height:26px;color:var(--coral)}
+.lk-d .d-indtile span{font-size:14.5px;font-weight:500}
+/* film */
+.lk-d .d-filmbox{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;background:#000}
+.lk-d .d-filmbox video{width:100%;height:100%;object-fit:cover;display:block}
+.lk-d .d-filmtoggle{position:absolute;left:18px;bottom:18px;background:rgba(10,13,19,.75);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13.5px;backdrop-filter:blur(6px)}
+/* contact */
+.lk-d .d-brief{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:0 0 0 1px rgba(77,124,255,.06),0 20px 60px rgba(77,124,255,.08);display:grid;grid-template-columns:1.1fr 1fr;gap:32px}
+.lk-d .d-field{margin-top:20px}
+.lk-d .d-field>span{font-family:var(--font-m);font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-bottom:10px}
+.lk-d .d-chip,.lk-d .d-stagebtn{background:var(--raised);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 16px;font-size:13.5px;cursor:pointer}
+.lk-d .d-chip[aria-pressed="true"],.lk-d .d-stagebtn[aria-pressed="true"]{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
+.lk-d .d-chips{display:flex;flex-wrap:wrap;gap:8px}
+.lk-d .d-notes{width:100%;background:var(--raised);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font-family:var(--font-b);font-size:14px;resize:vertical;min-height:80px}
+.lk-d .d-preview{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;height:fit-content}
+.lk-d .d-preview .d-mono{font-family:var(--font-m);font-size:12.5px;color:var(--muted)}
+.lk-d .d-preview .d-mono b{color:var(--text);font-weight:500}
+.lk-d .d-preview__body{white-space:pre-wrap;font-family:var(--font-m);font-size:12.5px;color:var(--text);border-top:1px dashed var(--line);padding-top:10px;margin-top:4px;line-height:1.6}
+.lk-d .d-preview__actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.lk-d .d-email-row{margin-top:22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--font-m);font-size:14.5px}
+.lk-d .d-email-row code{user-select:all;background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.lk-d .d-copybtn{background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12.5px;color:var(--text);cursor:pointer}
+.lk-d .d-copybtn:hover{border-color:var(--cobalt)}
+.lk-d .d-fineprint{color:var(--muted);font-size:13px;margin-top:16px}
+/* footer */
+.lk-d .d-footer{border-top:1px solid var(--line);padding:40px 0 24px;background:var(--ink2)}
+.lk-d .d-footer__row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
+.lk-d .d-footer__links{display:flex;gap:18px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.lk-d .d-footer__links a{text-decoration:none}
+.lk-d .d-footer__links a:hover{color:var(--text)}
+.lk-d .d-footer small{color:var(--muted);font-size:12px;display:block;margin-top:18px}
+/* reveal + keyframes */
+.lk-d [data-reveal]{opacity:1}
+.lk-d .lkd-draw{stroke-dasharray:100;stroke-dashoffset:0}
+.lk-d [data-reveal].lkd-seen .lkd-draw{animation:lkd-draw 1000ms ease forwards}
+.lk-d [data-reveal].lkd-seen .lkd-fade{animation:lkd-fade 700ms ease backwards}
+@keyframes lkd-draw{0%{stroke-dashoffset:100}100%{stroke-dashoffset:0}}
+@keyframes lkd-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes lkd-pulserun{0%{left:5%;opacity:0}8%{opacity:1}92%{opacity:1}100%{left:95%;opacity:0}}
+@keyframes lkd-sweep{to{transform:rotate(360deg)}}
+.lk-d .d-sweep{animation:lkd-sweep 10s linear infinite;transform-origin:220px 220px}
+@media (prefers-reduced-motion:reduce){.lk-d .d-pipeline__pulse{animation:none;left:50%}.lk-d .d-sweep{animation:none}.lk-d [data-reveal].lkd-seen .lkd-draw,.lk-d [data-reveal].lkd-seen .lkd-fade{animation:none}}
+/* responsive */
+@media (max-width:980px){
+.lk-d .d-hero__grid{grid-template-columns:1fr}
+.lk-d .d-hero__visual{order:-1}
+.lk-d .d-numgrid{grid-template-columns:1fr}
+.lk-d .d-case{grid-template-columns:1fr}
+.lk-d .d-case--rev .d-case__text,.lk-d .d-case--rev .d-case__mock{order:0}
+.lk-d .d-brief{grid-template-columns:1fr}
+.lk-d .d-pipeline{grid-template-columns:repeat(3,1fr);row-gap:36px}
+.lk-d .d-pipeline::before{display:none}
+}
+@media (max-width:640px){
+.lk-d{font-size:15.5px}
+.lk-d .d-navlinks{display:none}
+.lk-d .d-navtoggle{display:inline-flex;flex-direction:column;justify-content:center;align-items:center}
+.lk-d .d-proof__grid{grid-template-columns:repeat(2,1fr)}
+.lk-d .d-bento{grid-template-columns:1fr}
+.lk-d .d-card,.lk-d .d-card--sm{grid-column:span 1}
+.lk-d .d-shipgrid{grid-template-columns:1fr}
+.lk-d .d-pipeline{grid-template-columns:1fr 1fr}
+.lk-d .d-indgrid{grid-template-columns:1fr 1fr}
+.lk-d .d-hero__visual canvas{height:300px}
+}
+</style>
+<div class="lk-d">
+<svg class="d-grainsvg" aria-hidden="true" focusable="false">
+<filter id="d-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0"/></filter>
+<symbol id="d-ic-mobile" viewBox="0 0 28 28"><rect x="9" y="2" width="10" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><line x1="12.5" y1="21.3" x2="15.5" y2="21.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="d-ic-web" viewBox="0 0 28 28"><rect x="2" y="5" width="24" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><line x1="2" y1="10" x2="26" y2="10" stroke="currentColor" stroke-width="1.7"/><circle cx="5.6" cy="7.5" r=".9" fill="currentColor"/><circle cx="8.4" cy="7.5" r=".9" fill="currentColor"/></symbol>
+<symbol id="d-ic-ai" viewBox="0 0 28 28"><path d="M15 2 L7 16 L13 16 L11 26 L21 12 L14 12 Z" fill="currentColor"/></symbol>
+<symbol id="d-ic-data" viewBox="0 0 28 28"><line x1="3" y1="25" x2="25" y2="25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="5" y="15" width="4" height="9" fill="currentColor"/><rect x="13" y="9" width="4" height="15" fill="currentColor"/><rect x="21" y="4" width="4" height="20" fill="currentColor"/></symbol>
+<symbol id="d-ic-ext" viewBox="0 0 28 28"><rect x="4" y="4" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="23" cy="13" r="3" fill="currentColor"/></symbol>
+<symbol id="d-ic-film" viewBox="0 0 28 28"><rect x="3" y="5" width="22" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M11 10 L11 18 L19 14 Z" fill="currentColor"/></symbol>
+<symbol id="d-ic-auto" viewBox="0 0 28 28"><path d="M4 18 L6 11 Q7 9 10 9 H18 Q21 9 22 11 L24 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><rect x="3" y="18" width="22" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="23" r="2" fill="currentColor"/><circle cx="19" cy="23" r="2" fill="currentColor"/></symbol>
+<symbol id="d-ic-office" viewBox="0 0 28 28"><path d="M4 15 H10 L12 19 H16 L18 15 H24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 15 V22 H24 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 15 L7 5 H21 L24 15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="d-ic-invest" viewBox="0 0 28 28"><line x1="7" y1="4" x2="7" y2="24" stroke="currentColor" stroke-width="1.4"/><rect x="4.5" y="9" width="5" height="7" fill="currentColor"/><line x1="14" y1="2" x2="14" y2="24" stroke="currentColor" stroke-width="1.4"/><rect x="11.5" y="12" width="5" height="9" fill="currentColor"/><line x1="21" y1="6" x2="21" y2="24" stroke="currentColor" stroke-width="1.4"/><rect x="18.5" y="6" width="5" height="6" fill="currentColor"/></symbol>
+<symbol id="d-ic-lang" viewBox="0 0 28 28"><path d="M14 8 C11 5 6 5 4 6 V22 C6 21 11 21 14 24 C17 21 22 21 24 22 V6 C22 5 17 5 14 8 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><line x1="14" y1="8" x2="14" y2="24" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="d-ic-pilot" viewBox="0 0 28 28"><path d="M14 2 L14 12 L24 18 L24 20 L14 17 L14 21 L17 23 L17 24.5 L14 23.5 L11 24.5 L11 23 L14 21 L14 17 L4 20 L4 18 L14 12 Z" fill="currentColor"/></symbol>
+<symbol id="d-ic-market" viewBox="0 0 28 28"><path d="M4 4 H14 L24 14 L14 24 L4 14 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="9" r="1.6" fill="currentColor"/></symbol>
+</svg>
+<div class="d-grain" aria-hidden="true"></div>
 
-<div class="bgfx"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
-<div class="grid-lines"></div>
-
-<nav>
-  <a class="brand" href="#top"><span class="dot"></span>Synthetic&nbsp;M2M</a>
-  <div class="navlinks">
-    <a href="#work">Live products</a><a href="#how">How it works</a><a href="#capabilities">Capabilities</a><a href="/5-hour-audit/">5-Hour Audit</a>
+<nav class="d-nav" aria-label="Primary">
+  <div class="d-nav__row">
+    <a class="d-brand" href="#d-hero"><i></i>Synthetic M2M</a>
+    <ul class="d-navlinks">
+      <li><a href="#d-services">Services</a></li>
+      <li><a href="#d-work">Work</a></li>
+      <li><a href="#d-process">Process</a></li>
+      <li><a href="#d-contact">Contact</a></li>
+    </ul>
+    <div class="d-nav__right">
+      <a class="d-btn d-btn--solid" href="#d-contact">Start a project</a>
+      <button type="button" class="d-navtoggle" id="d-navtoggle" aria-expanded="false" aria-controls="d-navpanel" aria-label="Open menu"><span></span></button>
+    </div>
   </div>
-  <a class="btn primary" href="mailto:sales@syntheticm2m.com">Get a quote</a>
+  <div class="d-navpanel" id="d-navpanel" hidden>
+    <a href="#d-services">Services</a>
+    <a href="#d-work">Work</a>
+    <a href="#d-process">Process</a>
+    <a href="#d-contact">Contact</a>
+    <a class="d-btn d-btn--solid" href="#d-contact">Start a project</a>
+  </div>
 </nav>
 
-<header id="top">
-  <canvas id="synapse" aria-hidden="true"></canvas>
-  <div class="wrap">
-    <div class="pill rv"><span class="pulse"></span>Available for new projects</div>
-    <h1 class="rv">Your busywork goes in.<br><span class="grad">Finished work comes out.</span></h1>
-    <p class="sub rv">We build the software in the middle: scrapers, integrations, data pipelines, dashboards, and document automation — running 24/7 so you don't have to.</p>
-    <div class="hero-ctas rv">
-      <a class="btn primary" href="mailto:sales@syntheticm2m.com">Start a project</a>
-      <a class="btn ghost" href="#how">See how it works
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-      </a>
+<main>
+<section class="d-hero" id="d-hero">
+  <div class="d-hero__bg" aria-hidden="true"></div>
+  <div class="d-wrap d-hero__grid">
+    <div>
+      <p class="d-eyebrow">Product and automation studio</p>
+      <h1>The apps, automations and data tools your business runs on.</h1>
+      <p class="d-sub">Nine live products. Thirty plus automations running right now, every single day. Tell us what your business needs next.</p>
+      <div class="d-hero__actions">
+        <a class="d-btn d-btn--solid" href="#d-contact">Start a project</a>
+        <a class="d-btn d-btn--ghost" href="#d-work">See our work</a>
+      </div>
     </div>
-
-    <!-- brand film: silent autoplay loop, pausable -->
-    <div class="film-card rv" id="filmCard">
-      <video id="filmVideo" autoplay muted loop playsinline preload="auto" poster="media/m2m-film-30-poster.jpg"
-        aria-label="30 second film: busywork goes in, our software runs it, finished work comes out">
-        <source src="media/m2m-film-30.webm?v=1" type="video/webm">
-        <source src="media/m2m-film-30.mp4?v=1" type="video/mp4">
-      </video>
-      <button type="button" id="filmToggle" class="film-toggle" aria-label="Pause the film"></button>
-      <p class="film-error" id="filmError" role="alert" hidden>Video could not load. Try again later.</p>
+    <div class="d-hero__visual">
+      <canvas id="d-hero-canvas" role="img" aria-label="Diagram: five inputs, Orders, Emails, Spreadsheets, Market data and Paperwork, flow into a central Synthetic M2M hub, which sends work out to an App, a Dashboard, a Report, an Alert and a Letter."></canvas>
+      <span class="d-hero__cap">How work moves through the studio</span>
     </div>
   </div>
-</header>
+</section>
 
-<section id="work">
-  <div class="wrap">
-    <span class="eyebrow rv">Live products</span>
-    <h2 class="rv">Don't take our word for it.<br>Click these.</h2>
-    <p class="lead rv">Real deployed products — not mockups — running around the clock. We build client work the same way.</p>
-    <div class="cards">
-      <div class="card rv">
-        <a class="win" href="https://vinbaba.com" target="_blank" rel="noopener" aria-label="Open Arbitration Desk">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">vinbaba.com</span></span>
-          <span class="wview"><img src="/shots/arbitration-desk.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Arbitration Desk case-check page"></span>
-        </a>
-        <span class="tag"><span class="pulse"></span>Live</span>
+<section class="d-proof" aria-label="Headline numbers">
+  <div class="d-wrap d-proof__grid">
+    <div><div class="d-proof__n">9</div><div class="d-proof__l">Live products</div></div>
+    <div><div class="d-proof__n">4</div><div class="d-proof__l">App Store apps in 27 days</div></div>
+    <div><div class="d-proof__n">30+</div><div class="d-proof__l">Daily automations</div></div>
+    <div><div class="d-proof__n">350+</div><div class="d-proof__l">Tickers tracked</div></div>
+    <div><div class="d-proof__n">20</div><div class="d-proof__l">Languages in our apps</div></div>
+  </div>
+</section>
+
+<section class="d-section" id="d-services">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Services</p>
+      <h2 class="d-h2">Six ways we can help your business ship.</h2>
+      <p class="d-sub">Every service below is proven on a live product we built and run ourselves.</p>
+    </div>
+    <div class="d-bento">
+      <article class="d-card">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-mobile"></use></svg></div>
+        <h3 class="d-h3">Mobile apps &amp; games</h3>
+        <ul><li>iPhone and Android apps</li><li>Store listings</li><li>Launch</li></ul>
+        <p class="d-proofline">Proof: <a href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">4 apps on the App Store</a> <a href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">2 on Google Play</a></p>
+      </article>
+      <article class="d-card">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ai"></use></svg></div>
+        <h3 class="d-h3">AI assistants &amp; automation</h3>
+        <ul><li>Scheduled jobs</li><li>Browser automation</li><li>Document and letter drafting</li><li>Follow ups and back office work</li></ul>
+        <p class="d-proofline">Proof: <a href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">Autonomous Publisher</a> <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk letters</a> <a href="https://backofficefix.com" target="_blank" rel="noopener">BackofficeFix</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-web"></use></svg></div>
+        <h3 class="d-h3">Web apps &amp; SaaS</h3>
+        <ul><li>Accounts and payments</li><li>Dashboards</li><li>Admin tools</li></ul>
+        <p class="d-proofline">Proof: <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk</a> <a href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Lingo Pairs web</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-data"></use></svg></div>
+        <h3 class="d-h3">Data pipelines &amp; dashboards</h3>
+        <ul><li>Collect public data</li><li>Clean and rank it</li><li>Chart it and alert on it</li></ul>
+        <p class="d-proofline">Proof: <a href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">Alt-Data Signal Hub, 350+ tickers</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ext"></use></svg></div>
+        <h3 class="d-h3">Browser extensions</h3>
+        <ul><li>Spec to store</li><li>Built and maintained</li></ul>
+        <p class="d-proofline">Proof: <a href="https://guardian.syntheticm2m.com" target="_blank" rel="noopener">Marketplace Guardian, Chrome Web Store</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-film"></use></svg></div>
+        <h3 class="d-h3">Brand film &amp; motion</h3>
+        <ul><li>Short product films</li><li>Animated graphics</li></ul>
+        <p class="d-proofline">Proof: <a href="#d-film">Our own 30 second brand film</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="d-section d-section--deep">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Service map</p>
+      <h2 class="d-h2">One studio. Six services. Nine live products.</h2>
+      <p class="d-sub">Hover a service, or tab to it, to see exactly which product it powers.</p>
+    </div>
+    <div class="d-map-wrap">
+      <svg class="d-map-svg" id="d-map-svg" viewBox="0 0 680 540">
+        <g transform="translate(0,14)">
+          <path class="d-link" data-from="mobile" data-to="lingoflyer" d="M190,40 C340,40 340,20 490,20"></path>
+          <path class="d-link" data-from="mobile" data-to="lingopairs" d="M190,40 C340,40 340,73 490,73"></path>
+          <path class="d-link" data-from="mobile" data-to="crabwise" d="M190,40 C340,40 340,127 490,127"></path>
+          <path class="d-link" data-from="mobile" data-to="palabrazo" d="M190,40 C340,40 340,180 490,180"></path>
+          <path class="d-link" data-from="web" data-to="arbitration" d="M190,128 C340,128 340,233 490,233"></path>
+          <path class="d-link" data-from="web" data-to="guardian" d="M190,128 C340,128 340,287 490,287"></path>
+          <path class="d-link" data-from="web" data-to="lingopairs" d="M190,128 C340,128 340,73 490,73"></path>
+          <path class="d-link" data-from="ai" data-to="publisher" d="M190,216 C340,216 340,340 490,340"></path>
+          <path class="d-link" data-from="ai" data-to="arbitration" d="M190,216 C340,216 340,233 490,233"></path>
+          <path class="d-link" data-from="ai" data-to="backoffice" d="M190,216 C340,216 340,393 490,393"></path>
+          <path class="d-link" data-from="data" data-to="altdata" d="M190,304 C340,304 340,447 490,447"></path>
+          <path class="d-link" data-from="ext" data-to="guardian" d="M190,392 C340,392 340,287 490,287"></path>
+          <path class="d-link" data-from="film" data-to="brandfilm" d="M190,480 C340,480 340,500 490,500"></path>
+
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="mobile" aria-label="Mobile apps and games"><rect x="10" y="24" width="180" height="32" rx="16"></rect><text x="100" y="45" text-anchor="middle">Mobile apps &amp; games</text></g>
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="web" aria-label="Web apps and SaaS"><rect x="10" y="112" width="180" height="32" rx="16"></rect><text x="100" y="133" text-anchor="middle">Web apps &amp; SaaS</text></g>
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="ai" aria-label="AI assistants and automation"><rect x="10" y="195" width="180" height="42" rx="16"></rect><text x="100" y="212" text-anchor="middle">AI assistants</text><text x="100" y="227" text-anchor="middle">&amp; automation</text></g>
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="data" aria-label="Data pipelines and dashboards"><rect x="10" y="283" width="180" height="42" rx="16"></rect><text x="100" y="300" text-anchor="middle">Data pipelines</text><text x="100" y="315" text-anchor="middle">&amp; dashboards</text></g>
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="ext" aria-label="Browser extensions"><rect x="10" y="376" width="180" height="32" rx="16"></rect><text x="100" y="397" text-anchor="middle">Browser extensions</text></g>
+          <g class="d-pill" tabindex="0" role="button" aria-pressed="false" data-node="film" aria-label="Brand film and motion"><rect x="10" y="464" width="180" height="32" rx="16"></rect><text x="100" y="485" text-anchor="middle">Brand film &amp; motion</text></g>
+
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="lingoflyer" aria-label="LingoFlyer"><rect x="490" y="4" width="180" height="32" rx="16"></rect><text x="580" y="25" text-anchor="middle">LingoFlyer</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="lingopairs" aria-label="Lingo Pairs"><rect x="490" y="57" width="180" height="32" rx="16"></rect><text x="580" y="78" text-anchor="middle">Lingo Pairs</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="crabwise" aria-label="Crabwise"><rect x="490" y="111" width="180" height="32" rx="16"></rect><text x="580" y="132" text-anchor="middle">Crabwise</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="palabrazo" aria-label="Palabrazo"><rect x="490" y="164" width="180" height="32" rx="16"></rect><text x="580" y="185" text-anchor="middle">Palabrazo</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="arbitration" aria-label="Arbitration Desk"><rect x="490" y="217" width="180" height="32" rx="16"></rect><text x="580" y="238" text-anchor="middle">Arbitration Desk</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="guardian" aria-label="Marketplace Guardian"><rect x="490" y="271" width="180" height="32" rx="16"></rect><text x="580" y="292" text-anchor="middle">Marketplace Guardian</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="publisher" aria-label="Autonomous Publisher"><rect x="490" y="324" width="180" height="32" rx="16"></rect><text x="580" y="345" text-anchor="middle">Autonomous Publisher</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="backoffice" aria-label="BackofficeFix"><rect x="490" y="377" width="180" height="32" rx="16"></rect><text x="580" y="398" text-anchor="middle">BackofficeFix</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="altdata" aria-label="Alt-Data Signal Hub"><rect x="490" y="431" width="180" height="32" rx="16"></rect><text x="580" y="452" text-anchor="middle">Alt-Data Signal Hub</text></g>
+          <g class="d-pill" tabindex="0" role="link" aria-pressed="false" data-node="brandfilm" aria-label="Brand film"><rect x="490" y="484" width="180" height="32" rx="16"></rect><text x="580" y="505" text-anchor="middle">Brand film</text></g>
+        </g>
+      </svg>
+    </div>
+    <p class="d-sr">Service map, in words. Mobile apps and games powers LingoFlyer, Lingo Pairs, Crabwise and Palabrazo. Web apps and SaaS powers Arbitration Desk, Marketplace Guardian and Lingo Pairs. AI assistants and automation powers Autonomous Publisher, Arbitration Desk and BackofficeFix. Data pipelines and dashboards powers Alt-Data Signal Hub. Browser extensions powers Marketplace Guardian. Brand film and motion powers our brand film.</p>
+  </div>
+</section>
+<div class="d-tip" id="d-tip" role="tooltip"></div>
+
+<section class="d-section" id="d-work">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Work</p>
+      <h2 class="d-h2">Four problems. Four shipped answers.</h2>
+      <p class="d-sub">Real products, live right now, built the same way we would build yours.</p>
+    </div>
+
+    <article class="d-case">
+      <div class="d-case__text">
+        <p class="d-tag">Web apps &amp; SaaS</p>
         <h3>Arbitration Desk</h3>
-        <p>For used-car dealers fighting lowball wholesale-auction arbitration offers. Drop in the paperwork on a deal and it checks the offer against the auction's own published policy — the version that governed the sale date — then writes a ready-to-send rebuttal letter, in English and Spanish, citing their rules back at them. Free case check, no sign-up.</p>
-        <a class="go" href="https://vinbaba.com" target="_blank" rel="noopener">Check a case free
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <dl>
+          <dt>Problem</dt><dd>Used-car dealers get lowball arbitration offers from wholesale auctions.</dd>
+          <dt>Built</dt><dd>A web tool that reads the deal paperwork, checks the offer against the auction's own published policy for that sale date, and writes a rebuttal letter in English and Spanish.</dd>
+          <dt>Result</dt><dd>Live, free case check. A paid plan takes payments.</dd>
+        </dl>
+        <div class="d-case__links"><a href="https://vinbaba.com" target="_blank" rel="noopener">vinbaba.com</a></div>
       </div>
-      <div class="card rv">
-        <a class="win" href="https://altdata.syntheticm2m.com/" target="_blank" rel="noopener" aria-label="Open the Alt-Data Signal Hub dashboard">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">altdata.syntheticm2m.com</span></span>
-          <span class="wview"><img src="/shots/altdata-hub.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Alt-Data Signal Hub overview dashboard"></span>
-        </a>
-        <span class="tag"><span class="pulse"></span>Live</span>
+      <div class="d-case__mock">
+        <svg viewBox="0 0 300 220" class="d-mock" aria-hidden="true">
+          <rect x="30" y="14" width="240" height="192" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+          <rect x="52" y="40" width="120" height="10" rx="5" fill="var(--line)"/>
+          <rect x="52" y="62" width="196" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="76" width="196" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="90" width="150" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="112" width="196" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="126" width="196" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="140" width="120" height="6" rx="3" fill="var(--line)"/>
+          <rect x="52" y="164" width="46" height="20" rx="6" fill="rgba(77,124,255,.18)" stroke="var(--cobalt)"/>
+          <text x="75" y="178" text-anchor="middle" class="d-mocklbl">EN</text>
+          <rect x="104" y="164" width="46" height="20" rx="6" fill="rgba(34,211,176,.18)" stroke="var(--teal)"/>
+          <text x="127" y="178" text-anchor="middle" class="d-mocklbl">ES</text>
+          <circle cx="228" cy="174" r="14" fill="none" stroke="var(--coral)" stroke-width="2"/>
+          <path d="M221,174 l5,5 l9,-11" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="d-case d-case--rev">
+      <div class="d-case__text">
+        <p class="d-tag">Data pipelines &amp; dashboards</p>
         <h3>Alt-Data Signal Hub</h3>
-        <p>A market-signals dashboard that fuses alternative data — insider buying clusters, federal contract awards, short-volume trends, severe-weather alerts, and news — into ranked setups across 350+ tickers. Strictly data, no advice; refreshes itself daily with zero hands on it.</p>
-        <a class="go" href="https://altdata.syntheticm2m.com/" target="_blank" rel="noopener">Open the dashboard
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <dl>
+          <dt>Problem</dt><dd>Useful market signals are scattered across public sources.</dd>
+          <dt>Built</dt><dd>A pipeline that fuses insider buying clusters, federal contract awards, short volume trends, severe weather alerts and news, ranked across 350+ tickers, with interactive charts.</dd>
+          <dt>Result</dt><dd>Live dashboard that refreshes itself daily with nobody touching it. Data only, no advice.</dd>
+        </dl>
+        <div class="d-case__links"><a href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">altdata.syntheticm2m.com</a></div>
       </div>
-      <div class="card rv">
-        <a class="win" href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener" aria-label="Open the Autonomous Publisher profile">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">publisher.syntheticm2m.com</span></span>
-          <span class="wview"><img src="/shots/publisher.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Live publisher profile with daily posts"></span>
-        </a>
-        <span class="tag"><span class="pulse"></span>Live</span>
+      <div class="d-case__mock">
+        <svg viewBox="0 0 300 220" class="d-mock" aria-hidden="true">
+          <rect x="20" y="16" width="260" height="188" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+          <circle cx="42" cy="46" r="10" fill="none" stroke="var(--cobalt)"/><text x="42" y="50" text-anchor="middle" class="d-mocklbl">1</text>
+          <rect x="62" y="40" width="160" height="12" rx="3" fill="var(--cobalt)" opacity=".55"/>
+          <circle cx="42" cy="82" r="10" fill="none" stroke="var(--coral)"/><text x="42" y="86" text-anchor="middle" class="d-mocklbl">2</text>
+          <rect x="62" y="76" width="128" height="12" rx="3" fill="var(--coral)" opacity=".55"/>
+          <circle cx="42" cy="118" r="10" fill="none" stroke="var(--teal)"/><text x="42" y="122" text-anchor="middle" class="d-mocklbl">3</text>
+          <rect x="62" y="112" width="98" height="12" rx="3" fill="var(--teal)" opacity=".55"/>
+          <circle cx="42" cy="154" r="10" fill="none" stroke="var(--sun)"/><text x="42" y="158" text-anchor="middle" class="d-mocklbl">4</text>
+          <rect x="62" y="148" width="70" height="12" rx="3" fill="var(--sun)" opacity=".55"/>
+          <path d="M62,182 L100,170 L140,178 L180,160 L220,168 L250,150" fill="none" stroke="var(--cobalt)" stroke-width="2"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="d-case">
+      <div class="d-case__text">
+        <p class="d-tag">Mobile apps &amp; games</p>
+        <h3>The app line</h3>
+        <dl>
+          <dt>Problem</dt><dd>Four different apps, four different audiences, one small studio.</dd>
+          <dt>Built</dt><dd>A wingsuit language game with 20 languages, a matching card game with 20 languages you can play with friends, an offline flight computer for pilots, and a daily Spanish word game.</dd>
+          <dt>Result</dt><dd>4 App Store launches in 27 days, Aug 31 to Sep 26, 2026. LingoFlyer and Lingo Pairs are also on Google Play.</dd>
+        </dl>
+        <div class="d-case__links">
+          <a href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">LingoFlyer, App Store</a>
+          <a href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">LingoFlyer, Google Play</a>
+          <a href="https://apps.apple.com/us/app/lingo-pairs-language-game/id6797565158" target="_blank" rel="noopener">Lingo Pairs, App Store</a>
+          <a href="https://play.google.com/store/apps/details?id=com.syntheticm2m.vocabmatch" target="_blank" rel="noopener">Lingo Pairs, Google Play</a>
+          <a href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Lingo Pairs, web</a>
+          <a href="https://apps.apple.com/us/app/crabwise-e6b-flight-computer/id6813311167" target="_blank" rel="noopener">Crabwise, App Store</a>
+          <a href="https://apps.apple.com/us/app/palabrazo-spanish-word-game/id6811220066" target="_blank" rel="noopener">Palabrazo, App Store</a>
+        </div>
+      </div>
+      <div class="d-case__mock">
+        <svg viewBox="0 0 300 190" class="d-mock" aria-hidden="true">
+          <g>
+            <rect x="8" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+            <path d="M24,60 L38,40 L52,60 L44,60 L44,100 L32,100 L32,60 Z" fill="var(--cobalt)"/>
+            <text x="38" y="152" text-anchor="middle" class="d-mocklbl">Fly</text>
+          </g>
+          <g>
+            <rect x="80" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+            <rect x="94" y="45" width="14" height="20" rx="2" fill="var(--coral)"/>
+            <rect x="112" y="45" width="14" height="20" rx="2" fill="var(--line)"/>
+            <rect x="94" y="70" width="14" height="20" rx="2" fill="var(--line)"/>
+            <rect x="112" y="70" width="14" height="20" rx="2" fill="var(--coral)"/>
+            <text x="110" y="152" text-anchor="middle" class="d-mocklbl">Pairs</text>
+          </g>
+          <g>
+            <rect x="152" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+            <circle cx="182" cy="60" r="16" fill="none" stroke="var(--teal)" stroke-width="2"/>
+            <line x1="182" y1="60" x2="182" y2="48" stroke="var(--teal)" stroke-width="2"/>
+            <line x1="182" y1="60" x2="191" y2="64" stroke="var(--teal)" stroke-width="2"/>
+            <text x="182" y="152" text-anchor="middle" class="d-mocklbl">Fly e6b</text>
+          </g>
+          <g>
+            <rect x="224" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+            <rect x="238" y="48" width="32" height="10" rx="2" fill="var(--sun)"/>
+            <rect x="238" y="62" width="20" height="10" rx="2" fill="var(--line)"/>
+            <text x="254" y="152" text-anchor="middle" class="d-mocklbl">Palabra</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="d-case d-case--rev">
+      <div class="d-case__text">
+        <p class="d-tag">AI assistants &amp; automation</p>
         <h3>Autonomous Publisher</h3>
-        <p>An always-on publisher for an AI-agent social network: writes fresh, on-brand posts, publishes daily, and engages with replies — fully hands-off since launch. Not one post has needed a human.</p>
-        <a class="go" href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">See the live profile
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <dl>
+          <dt>Problem</dt><dd>Staying visible online takes daily posting nobody has time for.</dd>
+          <dt>Built</dt><dd>An always-on publisher that writes and posts daily and answers replies.</dd>
+          <dt>Result</dt><dd>Hands-off since launch in July 2026.</dd>
+        </dl>
+        <div class="d-case__links"><a href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">publisher.syntheticm2m.com</a></div>
       </div>
-      <div class="card rv">
-        <a class="win" href="https://guardian.syntheticm2m.com/" target="_blank" rel="noopener" aria-label="Open Marketplace Guardian">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">guardian.syntheticm2m.com</span></span>
-          <span class="wview"><img src="/shots/guardian.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Marketplace Guardian scam-check tool"></span>
-        </a>
-        <span class="tag"><span class="pulse"></span>Live</span>
-        <h3>Marketplace Guardian</h3>
-        <p>A free safety toolkit for marketplace buyers and sellers: paste a suspicious listing or message and get a scam-risk read, listing improvements, or a ready-to-send negotiation reply. English &amp; Spanish — also packaged as a Chrome extension.</p>
-        <a class="go" href="https://guardian.syntheticm2m.com/" target="_blank" rel="noopener">Try it live
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <div class="d-case__mock">
+        <svg viewBox="0 0 300 190" class="d-mock" aria-hidden="true">
+          <rect x="20" y="10" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+          <circle cx="42" cy="33" r="10" fill="var(--cobalt)"/>
+          <rect x="60" y="24" width="130" height="7" rx="3" fill="var(--line)"/>
+          <rect x="60" y="37" width="90" height="7" rx="3" fill="var(--line)"/>
+          <rect x="20" y="66" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+          <circle cx="42" cy="89" r="10" fill="var(--teal)"/>
+          <rect x="60" y="80" width="150" height="7" rx="3" fill="var(--line)"/>
+          <rect x="60" y="93" width="110" height="7" rx="3" fill="var(--line)"/>
+          <rect x="20" y="122" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+          <circle cx="42" cy="145" r="10" fill="var(--coral)"/>
+          <rect x="60" y="136" width="120" height="7" rx="3" fill="var(--line)"/>
+          <rect x="60" y="149" width="95" height="7" rx="3" fill="var(--line)"/>
+        </svg>
       </div>
-      <div class="card rv">
-        <a class="win" href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener" aria-label="Play Lingo Pairs">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">lingopairs.syntheticm2m.com</span></span>
-          <span class="wview"><img src="/shots/vocab-match.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Lingo Pairs room setup screen"></span>
-        </a>
-        <span class="tag"><span class="pulse"></span>Live</span>
-        <h3>Lingo Pairs</h3>
-        <p>A turn-based word-matching game for two to ten players across 13 languages, with real audio on every word. Private rooms with a join code and chat, a solo practice mode, and your own custom word lists. Installs on a phone like an app. Free, no account.</p>
-        <a class="go" href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Play a round
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </article>
+
+    <div class="d-shipped">
+      <h3>More we've shipped</h3>
+      <div class="d-shipgrid">
+        <div class="d-shipitem"><b>LingoFlyer</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">Google Play</a></div></div>
+        <div class="d-shipitem"><b>Lingo Pairs</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingo-pairs-language-game/id6797565158" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.vocabmatch" target="_blank" rel="noopener">Google Play</a><a class="d-badge" href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b>Crabwise</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/crabwise-e6b-flight-computer/id6813311167" target="_blank" rel="noopener">App Store</a></div></div>
+        <div class="d-shipitem"><b>Palabrazo</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/palabrazo-spanish-word-game/id6811220066" target="_blank" rel="noopener">App Store</a></div></div>
+        <div class="d-shipitem"><b>Arbitration Desk</b><div class="d-badges"><a class="d-badge" href="https://vinbaba.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b>BackofficeFix</b><div class="d-badges"><a class="d-badge" href="https://backofficefix.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b>Marketplace Guardian</b><div class="d-badges"><a class="d-badge" href="https://guardian.syntheticm2m.com" target="_blank" rel="noopener">Web</a><span class="d-badge">Chrome Web Store</span></div></div>
+        <div class="d-shipitem"><b>Alt-Data Signal Hub</b><div class="d-badges"><a class="d-badge" href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b>Autonomous Publisher</b><div class="d-badges"><a class="d-badge" href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b>Teclita</b><div class="d-badges"><span class="d-badge d-badge--wip">In review</span></div></div>
       </div>
-      <div class="card rv">
-        <div class="win">
-          <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">internal fleet, private</span></span>
-          <div class="wview cv">
-            <b><s></s>cloud watchers &middot; alerting</b>
-            <b><s></s>scheduled data pipelines</b>
-            <b><s></s>uptime monitors</b>
-            <b><s></s>browser automation, posting and filing</b>
+    </div>
+  </div>
+</section>
+<section class="d-section d-section--deep">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">By the numbers</p>
+      <h2 class="d-h2">The studio, measured.</h2>
+      <p class="d-sub">Every number below comes straight from what we actually ship and run.</p>
+    </div>
+    <div class="d-numgrid">
+
+      <figure class="d-chart d-chart--wide">
+        <h3>Nine live products, five months.</h3>
+        <div class="d-chart__wrap" data-reveal>
+          <svg viewBox="0 0 660 250" style="width:100%;height:auto" aria-hidden="true">
+            <defs>
+              <linearGradient id="d-c1fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#4d7cff" stop-opacity=".38"/>
+                <stop offset="1" stop-color="#4d7cff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="50" y1="202" x2="610" y2="202" stroke="var(--line)"/>
+            <line x1="50" y1="148" x2="610" y2="148" stroke="var(--line)" stroke-dasharray="2 5"/>
+            <line x1="50" y1="94" x2="610" y2="94" stroke="var(--line)" stroke-dasharray="2 5"/>
+            <line x1="50" y1="40" x2="610" y2="40" stroke="var(--line)" stroke-dasharray="2 5"/>
+            <text x="40" y="206" text-anchor="end" font-size="11" fill="var(--muted)">0</text>
+            <text x="40" y="152" text-anchor="end" font-size="11" fill="var(--muted)">3</text>
+            <text x="40" y="98" text-anchor="end" font-size="11" fill="var(--muted)">6</text>
+            <text x="40" y="44" text-anchor="end" font-size="11" fill="var(--muted)">9</text>
+            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40 L610,202 L50,202 Z" fill="url(#d-c1fill)"/>
+            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40" fill="none" stroke="var(--cobalt)" stroke-width="5" opacity=".25" style="filter:blur(4px)"/>
+            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40" fill="none" stroke="var(--cobalt)" stroke-width="2.5" pathLength="100" class="lkd-draw"/>
+            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="May 2026: 0 live products. The studio's first month." cx="50" cy="202" r="5" fill="var(--cobalt)"/>
+            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Jun 2026: 1 live product. Launched Marketplace Guardian." cx="190" cy="184" r="5" fill="var(--cobalt)"/>
+            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Jul 2026: 4 live products. Launched Autonomous Publisher, Alt-Data Signal Hub and BackofficeFix." cx="330" cy="130" r="5" fill="var(--cobalt)"/>
+            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Aug 2026: 6 live products. Launched Arbitration Desk and LingoFlyer on Aug 31." cx="470" cy="94" r="5" fill="var(--cobalt)"/>
+            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Sep 2026: 9 live products. Launched Lingo Pairs Sep 9, Crabwise Sep 23, Palabrazo Sep 26." cx="610" cy="40" r="6" fill="var(--cobalt)"/>
+            <text x="50" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">May</text>
+            <text x="190" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Jun</text>
+            <text x="330" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Jul</text>
+            <text x="470" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Aug</text>
+            <text x="610" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Sep</text>
+          </svg>
+        </div>
+        <figcaption>Cumulative live products at the end of each month, May to Sep 2026. Focus a dot for the month's launches.</figcaption>
+        <table class="d-sr"><caption>Live products by month end</caption><thead><tr><th>Month</th><th>Cumulative live products</th></tr></thead><tbody><tr><td>May 2026</td><td>0</td></tr><tr><td>Jun 2026</td><td>1</td></tr><tr><td>Jul 2026</td><td>4</td></tr><tr><td>Aug 2026</td><td>6</td></tr><tr><td>Sep 2026</td><td>9</td></tr></tbody></table>
+      </figure>
+
+      <figure class="d-chart">
+        <h3>Where it runs.</h3>
+        <div class="d-chart__wrap">
+          <svg viewBox="0 0 220 220" width="220" height="220" role="img" aria-label="Donut chart. 13 live listings across 4 platforms: Web 6, App Store 4, Google Play 2, Chrome Web Store 1.">
+            <circle cx="110" cy="110" r="70" fill="none" stroke="var(--line)" stroke-width="22"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="Web: 6 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--cobalt)" stroke-width="22" stroke-dasharray="202.99 439.82" stroke-dashoffset="0" transform="rotate(-90 110 110)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="App Store: 4 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--coral)" stroke-width="22" stroke-dasharray="135.33 439.82" stroke-dashoffset="-202.99" transform="rotate(-90 110 110)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="Google Play: 2 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--teal)" stroke-width="22" stroke-dasharray="67.66 439.82" stroke-dashoffset="-338.32" transform="rotate(-90 110 110)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="Chrome Web Store: 1 listing" cx="110" cy="110" r="70" fill="none" stroke="var(--sun)" stroke-width="22" stroke-dasharray="33.83 439.82" stroke-dashoffset="-405.98" transform="rotate(-90 110 110)"/>
+            <text x="110" y="106" text-anchor="middle" font-size="30" font-weight="500">13</text>
+            <text x="110" y="126" text-anchor="middle" font-size="11" fill="var(--muted)">listings</text>
+          </svg>
+        </div>
+        <div class="d-legend">
+          <span><i style="background:var(--cobalt)"></i>Web 6</span>
+          <span><i style="background:var(--coral)"></i>App Store 4</span>
+          <span><i style="background:var(--teal)"></i>Google Play 2</span>
+          <span><i style="background:var(--sun)"></i>Chrome Web Store 1</span>
+        </div>
+        <figcaption>13 live listings across 4 platforms, from 9 products.</figcaption>
+      </figure>
+
+      <figure class="d-chart d-chart--wide">
+        <h3>30+ automations. Something runs every 5 minutes, all day.</h3>
+        <div class="d-chart__wrap" data-reveal>
+          <svg viewBox="0 0 440 440" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto" aria-hidden="true">
+            <circle cx="220" cy="220" r="60" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
+            <circle cx="220" cy="220" r="95" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
+            <circle cx="220" cy="220" r="130" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
+            <line x1="220" y1="40" x2="220" y2="26" stroke="var(--line)"/><line x1="266.6" y1="46.1" x2="270.2" y2="32.6" stroke="var(--line)"/><line x1="310" y1="64.1" x2="317" y2="52" stroke="var(--line)"/><line x1="347.3" y1="92.7" x2="357.2" y2="82.8" stroke="var(--line)"/><line x1="375.9" y1="130" x2="388" y2="123" stroke="var(--line)"/><line x1="393.9" y1="173.4" x2="407.4" y2="169.8" stroke="var(--line)"/><line x1="400" y1="220" x2="414" y2="220" stroke="var(--line)"/><line x1="393.9" y1="266.6" x2="407.4" y2="270.2" stroke="var(--line)"/><line x1="375.9" y1="310" x2="388" y2="317" stroke="var(--line)"/><line x1="347.3" y1="347.3" x2="357.2" y2="357.2" stroke="var(--line)"/><line x1="310" y1="375.9" x2="317" y2="388" stroke="var(--line)"/><line x1="266.6" y1="393.9" x2="270.2" y2="407.4" stroke="var(--line)"/><line x1="220" y1="400" x2="220" y2="414" stroke="var(--line)"/><line x1="173.4" y1="393.9" x2="169.8" y2="407.4" stroke="var(--line)"/><line x1="130" y1="375.9" x2="123" y2="388" stroke="var(--line)"/><line x1="92.7" y1="347.3" x2="82.8" y2="357.2" stroke="var(--line)"/><line x1="64.1" y1="310" x2="52" y2="317" stroke="var(--line)"/><line x1="46.1" y1="266.6" x2="32.6" y2="270.2" stroke="var(--line)"/><line x1="40" y1="220" x2="26" y2="220" stroke="var(--line)"/><line x1="46.1" y1="173.4" x2="32.6" y2="169.8" stroke="var(--line)"/><line x1="64.1" y1="130" x2="52" y2="123" stroke="var(--line)"/><line x1="92.7" y1="92.7" x2="82.8" y2="82.8" stroke="var(--line)"/><line x1="130" y1="64.1" x2="123" y2="52" stroke="var(--line)"/><line x1="173.4" y1="46.1" x2="169.8" y2="32.6" stroke="var(--line)"/>
+            <text x="220" y="10" text-anchor="middle" font-size="10" fill="var(--muted)">0</text>
+            <text x="368.5" y="75.5" text-anchor="middle" font-size="10" fill="var(--muted)">3</text>
+            <text x="430" y="224" text-anchor="middle" font-size="10" fill="var(--muted)">6</text>
+            <text x="368.5" y="372.5" text-anchor="middle" font-size="10" fill="var(--muted)">9</text>
+            <text x="220" y="434" text-anchor="middle" font-size="10" fill="var(--muted)">12</text>
+            <text x="71.5" y="372.5" text-anchor="middle" font-size="10" fill="var(--muted)">15</text>
+            <text x="10" y="224" text-anchor="middle" font-size="10" fill="var(--muted)">18</text>
+            <text x="71.5" y="75.5" text-anchor="middle" font-size="10" fill="var(--muted)">21</text>
+            <g class="d-sweep"><line x1="220" y1="220" x2="220" y2="42" stroke="var(--cobalt)" stroke-width="2"/><circle cx="220" cy="42" r="4" fill="var(--cobalt)"/></g>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="00:00, market data" cx="220" cy="60" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="02:00, market data" cx="300" cy="81.4" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="06:00, market data" cx="380" cy="220" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="06:00, daily report, weekdays" cx="391" cy="220" r="4" fill="var(--sun)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="07:00, market data" cx="374.5" cy="261.4" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="07:30, market data, weekly" cx="367.8" cy="281.2" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="09:30, market data, weekly" cx="317.4" cy="346.9" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, app watchers" cx="300" cy="358.6" r="4" fill="var(--coral)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, market data, 2 jobs" cx="305.5" cy="368.1" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, market data, second job" cx="311" cy="377.6" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="10:15, app watchers" cx="290.8" cy="363.5" r="4" fill="var(--coral)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="10:15, market data, weekdays" cx="295.6" cy="373.4" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="12:30, market data, 2 jobs" cx="199.1" cy="378.6" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="12:30, market data, second job" cx="197.7" cy="389.5" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:00, market data" cx="178.6" cy="374.5" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:05, market data" cx="175.2" cy="373.6" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:10, market data" cx="171.9" cy="372.6" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:15, market data, 2 jobs" cx="168.6" cy="371.5" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:15, market data, second job" cx="165" cy="381.9" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="13:30, knowledge sync" cx="158.8" cy="367.8" r="4" fill="var(--teal)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="15:00, market data" cx="106.9" cy="333.1" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="15:30, market data" cx="93.1" cy="317.4" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="19:15, market data" cx="68.5" cy="168.6" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="20:00, market data" cx="81.4" cy="140" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="21:25, market data" cx="119.9" cy="95.2" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="21:30, market data" cx="122.6" cy="93.1" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="22:19, knowledge sync" cx="151.7" cy="75.3" r="4" fill="var(--teal)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="22:30, market data" cx="158.8" cy="72.2" r="4" fill="var(--cobalt)"/>
+            <circle class="d-mark" tabindex="0" role="img" aria-label="22:53, app watchers" cx="173.9" cy="66.8" r="4" fill="var(--coral)"/>
+          </svg>
+        </div>
+        <div class="d-legend">
+          <span><i style="background:var(--cobalt)"></i>Market data &amp; research</span>
+          <span><i style="background:var(--coral)"></i>App watchers</span>
+          <span><i style="background:var(--teal)"></i>Knowledge sync</span>
+          <span><i style="background:var(--sun)"></i>Daily report</span>
+        </div>
+        <figcaption>Our real fixed-time schedule, local time, plus 3 jobs every 5 minutes, 5 jobs every hour and 1 job every 2 hours on the inner rings. Focus a dot for its time.</figcaption>
+        <table class="d-sr"><caption>Fixed-time automation runs</caption><thead><tr><th>Time</th><th>Category</th></tr></thead><tbody><tr><td>00:00</td><td>Market data</td></tr><tr><td>02:00</td><td>Market data</td></tr><tr><td>06:00</td><td>Market data</td></tr><tr><td>06:00</td><td>Daily report, weekdays</td></tr><tr><td>07:00</td><td>Market data</td></tr><tr><td>07:30</td><td>Market data, weekly</td></tr><tr><td>09:30</td><td>Market data, weekly</td></tr><tr><td>10:00</td><td>App watchers</td></tr><tr><td>10:00</td><td>Market data x2</td></tr><tr><td>10:15</td><td>App watchers</td></tr><tr><td>10:15</td><td>Market data, weekdays</td></tr><tr><td>12:30</td><td>Market data x2</td></tr><tr><td>13:00</td><td>Market data</td></tr><tr><td>13:05</td><td>Market data</td></tr><tr><td>13:10</td><td>Market data</td></tr><tr><td>13:15</td><td>Market data x2</td></tr><tr><td>13:30</td><td>Knowledge sync</td></tr><tr><td>15:00</td><td>Market data</td></tr><tr><td>15:30</td><td>Market data</td></tr><tr><td>19:15</td><td>Market data</td></tr><tr><td>20:00</td><td>Market data</td></tr><tr><td>21:25</td><td>Market data</td></tr><tr><td>21:30</td><td>Market data</td></tr><tr><td>22:19</td><td>Knowledge sync</td></tr><tr><td>22:30</td><td>Market data</td></tr><tr><td>22:53</td><td>App watchers</td></tr></tbody></table>
+      </figure>
+
+      <figure class="d-chart">
+        <h3>4 launches in 27 days.</h3>
+        <div class="d-chart__wrap" data-reveal>
+          <svg viewBox="0 0 660 200" style="width:100%;height:auto" aria-hidden="true">
+            <line x1="40" y1="50" x2="40" y2="60" stroke="var(--muted)"/>
+            <line x1="620" y1="50" x2="620" y2="60" stroke="var(--muted)"/>
+            <line x1="40" y1="55" x2="620" y2="55" stroke="var(--muted)"/>
+            <text x="330" y="42" text-anchor="middle" font-size="12" fill="var(--muted)">27 days</text>
+            <line x1="40" y1="110" x2="620" y2="110" stroke="var(--cobalt)" stroke-width="2" pathLength="100" class="lkd-draw"/>
+            <g><line x1="40" y1="104" x2="40" y2="86" stroke="var(--line)"/><text x="40" y="80" text-anchor="middle" font-size="12">LingoFlyer</text><circle class="d-mark" tabindex="0" role="img" aria-label="Aug 31 2026: LingoFlyer launches on the App Store." cx="40" cy="110" r="6" fill="var(--cobalt)"/><text x="40" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Aug 31</text></g>
+            <g><line x1="241" y1="104" x2="241" y2="86" stroke="var(--line)"/><text x="241" y="80" text-anchor="middle" font-size="12">Lingo Pairs</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 9 2026: Lingo Pairs launches on the App Store." cx="241" cy="110" r="6" fill="var(--coral)"/><text x="241" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 9</text></g>
+            <g><line x1="553" y1="104" x2="553" y2="86" stroke="var(--line)"/><text x="553" y="80" text-anchor="middle" font-size="12">Crabwise</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 23 2026: Crabwise launches on the App Store." cx="553" cy="110" r="6" fill="var(--teal)"/><text x="553" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 23</text></g>
+            <g><line x1="620" y1="104" x2="620" y2="86" stroke="var(--line)"/><text x="600" y="80" text-anchor="middle" font-size="12">Palabrazo</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 26 2026: Palabrazo launches on the App Store." cx="620" cy="110" r="6" fill="var(--sun)"/><text x="608" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 26</text></g>
+          </svg>
+        </div>
+        <figcaption>4 App Store launches, Aug 31 to Sep 26, 2026, 27 days apart.</figcaption>
+        <table class="d-sr"><caption>App launch sprint</caption><thead><tr><th>Date</th><th>App</th></tr></thead><tbody><tr><td>Aug 31 2026</td><td>LingoFlyer</td></tr><tr><td>Sep 9 2026</td><td>Lingo Pairs</td></tr><tr><td>Sep 23 2026</td><td>Crabwise</td></tr><tr><td>Sep 26 2026</td><td>Palabrazo</td></tr></tbody></table>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<section class="d-section" id="d-process">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Process</p>
+      <h2 class="d-h2">How we work. Literally.</h2>
+      <p class="d-sub">Six steps, every project, no exceptions.</p>
+    </div>
+    <div class="d-pipeline">
+      <div class="d-pipeline__pulse" style="animation-delay:0s"></div>
+      <div class="d-pipeline__pulse" style="animation-delay:1.7s"></div>
+      <div class="d-pipeline__pulse" style="animation-delay:3.4s"></div>
+      <div class="d-step"><div class="d-step__n">1</div><h3>Brief</h3><p>You describe the job in an email.</p></div>
+      <div class="d-step"><div class="d-step__n">2</div><h3>Clickable designs</h3><p>You get several working looks and pick one before we build.</p></div>
+      <div class="d-step"><div class="d-step__n">3</div><h3>Build</h3><p>In short rounds you can see.</p></div>
+      <div class="d-step d-step--gauge" data-reveal>
+        <div class="d-step__n">4</div><h3>Test gates</h3><p>Every screen size, every button clicked, every link opened, zero console errors.</p>
+        <div class="d-gaugewrap">
+          <svg viewBox="0 0 120 120" width="86" height="86" role="img" aria-label="Release test meter: 96 of 96 checks passed">
+            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--line)" stroke-width="10"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--cobalt)" stroke-width="10" stroke-linecap="round" pathLength="100" class="lkd-draw" transform="rotate(-90 60 60)"/>
+            <text x="60" y="57" text-anchor="middle" font-size="17" font-weight="500">96/96</text>
+            <text x="60" y="72" text-anchor="middle" font-size="9" fill="var(--muted)">checks</text>
+          </svg>
+          <div class="d-chips-row">
+            <span class="d-chip-stat">3 widths</span>
+            <span class="d-chip-stat">0 errors</span>
+            <span class="d-chip-stat">13/13 links</span>
           </div>
         </div>
-        <span class="tag"><span class="pulse"></span>In production</span>
-        <h3>Internal automation fleet</h3>
-        <p>Systems we run for our own operations: cloud watchers that ping a phone within minutes of an event, scheduled data pipelines, uptime monitors, and browser automation that posts, files, and reconciles — no human in the loop.</p>
       </div>
+      <div class="d-step"><div class="d-step__n">5</div><h3>Launch</h3><p>App Store, Google Play or the web.</p></div>
+      <div class="d-step"><div class="d-step__n">6</div><h3>Watch</h3><p>A watchdog checks live products every morning and alerts a phone within minutes.</p></div>
     </div>
+  </div>
+</section>
 
-    <div style="margin-top:44px">
-      <span class="eyebrow rv">In development</span>
-      <p class="lead rv" style="margin-bottom:24px">Built and working — launching after validation. The point: the engine that builds these is repeatable.</p>
-      <div class="cards">
-        <div class="card rv">
-          <a class="win" href="/govcon/" aria-label="Open the GovCon Award Feed preview">
-            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">syntheticm2m.com/govcon</span></span>
-            <span class="wview"><img src="/shots/govcon.webp" width="1280" height="820" loading="lazy" decoding="async" alt="GovCon Award Feed working preview"></span>
-          </a>
-          <span class="tag dev">⚙ In development</span>
-          <h3>GovCon Award Feed</h3>
-          <p>A daily intelligence digest that tells government contractors which federal contracts are coming up for renewal — and which incumbents look vulnerable. Pipeline, dashboard, and checkout built end-to-end.</p>
-          <a class="go" href="/govcon/">See the working preview
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <div class="card rv">
-          <a class="win" href="/disaster-feed/" aria-label="Open the Disaster-Recovery Money Feed preview">
-            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">syntheticm2m.com/disaster-feed</span></span>
-            <span class="wview"><img src="/shots/disaster-feed.webp" width="1280" height="820" loading="lazy" decoding="async" alt="Disaster-Recovery Money Feed working preview"></span>
-          </a>
-          <span class="tag dev">⚙ In development</span>
-          <h3>Disaster-Recovery Money Feed</h3>
-          <p>Tracks federal disaster-relief dollars county-by-county as they're awarded, for recovery contractors chasing rebuild work. Same engine as the GovCon feed — ported to a new vertical in a day.</p>
-          <a class="go" href="/disaster-feed/">See the working preview
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <div class="card rv">
-          <div class="win">
-            <span class="wbar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="u">gated on compliance review</span></span>
-            <div class="wview cv">
-              <b class="d"><s></s>filings watched in real time</b>
-              <b class="d"><s></s>insider buying clusters</b>
-              <b class="d"><s></s>activist stakes</b>
-              <b class="d"><s></s>plain-English alerts out</b>
-            </div>
+<section class="d-section d-section--deep">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Industries</p>
+      <h2 class="d-h2">We already build for people like you.</h2>
+    </div>
+    <div class="d-indgrid">
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-auto"></use></svg><span>Auto dealers</span></div>
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-office"></use></svg><span>Small-business back offices</span></div>
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-invest"></use></svg><span>Investors and analysts</span></div>
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-lang"></use></svg><span>Language learners and schools</span></div>
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-pilot"></use></svg><span>Pilots and flight students</span></div>
+      <div class="d-indtile"><svg aria-hidden="true"><use href="#d-ic-market"></use></svg><span>Online marketplace buyers and sellers</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="d-section" id="d-film">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">See it in motion</p>
+      <h2 class="d-h2">The studio, in 30 seconds.</h2>
+      <p class="d-sub">Dashboards, charts and shipped products. No sound needed.</p>
+    </div>
+    <div class="d-filmbox">
+      <video id="d-film-video" src="media/m2m-film-30.mp4" poster="media/m2m-film-30-poster.jpg" muted playsinline loop preload="metadata"></video>
+      <button type="button" class="d-filmtoggle" id="d-filmtoggle" aria-label="Pause film">
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" id="d-filmicon"><path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/></svg>
+        <span id="d-filmtext">Pause</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="d-section d-section--deep" id="d-contact">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Start a project</p>
+      <h2 class="d-h2">Tell us what to build.</h2>
+      <p class="d-sub">Pick what you need below. We write the note. You send it.</p>
+    </div>
+    <div class="d-brief">
+      <div>
+        <div class="d-field"><span>What do you need</span>
+          <div class="d-chips" id="d-chips" role="group" aria-label="Services">
+            <button type="button" class="d-chip" aria-pressed="false" data-label="Mobile apps &amp; games">Mobile apps &amp; games</button>
+            <button type="button" class="d-chip" aria-pressed="false" data-label="Web apps &amp; SaaS">Web apps &amp; SaaS</button>
+            <button type="button" class="d-chip" aria-pressed="false" data-label="AI assistants &amp; automation">AI assistants &amp; automation</button>
+            <button type="button" class="d-chip" aria-pressed="false" data-label="Data pipelines &amp; dashboards">Data pipelines &amp; dashboards</button>
+            <button type="button" class="d-chip" aria-pressed="false" data-label="Browser extensions">Browser extensions</button>
+            <button type="button" class="d-chip" aria-pressed="false" data-label="Brand film &amp; motion">Brand film &amp; motion</button>
           </div>
-          <span class="tag dev">⚙ In development</span>
-          <h3>Filing Anomaly Alerts</h3>
-          <p>Watches regulatory filings in real time and turns material events — insider buying clusters, activist stakes — into plain-English alerts for small investment firms. Built end-to-end; launch deliberately gated on a compliance review.</p>
+        </div>
+        <div class="d-field"><span>Where you are starting from</span>
+          <div class="d-chips" id="d-stage" role="group" aria-label="Stage">
+            <button type="button" class="d-stagebtn" aria-pressed="false" data-stage="We have an idea and want to scope it.">Idea</button>
+            <button type="button" class="d-stagebtn" aria-pressed="false" data-stage="We already have designs and need it built.">Have designs</button>
+            <button type="button" class="d-stagebtn" aria-pressed="false" data-stage="We have a product that needs work.">Have a product</button>
+          </div>
+        </div>
+        <div class="d-field"><span>What should it do, optional</span>
+          <textarea class="d-notes" id="d-notes" placeholder="A short line or two."></textarea>
+        </div>
+        <div class="d-email-row">
+          <code>sales@syntheticm2m.com</code>
+          <button type="button" class="d-copybtn" id="d-copyemail">Copy</button>
+          <span class="d-sr" id="d-emailcopied" aria-live="polite"></span>
+        </div>
+        <p class="d-fineprint">Email only. We reply with a plan.</p>
+      </div>
+      <div class="d-preview" aria-live="polite">
+        <p class="d-mono">To: <b>sales@syntheticm2m.com</b></p>
+        <p class="d-mono">Subject: <b id="d-subject">Project brief: a project</b></p>
+        <div class="d-preview__body" id="d-body">Hi,
+
+We are not sure yet which service fits. Tell us what is possible.
+
+Please send a plan.</div>
+        <div class="d-preview__actions">
+          <button type="button" class="d-btn d-btn--solid" id="d-copybrief">Copy my brief</button>
+          <span class="d-sr" id="d-briefcopied" aria-live="polite"></span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="how">
-  <div class="wrap">
-    <span class="eyebrow rv">How it works</span>
-    <h2 class="rv">From "ugh, this again" to automated<br>in three steps.</h2>
-    <p class="lead rv">No jargon required — you describe the chore in plain English, we turn it into software.</p>
-    <div class="hiw">
-      <div class="hiw-card rv anim">
-        <span class="num">STEP 01</span>
-        <h3>Tell us the chore</h3>
-        <p>In plain words, over email or chat. That's the whole brief.</p>
-        <div class="stage">
-          <div class="bubble user">"Every Monday I copy 200 rows from our orders into a spreadsheet and email a summary to my team… it takes half my morning."</div>
-          <div class="bubble reply">Got it. We'll automate the whole loop — fixed quote coming up. <span class="dots"><i></i><i></i><i></i></span></div>
-        </div>
-      </div>
-      <div class="hiw-card rv anim">
-        <span class="num">STEP 02</span>
-        <h3>We build it</h3>
-        <p>Fixed scope in writing first. You see a working demo early — judge us fast.</p>
-        <div class="stage">
-          <div class="blocks"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
-          <div class="pbar"><span></span></div>
-          <div class="pdone">✓ demo ready — staging link sent</div>
-        </div>
-      </div>
-      <div class="hiw-card rv anim">
-        <span class="num">STEP 03</span>
-        <h3>It runs while you sleep</h3>
-        <p>Deployed on infrastructure that costs almost nothing, with docs and a handover.</p>
-        <div class="stage">
-          <span class="moon">🌙</span>
-          <div class="notif"><span class="ic">📊</span>Monday summary sent to the team — 7:00 AM</div>
-          <div class="notif"><span class="ic">✅</span>214 orders processed, 0 errors</div>
-          <div class="notif"><span class="ic">📬</span>3 new leads captured &amp; replied to</div>
-        </div>
-      </div>
+<footer class="d-footer">
+  <div class="d-wrap">
+    <div class="d-footer__row">
+      <a class="d-brand" href="#d-hero"><i></i>Synthetic M2M</a>
+      <nav class="d-footer__links" aria-label="Footer">
+        <a href="#d-services">Services</a>
+        <a href="#d-work">Work</a>
+        <a href="#d-process">Process</a>
+        <a href="#d-contact">Contact</a>
+        <a href="/5-hour-audit/">5-Hour Audit</a>
+      </nav>
+      <span style="font-family:var(--font-m);font-size:13px;color:var(--muted)">sales@syntheticm2m.com</span>
     </div>
-  </div>
-</section>
-
-<section id="services">
-  <div class="wrap">
-    <span class="eyebrow rv">Services</span>
-    <h2 class="rv">What we build for clients</h2>
-    <p class="lead rv">If it's repetitive, glue-shaped, or data-shaped — we've probably already built one.</p>
-    <ul class="svc">
-      <li class="rv"><b>Web scraping &amp; automation</b><span>Data collection, form-filling bots, scheduled jobs that replace hours of copy-paste.</span></li>
-      <li class="rv"><b>API integrations</b><span>Connect two services that don't talk — webhooks, syncs, small REST APIs.</span></li>
-      <li class="rv"><b>Data cleaning &amp; dashboards</b><span>Messy spreadsheets in, clean datasets and self-updating reports out.</span></li>
-      <li class="rv"><b>Document &amp; invoice tooling</b><span>PDF generation, invoice systems, template automation.</span></li>
-      <li class="rv"><b>Browser extensions</b><span>Chrome extensions from spec to store-ready package.</span></li>
-      <li class="rv"><b>Small web apps &amp; MVPs</b><span>Landing pages to working products on near-zero-cost infrastructure.</span></li>
-    </ul>
-  </div>
-</section>
-
-<section id="capabilities" style="padding-top:40px">
-  <div class="wrap">
-    <span class="eyebrow rv">Capabilities</span>
-    <h2 class="rv">If it's digital and repetitive,<br>we can probably build it.</h2>
-    <p class="lead rv">A sample of what comes off our production line — every one delivered as working software with docs, for a fixed quote.</p>
-  </div>
-  <div class="marq rv">
-    <div class="track">
-      <span class="chip"><span class="em">🤖</span>AI assistant trained on your docs</span>
-      <span class="chip"><span class="em">🕷️</span>Competitor price-tracking scraper</span>
-      <span class="chip"><span class="em">🧾</span>Invoice &amp; quote PDF generator</span>
-      <span class="chip"><span class="em">🔗</span>Sync two apps that don't talk</span>
-      <span class="chip"><span class="em">📊</span>Self-updating KPI dashboard</span>
-      <span class="chip"><span class="em">📬</span>Lead capture + instant auto-reply</span>
-      <span class="chip"><span class="em">🧹</span>CRM &amp; contact-list dedupe</span>
-      <span class="chip"><span class="em">📄</span>OCR: receipts &amp; forms → spreadsheet</span>
-      <span class="chip"><span class="em">🛒</span>Shopify / WooCommerce custom features</span>
-      <span class="chip"><span class="em">⏰</span>Scheduled jobs that run in the cloud</span>
-      <span class="chip"><span class="em">🤖</span>AI assistant trained on your docs</span>
-      <span class="chip"><span class="em">🕷️</span>Competitor price-tracking scraper</span>
-      <span class="chip"><span class="em">🧾</span>Invoice &amp; quote PDF generator</span>
-      <span class="chip"><span class="em">🔗</span>Sync two apps that don't talk</span>
-      <span class="chip"><span class="em">📊</span>Self-updating KPI dashboard</span>
-      <span class="chip"><span class="em">📬</span>Lead capture + instant auto-reply</span>
-      <span class="chip"><span class="em">🧹</span>CRM &amp; contact-list dedupe</span>
-      <span class="chip"><span class="em">📄</span>OCR: receipts &amp; forms → spreadsheet</span>
-      <span class="chip"><span class="em">🛒</span>Shopify / WooCommerce custom features</span>
-      <span class="chip"><span class="em">⏰</span>Scheduled jobs that run in the cloud</span>
-    </div>
-  </div>
-  <div class="marq rev rv">
-    <div class="track">
-      <span class="chip"><span class="em">📈</span>Financial models &amp; underwriting sheets</span>
-      <span class="chip"><span class="em">🗂️</span>Messy spreadsheet → clean database</span>
-      <span class="chip"><span class="em">🔔</span>Alerts to your phone when X happens</span>
-      <span class="chip"><span class="em">🧩</span>Chrome extensions for internal tools</span>
-      <span class="chip"><span class="em">✉️</span>Automated email digests &amp; reports</span>
-      <span class="chip"><span class="em">📝</span>Content &amp; SEO article pipelines</span>
-      <span class="chip"><span class="em">🎙️</span>Text-to-speech &amp; audio integrations</span>
-      <span class="chip"><span class="em">🏷️</span>Bulk product listing &amp; catalog tools</span>
-      <span class="chip"><span class="em">📅</span>Booking systems with calendar sync</span>
-      <span class="chip"><span class="em">🌐</span>Landing pages that load instantly</span>
-      <span class="chip"><span class="em">📈</span>Financial models &amp; underwriting sheets</span>
-      <span class="chip"><span class="em">🗂️</span>Messy spreadsheet → clean database</span>
-      <span class="chip"><span class="em">🔔</span>Alerts to your phone when X happens</span>
-      <span class="chip"><span class="em">🧩</span>Chrome extensions for internal tools</span>
-      <span class="chip"><span class="em">✉️</span>Automated email digests &amp; reports</span>
-      <span class="chip"><span class="em">📝</span>Content &amp; SEO article pipelines</span>
-      <span class="chip"><span class="em">🎙️</span>Text-to-speech &amp; audio integrations</span>
-      <span class="chip"><span class="em">🏷️</span>Bulk product listing &amp; catalog tools</span>
-      <span class="chip"><span class="em">📅</span>Booking systems with calendar sync</span>
-      <span class="chip"><span class="em">🌐</span>Landing pages that load instantly</span>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="capgrid">
-      <div class="cap rv"><div class="ico pulse2">🤖</div><h3>AI assistants &amp; chat tools</h3><p>Answer customers, draft replies, summarize documents — assistants that know your business and work around the clock.</p></div>
-      <div class="cap rv"><div class="ico bob">🕸️</div><h3>Data collection &amp; scrapers</h3><p>Prices, listings, leads, public records — gathered on schedule and delivered as clean spreadsheets or live feeds.</p></div>
-      <div class="cap rv"><div class="ico spin">⚙️</div><h3>Workflow automation</h3><p>The multi-step chore you do every week becomes a button — or better, a schedule that presses itself.</p></div>
-      <div class="cap rv"><div class="ico bob">📊</div><h3>Dashboards &amp; reporting</h3><p>Your numbers, always current, in one place — with scheduled PDF or email reports your team actually reads.</p></div>
-      <div class="cap rv"><div class="ico pulse2">📄</div><h3>Document automation</h3><p>Invoices, proposals, contracts, labels — generated from your data in your branding, at any volume.</p></div>
-      <div class="cap rv"><div class="ico bob">🔗</div><h3>Integrations &amp; APIs</h3><p>CRM to spreadsheet, store to accounting, form to calendar — we make your tools pass work between themselves.</p></div>
-      <div class="cap rv"><div class="ico pulse2">🔔</div><h3>Monitoring &amp; alerts</h3><p>When inventory drops, a payment fails, or a competitor moves — your phone knows before you'd have noticed.</p></div>
-      <div class="cap rv"><div class="ico spin">🚀</div><h3>Web apps &amp; MVPs</h3><p>From landing page to working product with payments — deployed on infrastructure that costs pennies to run.</p></div>
-    </div>
-    <!-- living bento dashboard -->
-    <div class="bento rv">
-      <div class="tile wide"><h4>Weekly report</h4><div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
-      <div class="tile wide"><h4>Alerts</h4>
-        <div class="toast">📬 3 new leads captured &amp; replied</div>
-        <div class="toast">✅ 214 orders processed, 0 errors</div>
-        <div class="toast">📊 Monday summary sent, 7:00 AM</div>
-      </div>
-      <div class="tile"><h4>Rows cleaned</h4><div class="bignum" id="rowsnum">0</div></div>
-      <div class="tile"><h4>Sync running</h4><div class="ring"></div></div>
-      <div class="tile"><h4>Pipelines</h4><div class="gearrow"><span>⚙️</span><span>⚙️</span></div></div>
-      <div class="tile"><h4>Uptime</h4><div class="bignum">24/7</div></div>
-    </div>
-    <div class="bigstats rv">
-      <div class="bstat"><b data-count="10">0</b><span>systems we run in production</span></div>
-      <div class="bstat"><b>24/7</b><span>everything we ship runs itself</span></div>
-      <div class="bstat"><b data-count="100" data-suffix="%">0</b><span>fixed-scope quotes, in writing</span></div>
-      <div class="bstat"><b>~$0</b><span>monthly hosting we hand you</span></div>
-    </div>
-  </div>
-</section>
-
-
-<section>
-  <div class="wrap">
-    <div class="band rv">
-      <span class="beam"></span>
-      <span class="eyebrow">Contact</span>
-      <h2>Have a repetitive problem?<br>We'll automate it.</h2>
-      <p>Tell us what eats your hours. You'll get a fixed quote and a delivery date.</p>
-      <a class="btn primary" href="mailto:sales@syntheticm2m.com" style="padding:15px 32px;font-size:15px">sales@syntheticm2m.com</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap foot">
-    <a class="brand" href="#top"><span class="dot" style="width:20px;height:20px;border-radius:6px"></span>Synthetic M2M</a>
-    <span>© 2026 Synthetic M2M · Remote, worldwide</span>
+    <small>Small studio. Real products. 2026 Synthetic M2M.</small>
   </div>
 </footer>
-
+</main>
+</div>
 <script>
-  // reveal on scroll; .anim cards also start their internal animations (.play)
-  const reveal = el => { el.classList.add('in'); if (el.classList.contains('anim')) el.classList.add('play'); };
-  const revealAll = () => document.querySelectorAll('.rv:not(.in)').forEach(el => { el.style.transitionDelay = '0ms'; reveal(el); });
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
-    }), {threshold:.25});
-    document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = (i % 6) * 60 + 'ms'; io.observe(el); });
-    // safety net: if the observer is broken (some webviews), the hero never reveals — show everything
-    setTimeout(() => { if (!document.querySelector('.rv.in')) revealAll(); }, 1200);
-  } else { revealAll(); }
+(function(){
+  var root = document.querySelector('.lk-d');
+  if(!root) return;
+  function qs(sel,ctx){ return (ctx||root).querySelector(sel); }
+  function qsa(sel,ctx){ return Array.prototype.slice.call((ctx||root).querySelectorAll(sel)); }
+  function reduced(){ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-  // synapse network (hero background)
-  (() => {
-    const canvas = document.getElementById('synapse');
-    if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = canvas.getContext('2d');
-    const CONNECT_R = 180, N = innerWidth < 700 ? 30 : 55, TRAIL = 0.15;
-    let W, H;
-    const mouse = { x: -9999, y: -9999 };
-    const resize = () => { W = canvas.width = canvas.offsetWidth || innerWidth || 1280; H = canvas.height = canvas.offsetHeight || 700; };
-    resize();
-    addEventListener('resize', resize);
-    addEventListener('pointermove', e => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  var isVisible = !root.hidden && root.closest && !(root.closest('[hidden]'));
+
+  /* ---- nav toggle ---- */
+  (function(){
+    var btn = qs('#d-navtoggle'), panel = qs('#d-navpanel');
+    if(!btn || !panel) return;
+    function close(){ panel.hidden = true; btn.setAttribute('aria-expanded','false'); }
+    function open(){ panel.hidden = false; btn.setAttribute('aria-expanded','true'); }
+    btn.addEventListener('click', function(){ panel.hidden ? open() : close(); });
+    qsa('a[href^="#d-"]').forEach(function(a){ a.addEventListener('click', close); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  })();
+
+  /* ---- reveal on view ---- */
+  (function(){
+    var els = qsa('[data-reveal]');
+    if(!els.length) return;
+    if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('lkd-seen'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('lkd-seen'); io.unobserve(en.target); }
+      });
+    }, {threshold:.3});
+    els.forEach(function(el){ io.observe(el); });
+  })();
+
+  /* ---- tooltip ---- */
+  (function(){
+    var tip = qs('#d-tip');
+    if(!tip) return;
+    var marks = qsa('.d-mark, .d-pill');
+    function show(el){
+      var label = el.getAttribute('aria-label');
+      if(!label) return;
+      tip.textContent = label;
+      var r = el.getBoundingClientRect();
+      var x = r.left + r.width/2, y = r.top;
+      x = Math.max(60, Math.min(window.innerWidth-60, x));
+      tip.style.left = x + 'px';
+      tip.style.top = Math.max(30,y) + 'px';
+      tip.classList.add('is-on');
+    }
+    function hide(){ tip.classList.remove('is-on'); }
+    marks.forEach(function(el){
+      el.addEventListener('mouseenter', function(){ show(el); });
+      el.addEventListener('mouseleave', hide);
+      el.addEventListener('focus', function(){ show(el); });
+      el.addEventListener('blur', hide);
     });
-    class Node {
-      constructor() {
-        this.x = Math.random() * W; this.y = Math.random() * H;
-        this.vx = (Math.random() - .5) * .5; this.vy = (Math.random() - .5) * .5;
-        this.r = Math.random() * 2 + 1.5; this.conn = []; this.pulses = []; this.act = 0;
+    window.addEventListener('scroll', hide, {passive:true});
+  })();
+
+  /* ---- service map hover / focus ---- */
+  (function(){
+    var svg = qs('#d-map-svg');
+    if(!svg) return;
+    var pills = qsa('.d-pill', svg);
+    var links = qsa('.d-link', svg);
+    function clear(){
+      pills.forEach(function(p){ p.classList.remove('is-active','is-dim'); p.setAttribute('aria-pressed','false'); });
+      links.forEach(function(l){ l.classList.remove('is-active','is-dim'); });
+    }
+    function activate(node){
+      clear();
+      var related = links.filter(function(l){ return l.dataset.from === node || l.dataset.to === node; });
+      var touched = {}; touched[node] = 1;
+      related.forEach(function(l){
+        l.classList.add('is-active');
+        touched[l.dataset.from] = 1; touched[l.dataset.to] = 1;
+      });
+      links.forEach(function(l){ if(l.classList.contains('is-active')) return; l.classList.add('is-dim'); });
+      pills.forEach(function(p){
+        var n = p.dataset.node;
+        if(touched[n]){ p.classList.add('is-active'); if(n===node) p.setAttribute('aria-pressed','true'); }
+        else { p.classList.add('is-dim'); }
+      });
+    }
+    pills.forEach(function(p){
+      p.addEventListener('mouseenter', function(){ activate(p.dataset.node); });
+      p.addEventListener('mouseleave', clear);
+      p.addEventListener('focus', function(){ activate(p.dataset.node); });
+      p.addEventListener('blur', clear);
+    });
+  })();
+
+  /* ---- hero canvas: operations network ---- */
+  (function(){
+    var canvas = qs('#d-hero-canvas');
+    if(!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var leftLabels = ['Orders','Emails','Spreadsheets','Market data','Paperwork'];
+    var rightLabels = ['App','Dashboard','Report','Alert','Letter'];
+    var colors = ['#4d7cff','#ff6a55','#22d3b0','#ffc53d'];
+    var W=0,H=0,dpr=1, vertical=false, raf=null, running=false, t0=performance.now();
+
+    function layout(){
+      var rect = canvas.getBoundingClientRect();
+      W = Math.max(240, rect.width || 480);
+      H = Math.max(200, rect.height || 360);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W*dpr);
+      canvas.height = Math.round(H*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      vertical = W < 520;
+    }
+
+    function nodes(){
+      var n = leftLabels.length, left=[], right=[], hub={x:W/2,y:H/2};
+      if(vertical){
+        /* phone: stagger 5 labels into a 3 + 2 zigzag so no two ever share a row */
+        var pad = Math.max(30, W*0.08);
+        var usable = W - 2*pad;
+        var inTop = H*0.16, inBot = H*0.32;
+        var outBot = H*0.84, outTop = H*0.68;
+        var r1 = 0, r2 = 0, i;
+        for(i=0;i<n;i++){
+          if(i % 2 === 0){ left.push({x: pad + r1*(usable/2), y: inTop, label:leftLabels[i], row:1}); r1++; }
+          else { left.push({x: pad + usable/4 + r2*(usable/2), y: inBot, label:leftLabels[i], row:2}); r2++; }
+        }
+        r1 = 0; r2 = 0;
+        for(i=0;i<n;i++){
+          if(i % 2 === 0){ right.push({x: pad + r1*(usable/2), y: outBot, label:rightLabels[i], row:1}); r1++; }
+          else { right.push({x: pad + usable/4 + r2*(usable/2), y: outTop, label:rightLabels[i], row:2}); r2++; }
+        }
+      } else {
+        var padY = H*0.12;
+        for(var j=0;j<n;j++){ left.push({x: W*0.12, y: padY + j*(H-2*padY)/(n-1), label:leftLabels[j]}); }
+        for(j=0;j<n;j++){ right.push({x: W*0.88, y: padY + j*(H-2*padY)/(n-1), label:rightLabels[j]}); }
       }
-      update() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < 0 || this.x > W) this.vx *= -1;
-        if (this.y < 0 || this.y > H) this.vy *= -1;
-        const d = Math.hypot(this.x - mouse.x, this.y - mouse.y);
-        this.act += (Math.max(0, 1 - d / (CONNECT_R * .8)) - this.act) * .1;
-        if (this.act > .5 && Math.random() > .98 && this.conn.length)
-          this.pulses.push({ s: this, e: this.conn[Math.floor(Math.random() * this.conn.length)], p: 0 });
-        this.pulses = this.pulses.filter(p => p.p < 1);
-        this.pulses.forEach(p => p.p += .03);
+      return {left:left, right:right, hub:hub};
+    }
+
+    function bez(p0,p1,p2,t){
+      var mt = 1-t;
+      return { x: mt*mt*p0.x + 2*mt*t*p1.x + t*t*p2.x, y: mt*mt*p0.y + 2*mt*t*p1.y + t*t*p2.y };
+    }
+    function ctrl(a,b){
+      if(vertical) return {x:(a.x+b.x)/2, y:(a.y+b.y)/2};
+      return {x:(a.x+b.x)/2, y:(a.y+b.y)/2};
+    }
+
+    function drawCurve(a,b){
+      var c = ctrl(a,b);
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.quadraticCurveTo(c.x,c.y,b.x,b.y);
+      ctx.strokeStyle = 'rgba(38,48,73,.9)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+
+    function drawNode(p, align){
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle = '#8e98b3';
+      ctx.fill();
+      var fs = vertical ? 10 : 11;
+      ctx.font = '500 '+fs+'px "JetBrains Mono", ui-monospace, monospace';
+      ctx.fillStyle = '#e9edf6';
+      if(vertical){
+        ctx.textAlign = 'center';
+        var row = p.row || 1;
+        var offset;
+        if(align==='top'){ offset = row===1 ? -10 : 14; }
+        else { offset = row===1 ? 18 : -10; }
+        ctx.fillText(p.label, p.x, p.y + offset);
+      } else {
+        ctx.textAlign = align;
+        ctx.fillText(p.label, align==='left' ? p.x+9 : p.x-9, p.y+4);
       }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, 7);
-        ctx.fillStyle = `rgba(0,220,255,${Math.max(.2, this.act)})`;
-        ctx.fill();
-        this.pulses.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.s.x + (p.e.x - p.s.x) * p.p, p.s.y + (p.e.y - p.s.y) * p.p, 2.5, 0, 7);
-          ctx.fillStyle = 'rgba(255,255,255,.95)';
-          ctx.fill();
+    }
+
+    function drawHub(p){
+      var g = ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,34);
+      g.addColorStop(0,'rgba(77,124,255,.85)');
+      g.addColorStop(1,'rgba(77,124,255,0)');
+      ctx.beginPath(); ctx.arc(p.x,p.y,34,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x,p.y,10,0,Math.PI*2); ctx.fillStyle = '#4d7cff'; ctx.fill();
+      ctx.font = '800 11px Archivo, system-ui, sans-serif';
+      ctx.fillStyle = '#e9edf6';
+      ctx.textAlign = 'center';
+      ctx.fillText('Synthetic', p.x, p.y - 20);
+      ctx.fillText('M2M', p.x, p.y - 8);
+    }
+
+    function drawPulse(a,b,c,t,color){
+      var pt = bez(a,c,b,t);
+      var g = ctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,7);
+      g.addColorStop(0,color);
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(pt.x,pt.y,7,0,Math.PI*2); ctx.fillStyle = g; ctx.fill();
+      ctx.beginPath(); ctx.arc(pt.x,pt.y,2.2,0,Math.PI*2); ctx.fillStyle = color; ctx.fill();
+    }
+
+    function frame(now){
+      var n = nodes();
+      ctx.clearRect(0,0,W,H);
+      n.left.forEach(function(p){ drawCurve(p, n.hub); });
+      n.right.forEach(function(p){ drawCurve(n.hub, p); });
+      drawHub(n.hub);
+      n.left.forEach(function(p){ drawNode(p, vertical ? 'top' : 'left'); });
+      n.right.forEach(function(p){ drawNode(p, vertical ? 'bottom' : 'right'); });
+
+      var elapsed = (now - t0) / 1000;
+      var dur = 2.6;
+      n.left.forEach(function(p,i){
+        var t = ((elapsed / dur) + i/n.left.length) % 1;
+        drawPulse(p, n.hub, ctrl(p,n.hub), t, colors[i % colors.length]);
+      });
+      n.right.forEach(function(p,i){
+        var t = ((elapsed / dur) + 0.5 + i/n.right.length) % 1;
+        drawPulse(n.hub, p, ctrl(n.hub,p), t, colors[i % colors.length]);
+      });
+
+      if(running){ raf = requestAnimationFrame(frame); }
+    }
+
+    function staticFrame(){
+      layout();
+      var n = nodes();
+      ctx.clearRect(0,0,W,H);
+      n.left.forEach(function(p){ drawCurve(p, n.hub); });
+      n.right.forEach(function(p){ drawCurve(n.hub, p); });
+      drawHub(n.hub);
+      n.left.forEach(function(p){ drawNode(p, vertical ? 'top' : 'left'); });
+      n.right.forEach(function(p){ drawNode(p, vertical ? 'bottom' : 'right'); });
+      n.left.forEach(function(p,i){ drawPulse(p, n.hub, ctrl(p,n.hub), 0.5, colors[i % colors.length]); });
+      n.right.forEach(function(p,i){ drawPulse(n.hub, p, ctrl(n.hub,p), 0.5, colors[i % colors.length]); });
+    }
+
+    function start(){
+      layout();
+      if(reduced()){ staticFrame(); return; }
+      if(running) return;
+      running = true;
+      t0 = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+    function stop(){
+      running = false;
+      if(raf) cancelAnimationFrame(raf);
+      raf = null;
+    }
+
+    var ro = null;
+    if('ResizeObserver' in window){
+      ro = new ResizeObserver(function(){ layout(); if(!running) staticFrame(); });
+      ro.observe(canvas.parentElement || canvas);
+    } else {
+      window.addEventListener('resize', function(){ layout(); if(!running) staticFrame(); });
+    }
+
+    staticFrame();
+
+    canvas.__heroShow = function(){ start(); };
+    canvas.__heroHide = function(){ stop(); };
+
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ stop(); } else if(isVisible){ start(); }
+    });
+  })();
+
+  /* ---- film ---- */
+  (function(){
+    var video = qs('#d-film-video');
+    var toggle = qs('#d-filmtoggle');
+    var text = qs('#d-filmtext');
+    if(!video || !toggle) return;
+    var userPaused = false;
+    var onScreen = false;
+    function label(playing){
+      toggle.setAttribute('aria-label', playing ? 'Pause film' : 'Play film');
+      if(text) text.textContent = playing ? 'Pause' : 'Play';
+    }
+    function tryPlay(){
+      if(reduced() || userPaused || !onScreen || !isVisible) return;
+      var p = video.play();
+      if(p && p.catch) p.catch(function(){});
+      label(true);
+    }
+    function doPause(){ video.pause(); label(false); }
+    toggle.addEventListener('click', function(){
+      if(video.paused){ userPaused = false; tryPlay(); } else { userPaused = true; doPause(); }
+    });
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          onScreen = en.isIntersecting;
+          if(onScreen) tryPlay(); else doPause();
         });
+      }, {threshold:.5});
+      io.observe(video);
+    } else { onScreen = true; }
+    video.__filmShow = function(){ isVisible = true; if(onScreen) tryPlay(); };
+    video.__filmHide = function(){ isVisible = false; doPause(); };
+    if(reduced()) label(false);
+  })();
+
+  /* ---- brief builder ---- */
+  (function(){
+    var chips = qsa('#d-chips .d-chip');
+    var stages = qsa('#d-stage .d-stagebtn');
+    var notes = qs('#d-notes');
+    var subjectEl = qs('#d-subject');
+    var bodyEl = qs('#d-body');
+    if(!chips.length || !subjectEl || !bodyEl) return;
+
+    function selectedServices(){ return chips.filter(function(c){ return c.getAttribute('aria-pressed') === 'true'; }).map(function(c){ return c.dataset.label; }); }
+    function selectedStage(){ var s = stages.filter(function(b){ return b.getAttribute('aria-pressed') === 'true'; }); return s.length ? s[0].dataset.stage : ''; }
+
+    function build(){
+      var services = selectedServices();
+      var stage = selectedStage();
+      var note = (notes && notes.value || '').trim();
+      subjectEl.textContent = 'Project brief: ' + (services.length ? services.join(', ') : 'a project');
+      var lines = ['Hi,',''];
+      if(stage){ lines.push(stage); lines.push(''); }
+      if(services.length){ lines.push('We need: ' + services.join(', ') + '.'); }
+      else { lines.push('We are not sure yet which service fits. Tell us what is possible.'); }
+      lines.push('');
+      if(note){ lines.push(note); lines.push(''); }
+      lines.push('Please send a plan.');
+      bodyEl.textContent = lines.join('\n');
+    }
+
+    chips.forEach(function(c){
+      c.addEventListener('click', function(){
+        c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        build();
+      });
+    });
+    stages.forEach(function(b){
+      b.addEventListener('click', function(){
+        var was = b.getAttribute('aria-pressed') === 'true';
+        stages.forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed', was ? 'false' : 'true');
+        build();
+      });
+    });
+    if(notes) notes.addEventListener('input', build);
+    build();
+
+    function copyText(str, flagEl, btn, doneLabel){
+      function done(){
+        if(flagEl){ flagEl.textContent = 'Copied'; setTimeout(function(){ flagEl.textContent=''; }, 1800); }
+        if(btn){ var old = btn.textContent; btn.textContent = doneLabel || 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1800); }
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(str).then(done).catch(function(){
+          try{
+            var ta = document.createElement('textarea');
+            ta.value = str; ta.style.position='fixed'; ta.style.opacity='0';
+            document.body.appendChild(ta); ta.focus(); ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }catch(e){}
+          done();
+        });
+      } else {
+        try{
+          var ta2 = document.createElement('textarea');
+          ta2.value = str; ta2.style.position='fixed'; ta2.style.opacity='0';
+          document.body.appendChild(ta2); ta2.focus(); ta2.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta2);
+        }catch(e){}
+        done();
       }
     }
-    const nodes = Array.from({ length: N }, () => new Node());
-    const relink = () => nodes.forEach(a => {
-      a.conn = nodes.filter(b => b !== a && Math.hypot(a.x - b.x, a.y - b.y) < CONNECT_R);
-    });
-    relink();
-    setInterval(relink, 3000);
-    (function anim() {
-      ctx.fillStyle = `rgba(5,6,10,${TRAIL})`;
-      ctx.fillRect(0, 0, W, H);
-      nodes.forEach(a => a.conn.forEach(b => {
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0,220,255,${Math.max(.04, a.act, b.act) * .2})`;
-        ctx.stroke();
-      }));
-      nodes.forEach(n => { n.update(); n.draw(); });
-      requestAnimationFrame(anim);
-    })();
-  })();
 
-  // bento rows counter
-  (() => {
-    const el = document.getElementById('rowsnum');
-    if (!el) return;
-    let n = 4180;
-    setInterval(() => { n += Math.floor(Math.random() * 7 + 3); el.textContent = n.toLocaleString(); }, 400);
-  })();
-
-  // count-up stats
-  const countUp = el => {
-    if (el.dataset.done) return;
-    el.dataset.done = 1;
-    const target = +el.dataset.count, suf = el.dataset.suffix || '+';
-    const t0 = performance.now(), dur = 1400;
-    (function tick(t) {
-      const p = Math.min(1, (t - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * ease) + (p === 1 ? suf : '');
-      if (p < 1) requestAnimationFrame(tick);
-    })(t0);
-  };
-  if ('IntersectionObserver' in window) {
-    const cio = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { countUp(e.target); cio.unobserve(e.target); }
-    }), {threshold:.6});
-    document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
-    setTimeout(() => { if (!document.querySelector('.rv.in') || document.querySelectorAll('.rv.in').length === document.querySelectorAll('.rv').length) document.querySelectorAll('[data-count]').forEach(countUp); }, 1300);
-  } else { document.querySelectorAll('[data-count]').forEach(countUp); }
-
-  // spotlight follows cursor
-  document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-    c.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }));
-
-  // hero brand film: silent loop with a pause control; honours reduced motion; pauses off-screen
-  (() => {
-    const video = document.getElementById('filmVideo');
-    const btn = document.getElementById('filmToggle');
-    const errMsg = document.getElementById('filmError');
-    if (!video || !btn) return;
-
-    const PAUSE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
-    const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let userPaused = reduced; // reduced motion: stay on the poster until the visitor presses play
-    let onScreen = true;
-
-    const render = () => {
-      const playing = !video.paused;
-      btn.innerHTML = playing ? PAUSE_ICON : PLAY_ICON;
-      btn.setAttribute('aria-label', playing ? 'Pause the film' : 'Play the film');
-    };
-    const tryPlay = () => {
-      const p = video.play();
-      if (p && p.catch) p.catch(() => render()); // autoplay refused (e.g. low power mode): show the play button
-    };
-
-    if (reduced) { video.removeAttribute('autoplay'); video.pause(); }
-    render();
-
-    btn.addEventListener('click', () => {
-      if (video.paused) { userPaused = false; tryPlay(); }
-      else { userPaused = true; video.pause(); }
-    });
-    video.addEventListener('play', render);
-    video.addEventListener('pause', render);
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(es => es.forEach(e => {
-        onScreen = e.isIntersecting;
-        if (!onScreen && !video.paused) video.pause();
-        else if (onScreen && video.paused && !userPaused) tryPlay();
-      }), { threshold: .15 }).observe(video);
+    var copyBrief = qs('#d-copybrief');
+    if(copyBrief){
+      copyBrief.addEventListener('click', function(){
+        var full = 'To: sales@syntheticm2m.com\nSubject: ' + subjectEl.textContent + '\n\n' + bodyEl.textContent;
+        copyText(full, qs('#d-briefcopied'), copyBrief, 'Copied');
+      });
     }
-
-    // with <source> children a failed load fires 'error' on the last <source>, not on <video>
-    const sources = video.querySelectorAll('source');
-    // if the WebM fails to decode (some browsers), retry once with the MP4 before giving up
-    let triedMp4 = false;
-    const fallbackToMp4 = () => {
-      const mp4 = [...sources].find(el => /\.mp4(\?|$)/.test(el.src));
-      if (triedMp4 || !mp4 || video.currentSrc === mp4.src) return false;
-      triedMp4 = true;
-      video.src = mp4.src;
-      video.load();
-      if (!userPaused && onScreen) tryPlay();
-      return true;
-    };
-    const onLoadError = () => {
-      if (fallbackToMp4()) return;
-      btn.hidden = true;
-      if (errMsg) errMsg.hidden = false;
-    };
-    if (sources.length) sources[sources.length - 1].addEventListener('error', onLoadError);
-    video.addEventListener('error', onLoadError);
+    var copyEmail = qs('#d-copyemail');
+    if(copyEmail){
+      copyEmail.addEventListener('click', function(){
+        copyText('sales@syntheticm2m.com', qs('#d-emailcopied'), copyEmail, 'Copied');
+      });
+    }
   })();
+
+  /* ---- look show/hide wiring ---- */
+  function onShow(){
+    isVisible = true;
+    var c = qs('#d-hero-canvas');
+    if(c && c.__heroShow) c.__heroShow();
+    var v = qs('#d-film-video');
+    if(v && v.__filmShow) v.__filmShow();
+  }
+  function onHide(){
+    isVisible = false;
+    var c = qs('#d-hero-canvas');
+    if(c && c.__heroHide) c.__heroHide();
+    var v = qs('#d-film-video');
+    if(v && v.__filmHide) v.__filmHide();
+  }
+  window.addEventListener('look:show', function(e){ e.detail === 'd' ? onShow() : onHide(); });
+  if(document.documentElement.dataset.look === 'd') onShow();
+})();
 </script>
+
+</div>
 </body>
 </html>
