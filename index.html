@@ -130,45 +130,34 @@ img{max-width:100%}
 .lk-d .d-case__links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 .lk-d .d-case__links a{font-size:13.5px;color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
 .lk-d .d-case__links a:hover{border-color:var(--cobalt)}
+.lk-d .d-case__does{color:var(--muted);font-size:15.5px;margin-top:10px}
+/* work: real screenshots in a browser frame */
+.lk-d .d-browser{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--ink2)}
+.lk-d .d-browser__bar{display:flex;align-items:center;gap:6px;padding:9px 10px;background:#05070c}
+.lk-d .d-browser__dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.lk-d .d-browser__dot--r{background:var(--coral)}
+.lk-d .d-browser__dot--y{background:var(--sun)}
+.lk-d .d-browser__dot--g{background:var(--teal)}
+.lk-d .d-browser__addr{margin-left:6px;flex:1;min-width:0;font-family:var(--font-m);font-size:11px;color:var(--muted);background:var(--raised);border-radius:6px;padding:3px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-d .d-browser__img{display:block;width:100%;height:auto}
+/* work: app icon row for the app line case */
+.lk-d .d-applineup{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;padding:20px 6px}
+.lk-d .d-appicon{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:500}
+.lk-d .d-appicon img{width:72px;height:72px;border-radius:18px;border:1px solid var(--line);display:block}
 .lk-d .d-case__mock{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
-.lk-d .d-mock{width:100%;height:auto;display:block}
-.lk-d .d-mocklbl{font-size:10px}
 .lk-d .d-shipped{margin-top:52px}
 .lk-d .d-shipped h3{font-size:15px;color:var(--muted);font-weight:600;font-family:var(--font-m);text-transform:uppercase;letter-spacing:.08em}
 .lk-d .d-shipgrid{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .lk-d .d-shipitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
-.lk-d .d-shipitem b{font-size:14.5px;font-weight:600}
+.lk-d .d-shipitem b{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+.lk-d .d-shipicon{width:24px;height:24px;border-radius:6px;flex:none;display:block}
 .lk-d .d-badges{display:flex;flex-wrap:wrap;gap:6px}
 .lk-d .d-badge{font-family:var(--font-m);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 7px;text-decoration:none}
 .lk-d .d-badge:hover{color:var(--text);border-color:var(--cobalt)}
 .lk-d .d-badge--wip{color:var(--sun);border-color:rgba(255,197,61,.4)}
-/* numbers / charts */
-.lk-d .d-numgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
-.lk-d .d-chart{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}
-.lk-d .d-chart--wide{grid-column:1/-1}
-.lk-d .d-chart h3{font-size:16.5px;font-variation-settings:'wdth' 112}
-.lk-d .d-chart__wrap{overflow-x:auto;margin-top:16px}
-.lk-d .d-chart__wrap svg{display:block}
-.lk-d .d-chart figcaption{color:var(--muted);font-size:13px;margin-top:12px}
-.lk-d .d-mark{cursor:pointer}
 .lk-d .d-tip{position:fixed;transform:translate(-50%,-100%);background:#05070c;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:var(--font-m);font-size:12px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s ease;z-index:999;margin-top:-8px}
 .lk-d .d-tip.is-on{opacity:1}
-.lk-d .d-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--muted)}
-.lk-d .d-legend span{display:inline-flex;align-items:center;gap:6px}
-.lk-d .d-legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
 .lk-d .d-ringlbl{font-size:9.5px;fill:var(--muted)}
-.lk-d .d-gaugewrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.lk-d .d-chips-row{display:flex;flex-wrap:wrap;gap:8px}
-.lk-d .d-chip-stat{font-family:var(--font-m);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--text)}
-/* process */
-.lk-d .d-pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:8px}
-.lk-d .d-pipeline::before{content:'';position:absolute;top:20px;left:5%;right:5%;height:2px;background:var(--line);z-index:0}
-.lk-d .d-pipeline__pulse{position:absolute;top:19px;width:4px;height:4px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 8px 2px rgba(77,124,255,.8);animation:lkd-pulserun 5s linear infinite}
-.lk-d .d-step{position:relative;z-index:1;padding:0 10px;text-align:left}
-.lk-d .d-step__n{width:40px;height:40px;border-radius:50%;background:var(--raised);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);color:var(--cobalt);font-weight:500}
-.lk-d .d-step h3{font-size:15px;margin-top:14px}
-.lk-d .d-step p{color:var(--muted);font-size:13.5px;margin-top:6px}
-.lk-d .d-step--gauge{grid-column:span 1}
 /* industries */
 .lk-d .d-indgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .lk-d .d-indtile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
@@ -203,27 +192,13 @@ img{max-width:100%}
 .lk-d .d-footer__links a{text-decoration:none}
 .lk-d .d-footer__links a:hover{color:var(--text)}
 .lk-d .d-footer small{color:var(--muted);font-size:12px;display:block;margin-top:18px}
-/* reveal + keyframes */
-.lk-d [data-reveal]{opacity:1}
-.lk-d .lkd-draw{stroke-dasharray:100;stroke-dashoffset:0}
-.lk-d [data-reveal].lkd-seen .lkd-draw{animation:lkd-draw 1000ms ease forwards}
-.lk-d [data-reveal].lkd-seen .lkd-fade{animation:lkd-fade 700ms ease backwards}
-@keyframes lkd-draw{0%{stroke-dashoffset:100}100%{stroke-dashoffset:0}}
-@keyframes lkd-fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
-@keyframes lkd-pulserun{0%{left:5%;opacity:0}8%{opacity:1}92%{opacity:1}100%{left:95%;opacity:0}}
-@keyframes lkd-sweep{to{transform:rotate(360deg)}}
-.lk-d .d-sweep{animation:lkd-sweep 10s linear infinite;transform-origin:220px 220px}
-@media (prefers-reduced-motion:reduce){.lk-d .d-pipeline__pulse{animation:none;left:50%}.lk-d .d-sweep{animation:none}.lk-d [data-reveal].lkd-seen .lkd-draw,.lk-d [data-reveal].lkd-seen .lkd-fade{animation:none}}
 /* responsive */
 @media (max-width:980px){
 .lk-d .d-hero__grid{grid-template-columns:1fr}
 .lk-d .d-hero__visual{order:-1}
-.lk-d .d-numgrid{grid-template-columns:1fr}
 .lk-d .d-case{grid-template-columns:1fr}
 .lk-d .d-case--rev .d-case__text,.lk-d .d-case--rev .d-case__mock{order:0}
 .lk-d .d-brief{grid-template-columns:1fr}
-.lk-d .d-pipeline{grid-template-columns:repeat(3,1fr);row-gap:36px}
-.lk-d .d-pipeline::before{display:none}
 }
 @media (max-width:640px){
 .lk-d{font-size:15.5px}
@@ -233,7 +208,6 @@ img{max-width:100%}
 .lk-d .d-bento{grid-template-columns:1fr}
 .lk-d .d-card,.lk-d .d-card--sm{grid-column:span 1}
 .lk-d .d-shipgrid{grid-template-columns:1fr}
-.lk-d .d-pipeline{grid-template-columns:1fr 1fr}
 .lk-d .d-indgrid{grid-template-columns:1fr 1fr}
 .lk-d .d-hero__visual canvas{height:300px}
 }
@@ -262,7 +236,6 @@ img{max-width:100%}
     <ul class="d-navlinks">
       <li><a href="#d-services">Services</a></li>
       <li><a href="#d-work">Work</a></li>
-      <li><a href="#d-process">Process</a></li>
       <li><a href="#d-contact">Contact</a></li>
     </ul>
     <div class="d-nav__right">
@@ -273,7 +246,6 @@ img{max-width:100%}
   <div class="d-navpanel" id="d-navpanel" hidden>
     <a href="#d-services">Services</a>
     <a href="#d-work">Work</a>
-    <a href="#d-process">Process</a>
     <a href="#d-contact">Contact</a>
     <a class="d-btn d-btn--solid" href="#d-contact">Start a project</a>
   </div>
@@ -306,54 +278,6 @@ img{max-width:100%}
     <div><div class="d-proof__n">30+</div><div class="d-proof__l">Daily automations</div></div>
     <div><div class="d-proof__n">350+</div><div class="d-proof__l">Tickers tracked</div></div>
     <div><div class="d-proof__n">20</div><div class="d-proof__l">Languages in our apps</div></div>
-  </div>
-</section>
-
-<section class="d-section" id="d-services">
-  <div class="d-wrap">
-    <div class="d-head">
-      <p class="d-eyebrow">Services</p>
-      <h2 class="d-h2">Six ways we can help your business ship.</h2>
-      <p class="d-sub">Every service below is proven on a live product we built and run ourselves.</p>
-    </div>
-    <div class="d-bento">
-      <article class="d-card">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-mobile"></use></svg></div>
-        <h3 class="d-h3">Mobile apps &amp; games</h3>
-        <ul><li>iPhone and Android apps</li><li>Store listings</li><li>Launch</li></ul>
-        <p class="d-proofline">Proof: <a href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">4 apps on the App Store</a> <a href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">2 on Google Play</a></p>
-      </article>
-      <article class="d-card">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ai"></use></svg></div>
-        <h3 class="d-h3">AI assistants &amp; automation</h3>
-        <ul><li>Scheduled jobs</li><li>Browser automation</li><li>Document and letter drafting</li><li>Follow ups and back office work</li></ul>
-        <p class="d-proofline">Proof: <a href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">Autonomous Publisher</a> <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk letters</a> <a href="https://backofficefix.com" target="_blank" rel="noopener">BackofficeFix</a></p>
-      </article>
-      <article class="d-card d-card--sm">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-web"></use></svg></div>
-        <h3 class="d-h3">Web apps &amp; SaaS</h3>
-        <ul><li>Accounts and payments</li><li>Dashboards</li><li>Admin tools</li></ul>
-        <p class="d-proofline">Proof: <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk</a> <a href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Lingo Pairs web</a></p>
-      </article>
-      <article class="d-card d-card--sm">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-data"></use></svg></div>
-        <h3 class="d-h3">Data pipelines &amp; dashboards</h3>
-        <ul><li>Collect public data</li><li>Clean and rank it</li><li>Chart it and alert on it</li></ul>
-        <p class="d-proofline">Proof: <a href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">Alt-Data Signal Hub, 350+ tickers</a></p>
-      </article>
-      <article class="d-card d-card--sm">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ext"></use></svg></div>
-        <h3 class="d-h3">Browser extensions</h3>
-        <ul><li>Spec to store</li><li>Built and maintained</li></ul>
-        <p class="d-proofline">Proof: <a href="https://guardian.syntheticm2m.com" target="_blank" rel="noopener">Marketplace Guardian, Chrome Web Store</a></p>
-      </article>
-      <article class="d-card d-card--sm">
-        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-film"></use></svg></div>
-        <h3 class="d-h3">Brand film &amp; motion</h3>
-        <ul><li>Short product films</li><li>Animated graphics</li></ul>
-        <p class="d-proofline">Proof: <a href="#d-film">Our own 30 second brand film</a></p>
-      </article>
-    </div>
   </div>
 </section>
 
@@ -406,6 +330,54 @@ img{max-width:100%}
 </section>
 <div class="d-tip" id="d-tip" role="tooltip"></div>
 
+<section class="d-section" id="d-services">
+  <div class="d-wrap">
+    <div class="d-head">
+      <p class="d-eyebrow">Services</p>
+      <h2 class="d-h2">Six ways we can help your business ship.</h2>
+      <p class="d-sub">Every service below is proven on a live product we built and run ourselves.</p>
+    </div>
+    <div class="d-bento">
+      <article class="d-card">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-mobile"></use></svg></div>
+        <h3 class="d-h3">Mobile apps &amp; games</h3>
+        <ul><li>iPhone and Android apps</li><li>Store listings</li><li>Launch</li></ul>
+        <p class="d-proofline">Proof: <a href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">4 apps on the App Store</a> <a href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">2 on Google Play</a></p>
+      </article>
+      <article class="d-card">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ai"></use></svg></div>
+        <h3 class="d-h3">AI assistants &amp; automation</h3>
+        <ul><li>Scheduled jobs</li><li>Browser automation</li><li>Document and letter drafting</li><li>Follow ups and back office work</li></ul>
+        <p class="d-proofline">Proof: <a href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">Autonomous Publisher</a> <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk letters</a> <a href="https://backofficefix.com" target="_blank" rel="noopener">BackofficeFix</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-web"></use></svg></div>
+        <h3 class="d-h3">Web apps &amp; SaaS</h3>
+        <ul><li>Accounts and payments</li><li>Dashboards</li><li>Admin tools</li></ul>
+        <p class="d-proofline">Proof: <a href="https://vinbaba.com" target="_blank" rel="noopener">Arbitration Desk</a> <a href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Lingo Pairs web</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-data"></use></svg></div>
+        <h3 class="d-h3">Data pipelines &amp; dashboards</h3>
+        <ul><li>Collect public data</li><li>Clean and rank it</li><li>Chart it and alert on it</li></ul>
+        <p class="d-proofline">Proof: <a href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">Alt-Data Signal Hub, 350+ tickers</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-ext"></use></svg></div>
+        <h3 class="d-h3">Browser extensions</h3>
+        <ul><li>Spec to store</li><li>Built and maintained</li></ul>
+        <p class="d-proofline">Proof: <a href="https://guardian.syntheticm2m.com" target="_blank" rel="noopener">Marketplace Guardian, Chrome Web Store</a></p>
+      </article>
+      <article class="d-card d-card--sm">
+        <div class="d-icontile"><svg aria-hidden="true"><use href="#d-ic-film"></use></svg></div>
+        <h3 class="d-h3">Brand film &amp; motion</h3>
+        <ul><li>Short product films</li><li>Animated graphics</li></ul>
+        <p class="d-proofline">Proof: <a href="#d-film">Our own 30 second brand film</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section class="d-section" id="d-work">
   <div class="d-wrap">
     <div class="d-head">
@@ -418,6 +390,7 @@ img{max-width:100%}
       <div class="d-case__text">
         <p class="d-tag">Web apps &amp; SaaS</p>
         <h3>Arbitration Desk</h3>
+        <p class="d-case__does">For a used-car dealer, this checks an auction's arbitration offer against the auction's own written policy and shows exactly where it is wrong.</p>
         <dl>
           <dt>Problem</dt><dd>Used-car dealers get lowball arbitration offers from wholesale auctions.</dd>
           <dt>Built</dt><dd>A web tool that reads the deal paperwork, checks the offer against the auction's own published policy for that sale date, and writes a rebuttal letter in English and Spanish.</dd>
@@ -426,22 +399,13 @@ img{max-width:100%}
         <div class="d-case__links"><a href="https://vinbaba.com" target="_blank" rel="noopener">vinbaba.com</a></div>
       </div>
       <div class="d-case__mock">
-        <svg viewBox="0 0 300 220" class="d-mock" aria-hidden="true">
-          <rect x="30" y="14" width="240" height="192" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-          <rect x="52" y="40" width="120" height="10" rx="5" fill="var(--line)"/>
-          <rect x="52" y="62" width="196" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="76" width="196" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="90" width="150" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="112" width="196" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="126" width="196" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="140" width="120" height="6" rx="3" fill="var(--line)"/>
-          <rect x="52" y="164" width="46" height="20" rx="6" fill="rgba(77,124,255,.18)" stroke="var(--cobalt)"/>
-          <text x="75" y="178" text-anchor="middle" class="d-mocklbl">EN</text>
-          <rect x="104" y="164" width="46" height="20" rx="6" fill="rgba(34,211,176,.18)" stroke="var(--teal)"/>
-          <text x="127" y="178" text-anchor="middle" class="d-mocklbl">ES</text>
-          <circle cx="228" cy="174" r="14" fill="none" stroke="var(--coral)" stroke-width="2"/>
-          <path d="M221,174 l5,5 l9,-11" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <div class="d-browser">
+          <div class="d-browser__bar">
+            <span class="d-browser__dot d-browser__dot--r"></span><span class="d-browser__dot d-browser__dot--y"></span><span class="d-browser__dot d-browser__dot--g"></span>
+            <span class="d-browser__addr">vinbaba.com</span>
+          </div>
+          <img class="d-browser__img" src="media/work/arbitration-desk.jpg" width="1200" height="750" loading="lazy" alt="Arbitration Desk web tool showing an arbitration offer check screen for a used-car dealer">
+        </div>
       </div>
     </article>
 
@@ -449,6 +413,7 @@ img{max-width:100%}
       <div class="d-case__text">
         <p class="d-tag">Data pipelines &amp; dashboards</p>
         <h3>Alt-Data Signal Hub</h3>
+        <p class="d-case__does">For an investor or analyst, this pulls public market signals into one dashboard that refreshes itself every day.</p>
         <dl>
           <dt>Problem</dt><dd>Useful market signals are scattered across public sources.</dd>
           <dt>Built</dt><dd>A pipeline that fuses insider buying clusters, federal contract awards, short volume trends, severe weather alerts and news, ranked across 350+ tickers, with interactive charts.</dd>
@@ -457,18 +422,13 @@ img{max-width:100%}
         <div class="d-case__links"><a href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">altdata.syntheticm2m.com</a></div>
       </div>
       <div class="d-case__mock">
-        <svg viewBox="0 0 300 220" class="d-mock" aria-hidden="true">
-          <rect x="20" y="16" width="260" height="188" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-          <circle cx="42" cy="46" r="10" fill="none" stroke="var(--cobalt)"/><text x="42" y="50" text-anchor="middle" class="d-mocklbl">1</text>
-          <rect x="62" y="40" width="160" height="12" rx="3" fill="var(--cobalt)" opacity=".55"/>
-          <circle cx="42" cy="82" r="10" fill="none" stroke="var(--coral)"/><text x="42" y="86" text-anchor="middle" class="d-mocklbl">2</text>
-          <rect x="62" y="76" width="128" height="12" rx="3" fill="var(--coral)" opacity=".55"/>
-          <circle cx="42" cy="118" r="10" fill="none" stroke="var(--teal)"/><text x="42" y="122" text-anchor="middle" class="d-mocklbl">3</text>
-          <rect x="62" y="112" width="98" height="12" rx="3" fill="var(--teal)" opacity=".55"/>
-          <circle cx="42" cy="154" r="10" fill="none" stroke="var(--sun)"/><text x="42" y="158" text-anchor="middle" class="d-mocklbl">4</text>
-          <rect x="62" y="148" width="70" height="12" rx="3" fill="var(--sun)" opacity=".55"/>
-          <path d="M62,182 L100,170 L140,178 L180,160 L220,168 L250,150" fill="none" stroke="var(--cobalt)" stroke-width="2"/>
-        </svg>
+        <div class="d-browser">
+          <div class="d-browser__bar">
+            <span class="d-browser__dot d-browser__dot--r"></span><span class="d-browser__dot d-browser__dot--y"></span><span class="d-browser__dot d-browser__dot--g"></span>
+            <span class="d-browser__addr">altdata.syntheticm2m.com</span>
+          </div>
+          <img class="d-browser__img" src="media/work/altdata.jpg" width="1200" height="750" loading="lazy" alt="Alt-Data Signal Hub dashboard showing ticker signal counts, a source mix chart and the most active tickers">
+        </div>
       </div>
     </article>
 
@@ -476,6 +436,7 @@ img{max-width:100%}
       <div class="d-case__text">
         <p class="d-tag">Mobile apps &amp; games</p>
         <h3>The app line</h3>
+        <p class="d-case__does">Four small apps, each solving one problem for its own kind of user, all live and downloadable today.</p>
         <dl>
           <dt>Problem</dt><dd>Four different apps, four different audiences, one small studio.</dd>
           <dt>Built</dt><dd>A wingsuit language game with 20 languages, a matching card game with 20 languages you can play with friends, an offline flight computer for pilots, and a daily Spanish word game.</dd>
@@ -492,34 +453,12 @@ img{max-width:100%}
         </div>
       </div>
       <div class="d-case__mock">
-        <svg viewBox="0 0 300 190" class="d-mock" aria-hidden="true">
-          <g>
-            <rect x="8" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-            <path d="M24,60 L38,40 L52,60 L44,60 L44,100 L32,100 L32,60 Z" fill="var(--cobalt)"/>
-            <text x="38" y="152" text-anchor="middle" class="d-mocklbl">Fly</text>
-          </g>
-          <g>
-            <rect x="80" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-            <rect x="94" y="45" width="14" height="20" rx="2" fill="var(--coral)"/>
-            <rect x="112" y="45" width="14" height="20" rx="2" fill="var(--line)"/>
-            <rect x="94" y="70" width="14" height="20" rx="2" fill="var(--line)"/>
-            <rect x="112" y="70" width="14" height="20" rx="2" fill="var(--coral)"/>
-            <text x="110" y="152" text-anchor="middle" class="d-mocklbl">Pairs</text>
-          </g>
-          <g>
-            <rect x="152" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-            <circle cx="182" cy="60" r="16" fill="none" stroke="var(--teal)" stroke-width="2"/>
-            <line x1="182" y1="60" x2="182" y2="48" stroke="var(--teal)" stroke-width="2"/>
-            <line x1="182" y1="60" x2="191" y2="64" stroke="var(--teal)" stroke-width="2"/>
-            <text x="182" y="152" text-anchor="middle" class="d-mocklbl">Fly e6b</text>
-          </g>
-          <g>
-            <rect x="224" y="10" width="60" height="130" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-            <rect x="238" y="48" width="32" height="10" rx="2" fill="var(--sun)"/>
-            <rect x="238" y="62" width="20" height="10" rx="2" fill="var(--line)"/>
-            <text x="254" y="152" text-anchor="middle" class="d-mocklbl">Palabra</text>
-          </g>
-        </svg>
+        <div class="d-applineup">
+          <div class="d-appicon"><img src="media/work/icon-lingoflyer.png" width="256" height="256" loading="lazy" alt="LingoFlyer app icon"><span>LingoFlyer</span></div>
+          <div class="d-appicon"><img src="media/work/icon-lingopairs.png" width="256" height="256" loading="lazy" alt="Lingo Pairs app icon"><span>Lingo Pairs</span></div>
+          <div class="d-appicon"><img src="media/work/icon-crabwise.png" width="256" height="256" loading="lazy" alt="Crabwise app icon"><span>Crabwise</span></div>
+          <div class="d-appicon"><img src="media/work/icon-palabrazo.png" width="256" height="256" loading="lazy" alt="Palabrazo app icon"><span>Palabrazo</span></div>
+        </div>
       </div>
     </article>
 
@@ -527,6 +466,7 @@ img{max-width:100%}
       <div class="d-case__text">
         <p class="d-tag">AI assistants &amp; automation</p>
         <h3>Autonomous Publisher</h3>
+        <p class="d-case__does">For a business that needs to stay visible online, this writes and posts content every day without anyone touching it.</p>
         <dl>
           <dt>Problem</dt><dd>Staying visible online takes daily posting nobody has time for.</dd>
           <dt>Built</dt><dd>An always-on publisher that writes and posts daily and answers replies.</dd>
@@ -535,221 +475,29 @@ img{max-width:100%}
         <div class="d-case__links"><a href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">publisher.syntheticm2m.com</a></div>
       </div>
       <div class="d-case__mock">
-        <svg viewBox="0 0 300 190" class="d-mock" aria-hidden="true">
-          <rect x="20" y="10" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-          <circle cx="42" cy="33" r="10" fill="var(--cobalt)"/>
-          <rect x="60" y="24" width="130" height="7" rx="3" fill="var(--line)"/>
-          <rect x="60" y="37" width="90" height="7" rx="3" fill="var(--line)"/>
-          <rect x="20" y="66" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-          <circle cx="42" cy="89" r="10" fill="var(--teal)"/>
-          <rect x="60" y="80" width="150" height="7" rx="3" fill="var(--line)"/>
-          <rect x="60" y="93" width="110" height="7" rx="3" fill="var(--line)"/>
-          <rect x="20" y="122" width="260" height="46" rx="10" fill="var(--raised)" stroke="var(--line)"/>
-          <circle cx="42" cy="145" r="10" fill="var(--coral)"/>
-          <rect x="60" y="136" width="120" height="7" rx="3" fill="var(--line)"/>
-          <rect x="60" y="149" width="95" height="7" rx="3" fill="var(--line)"/>
-        </svg>
+        <div class="d-browser">
+          <div class="d-browser__bar">
+            <span class="d-browser__dot d-browser__dot--r"></span><span class="d-browser__dot d-browser__dot--y"></span><span class="d-browser__dot d-browser__dot--g"></span>
+            <span class="d-browser__addr">publisher.syntheticm2m.com</span>
+          </div>
+          <img class="d-browser__img" src="media/work/publisher.jpg" width="1200" height="750" loading="lazy" alt="Autonomous Publisher's public profile page showing its post history">
+        </div>
       </div>
     </article>
 
     <div class="d-shipped">
       <h3>More we've shipped</h3>
       <div class="d-shipgrid">
-        <div class="d-shipitem"><b>LingoFlyer</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">Google Play</a></div></div>
-        <div class="d-shipitem"><b>Lingo Pairs</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingo-pairs-language-game/id6797565158" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.vocabmatch" target="_blank" rel="noopener">Google Play</a><a class="d-badge" href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
-        <div class="d-shipitem"><b>Crabwise</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/crabwise-e6b-flight-computer/id6813311167" target="_blank" rel="noopener">App Store</a></div></div>
-        <div class="d-shipitem"><b>Palabrazo</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/palabrazo-spanish-word-game/id6811220066" target="_blank" rel="noopener">App Store</a></div></div>
+        <div class="d-shipitem"><b><img class="d-shipicon" src="media/work/icon-lingoflyer.png" width="24" height="24" loading="lazy" alt="">LingoFlyer</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingoflyer-language-game/id6805122226" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.lingoflyer" target="_blank" rel="noopener">Google Play</a></div></div>
+        <div class="d-shipitem"><b><img class="d-shipicon" src="media/work/icon-lingopairs.png" width="24" height="24" loading="lazy" alt="">Lingo Pairs</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/lingo-pairs-language-game/id6797565158" target="_blank" rel="noopener">App Store</a><a class="d-badge" href="https://play.google.com/store/apps/details?id=com.syntheticm2m.vocabmatch" target="_blank" rel="noopener">Google Play</a><a class="d-badge" href="https://lingopairs.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
+        <div class="d-shipitem"><b><img class="d-shipicon" src="media/work/icon-crabwise.png" width="24" height="24" loading="lazy" alt="">Crabwise</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/crabwise-e6b-flight-computer/id6813311167" target="_blank" rel="noopener">App Store</a></div></div>
+        <div class="d-shipitem"><b><img class="d-shipicon" src="media/work/icon-palabrazo.png" width="24" height="24" loading="lazy" alt="">Palabrazo</b><div class="d-badges"><a class="d-badge" href="https://apps.apple.com/us/app/palabrazo-spanish-word-game/id6811220066" target="_blank" rel="noopener">App Store</a></div></div>
         <div class="d-shipitem"><b>Arbitration Desk</b><div class="d-badges"><a class="d-badge" href="https://vinbaba.com" target="_blank" rel="noopener">Web</a></div></div>
         <div class="d-shipitem"><b>BackofficeFix</b><div class="d-badges"><a class="d-badge" href="https://backofficefix.com" target="_blank" rel="noopener">Web</a></div></div>
         <div class="d-shipitem"><b>Marketplace Guardian</b><div class="d-badges"><a class="d-badge" href="https://guardian.syntheticm2m.com" target="_blank" rel="noopener">Web</a><span class="d-badge">Chrome Web Store</span></div></div>
         <div class="d-shipitem"><b>Alt-Data Signal Hub</b><div class="d-badges"><a class="d-badge" href="https://altdata.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
         <div class="d-shipitem"><b>Autonomous Publisher</b><div class="d-badges"><a class="d-badge" href="https://publisher.syntheticm2m.com" target="_blank" rel="noopener">Web</a></div></div>
-        <div class="d-shipitem"><b>Teclita</b><div class="d-badges"><span class="d-badge d-badge--wip">In review</span></div></div>
       </div>
-    </div>
-  </div>
-</section>
-<section class="d-section d-section--deep">
-  <div class="d-wrap">
-    <div class="d-head">
-      <p class="d-eyebrow">By the numbers</p>
-      <h2 class="d-h2">The studio, measured.</h2>
-      <p class="d-sub">Every number below comes straight from what we actually ship and run.</p>
-    </div>
-    <div class="d-numgrid">
-
-      <figure class="d-chart d-chart--wide">
-        <h3>Nine live products, five months.</h3>
-        <div class="d-chart__wrap" data-reveal>
-          <svg viewBox="0 0 660 250" style="width:100%;height:auto" aria-hidden="true">
-            <defs>
-              <linearGradient id="d-c1fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#4d7cff" stop-opacity=".38"/>
-                <stop offset="1" stop-color="#4d7cff" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <line x1="50" y1="202" x2="610" y2="202" stroke="var(--line)"/>
-            <line x1="50" y1="148" x2="610" y2="148" stroke="var(--line)" stroke-dasharray="2 5"/>
-            <line x1="50" y1="94" x2="610" y2="94" stroke="var(--line)" stroke-dasharray="2 5"/>
-            <line x1="50" y1="40" x2="610" y2="40" stroke="var(--line)" stroke-dasharray="2 5"/>
-            <text x="40" y="206" text-anchor="end" font-size="11" fill="var(--muted)">0</text>
-            <text x="40" y="152" text-anchor="end" font-size="11" fill="var(--muted)">3</text>
-            <text x="40" y="98" text-anchor="end" font-size="11" fill="var(--muted)">6</text>
-            <text x="40" y="44" text-anchor="end" font-size="11" fill="var(--muted)">9</text>
-            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40 L610,202 L50,202 Z" fill="url(#d-c1fill)"/>
-            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40" fill="none" stroke="var(--cobalt)" stroke-width="5" opacity=".25" style="filter:blur(4px)"/>
-            <path d="M50,202 L190,202 L190,184 L330,184 L330,130 L470,130 L470,94 L610,94 L610,40" fill="none" stroke="var(--cobalt)" stroke-width="2.5" pathLength="100" class="lkd-draw"/>
-            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="May 2026: 0 live products. The studio's first month." cx="50" cy="202" r="5" fill="var(--cobalt)"/>
-            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Jun 2026: 1 live product. Launched Marketplace Guardian." cx="190" cy="184" r="5" fill="var(--cobalt)"/>
-            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Jul 2026: 4 live products. Launched Autonomous Publisher, Alt-Data Signal Hub and BackofficeFix." cx="330" cy="130" r="5" fill="var(--cobalt)"/>
-            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Aug 2026: 6 live products. Launched Arbitration Desk and LingoFlyer on Aug 31." cx="470" cy="94" r="5" fill="var(--cobalt)"/>
-            <circle class="d-mark lkd-fade" tabindex="0" role="img" aria-label="Sep 2026: 9 live products. Launched Lingo Pairs Sep 9, Crabwise Sep 23, Palabrazo Sep 26." cx="610" cy="40" r="6" fill="var(--cobalt)"/>
-            <text x="50" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">May</text>
-            <text x="190" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Jun</text>
-            <text x="330" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Jul</text>
-            <text x="470" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Aug</text>
-            <text x="610" y="222" text-anchor="middle" font-size="11" fill="var(--muted)">Sep</text>
-          </svg>
-        </div>
-        <figcaption>Cumulative live products at the end of each month, May to Sep 2026. Focus a dot for the month's launches.</figcaption>
-        <table class="d-sr"><caption>Live products by month end</caption><thead><tr><th>Month</th><th>Cumulative live products</th></tr></thead><tbody><tr><td>May 2026</td><td>0</td></tr><tr><td>Jun 2026</td><td>1</td></tr><tr><td>Jul 2026</td><td>4</td></tr><tr><td>Aug 2026</td><td>6</td></tr><tr><td>Sep 2026</td><td>9</td></tr></tbody></table>
-      </figure>
-
-      <figure class="d-chart">
-        <h3>Where it runs.</h3>
-        <div class="d-chart__wrap">
-          <svg viewBox="0 0 220 220" width="220" height="220" role="img" aria-label="Donut chart. 13 live listings across 4 platforms: Web 6, App Store 4, Google Play 2, Chrome Web Store 1.">
-            <circle cx="110" cy="110" r="70" fill="none" stroke="var(--line)" stroke-width="22"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="Web: 6 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--cobalt)" stroke-width="22" stroke-dasharray="202.99 439.82" stroke-dashoffset="0" transform="rotate(-90 110 110)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="App Store: 4 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--coral)" stroke-width="22" stroke-dasharray="135.33 439.82" stroke-dashoffset="-202.99" transform="rotate(-90 110 110)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="Google Play: 2 listings" cx="110" cy="110" r="70" fill="none" stroke="var(--teal)" stroke-width="22" stroke-dasharray="67.66 439.82" stroke-dashoffset="-338.32" transform="rotate(-90 110 110)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="Chrome Web Store: 1 listing" cx="110" cy="110" r="70" fill="none" stroke="var(--sun)" stroke-width="22" stroke-dasharray="33.83 439.82" stroke-dashoffset="-405.98" transform="rotate(-90 110 110)"/>
-            <text x="110" y="106" text-anchor="middle" font-size="30" font-weight="500">13</text>
-            <text x="110" y="126" text-anchor="middle" font-size="11" fill="var(--muted)">listings</text>
-          </svg>
-        </div>
-        <div class="d-legend">
-          <span><i style="background:var(--cobalt)"></i>Web 6</span>
-          <span><i style="background:var(--coral)"></i>App Store 4</span>
-          <span><i style="background:var(--teal)"></i>Google Play 2</span>
-          <span><i style="background:var(--sun)"></i>Chrome Web Store 1</span>
-        </div>
-        <figcaption>13 live listings across 4 platforms, from 9 products.</figcaption>
-      </figure>
-
-      <figure class="d-chart d-chart--wide">
-        <h3>30+ automations. Something runs every 5 minutes, all day.</h3>
-        <div class="d-chart__wrap" data-reveal>
-          <svg viewBox="0 0 440 440" style="width:100%;max-width:340px;height:auto;display:block;margin:0 auto" aria-hidden="true">
-            <circle cx="220" cy="220" r="60" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
-            <circle cx="220" cy="220" r="95" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
-            <circle cx="220" cy="220" r="130" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="1 5"/>
-            <line x1="220" y1="40" x2="220" y2="26" stroke="var(--line)"/><line x1="266.6" y1="46.1" x2="270.2" y2="32.6" stroke="var(--line)"/><line x1="310" y1="64.1" x2="317" y2="52" stroke="var(--line)"/><line x1="347.3" y1="92.7" x2="357.2" y2="82.8" stroke="var(--line)"/><line x1="375.9" y1="130" x2="388" y2="123" stroke="var(--line)"/><line x1="393.9" y1="173.4" x2="407.4" y2="169.8" stroke="var(--line)"/><line x1="400" y1="220" x2="414" y2="220" stroke="var(--line)"/><line x1="393.9" y1="266.6" x2="407.4" y2="270.2" stroke="var(--line)"/><line x1="375.9" y1="310" x2="388" y2="317" stroke="var(--line)"/><line x1="347.3" y1="347.3" x2="357.2" y2="357.2" stroke="var(--line)"/><line x1="310" y1="375.9" x2="317" y2="388" stroke="var(--line)"/><line x1="266.6" y1="393.9" x2="270.2" y2="407.4" stroke="var(--line)"/><line x1="220" y1="400" x2="220" y2="414" stroke="var(--line)"/><line x1="173.4" y1="393.9" x2="169.8" y2="407.4" stroke="var(--line)"/><line x1="130" y1="375.9" x2="123" y2="388" stroke="var(--line)"/><line x1="92.7" y1="347.3" x2="82.8" y2="357.2" stroke="var(--line)"/><line x1="64.1" y1="310" x2="52" y2="317" stroke="var(--line)"/><line x1="46.1" y1="266.6" x2="32.6" y2="270.2" stroke="var(--line)"/><line x1="40" y1="220" x2="26" y2="220" stroke="var(--line)"/><line x1="46.1" y1="173.4" x2="32.6" y2="169.8" stroke="var(--line)"/><line x1="64.1" y1="130" x2="52" y2="123" stroke="var(--line)"/><line x1="92.7" y1="92.7" x2="82.8" y2="82.8" stroke="var(--line)"/><line x1="130" y1="64.1" x2="123" y2="52" stroke="var(--line)"/><line x1="173.4" y1="46.1" x2="169.8" y2="32.6" stroke="var(--line)"/>
-            <text x="220" y="10" text-anchor="middle" font-size="10" fill="var(--muted)">0</text>
-            <text x="368.5" y="75.5" text-anchor="middle" font-size="10" fill="var(--muted)">3</text>
-            <text x="430" y="224" text-anchor="middle" font-size="10" fill="var(--muted)">6</text>
-            <text x="368.5" y="372.5" text-anchor="middle" font-size="10" fill="var(--muted)">9</text>
-            <text x="220" y="434" text-anchor="middle" font-size="10" fill="var(--muted)">12</text>
-            <text x="71.5" y="372.5" text-anchor="middle" font-size="10" fill="var(--muted)">15</text>
-            <text x="10" y="224" text-anchor="middle" font-size="10" fill="var(--muted)">18</text>
-            <text x="71.5" y="75.5" text-anchor="middle" font-size="10" fill="var(--muted)">21</text>
-            <g class="d-sweep"><line x1="220" y1="220" x2="220" y2="42" stroke="var(--cobalt)" stroke-width="2"/><circle cx="220" cy="42" r="4" fill="var(--cobalt)"/></g>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="00:00, market data" cx="220" cy="60" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="02:00, market data" cx="300" cy="81.4" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="06:00, market data" cx="380" cy="220" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="06:00, daily report, weekdays" cx="391" cy="220" r="4" fill="var(--sun)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="07:00, market data" cx="374.5" cy="261.4" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="07:30, market data, weekly" cx="367.8" cy="281.2" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="09:30, market data, weekly" cx="317.4" cy="346.9" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, app watchers" cx="300" cy="358.6" r="4" fill="var(--coral)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, market data, 2 jobs" cx="305.5" cy="368.1" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="10:00, market data, second job" cx="311" cy="377.6" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="10:15, app watchers" cx="290.8" cy="363.5" r="4" fill="var(--coral)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="10:15, market data, weekdays" cx="295.6" cy="373.4" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="12:30, market data, 2 jobs" cx="199.1" cy="378.6" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="12:30, market data, second job" cx="197.7" cy="389.5" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:00, market data" cx="178.6" cy="374.5" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:05, market data" cx="175.2" cy="373.6" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:10, market data" cx="171.9" cy="372.6" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:15, market data, 2 jobs" cx="168.6" cy="371.5" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:15, market data, second job" cx="165" cy="381.9" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="13:30, knowledge sync" cx="158.8" cy="367.8" r="4" fill="var(--teal)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="15:00, market data" cx="106.9" cy="333.1" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="15:30, market data" cx="93.1" cy="317.4" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="19:15, market data" cx="68.5" cy="168.6" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="20:00, market data" cx="81.4" cy="140" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="21:25, market data" cx="119.9" cy="95.2" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="21:30, market data" cx="122.6" cy="93.1" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="22:19, knowledge sync" cx="151.7" cy="75.3" r="4" fill="var(--teal)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="22:30, market data" cx="158.8" cy="72.2" r="4" fill="var(--cobalt)"/>
-            <circle class="d-mark" tabindex="0" role="img" aria-label="22:53, app watchers" cx="173.9" cy="66.8" r="4" fill="var(--coral)"/>
-          </svg>
-        </div>
-        <div class="d-legend">
-          <span><i style="background:var(--cobalt)"></i>Market data &amp; research</span>
-          <span><i style="background:var(--coral)"></i>App watchers</span>
-          <span><i style="background:var(--teal)"></i>Knowledge sync</span>
-          <span><i style="background:var(--sun)"></i>Daily report</span>
-        </div>
-        <figcaption>Our real fixed-time schedule, local time, plus 3 jobs every 5 minutes, 5 jobs every hour and 1 job every 2 hours on the inner rings. Focus a dot for its time.</figcaption>
-        <table class="d-sr"><caption>Fixed-time automation runs</caption><thead><tr><th>Time</th><th>Category</th></tr></thead><tbody><tr><td>00:00</td><td>Market data</td></tr><tr><td>02:00</td><td>Market data</td></tr><tr><td>06:00</td><td>Market data</td></tr><tr><td>06:00</td><td>Daily report, weekdays</td></tr><tr><td>07:00</td><td>Market data</td></tr><tr><td>07:30</td><td>Market data, weekly</td></tr><tr><td>09:30</td><td>Market data, weekly</td></tr><tr><td>10:00</td><td>App watchers</td></tr><tr><td>10:00</td><td>Market data x2</td></tr><tr><td>10:15</td><td>App watchers</td></tr><tr><td>10:15</td><td>Market data, weekdays</td></tr><tr><td>12:30</td><td>Market data x2</td></tr><tr><td>13:00</td><td>Market data</td></tr><tr><td>13:05</td><td>Market data</td></tr><tr><td>13:10</td><td>Market data</td></tr><tr><td>13:15</td><td>Market data x2</td></tr><tr><td>13:30</td><td>Knowledge sync</td></tr><tr><td>15:00</td><td>Market data</td></tr><tr><td>15:30</td><td>Market data</td></tr><tr><td>19:15</td><td>Market data</td></tr><tr><td>20:00</td><td>Market data</td></tr><tr><td>21:25</td><td>Market data</td></tr><tr><td>21:30</td><td>Market data</td></tr><tr><td>22:19</td><td>Knowledge sync</td></tr><tr><td>22:30</td><td>Market data</td></tr><tr><td>22:53</td><td>App watchers</td></tr></tbody></table>
-      </figure>
-
-      <figure class="d-chart">
-        <h3>4 launches in 27 days.</h3>
-        <div class="d-chart__wrap" data-reveal>
-          <svg viewBox="0 0 660 200" style="width:100%;height:auto" aria-hidden="true">
-            <line x1="40" y1="50" x2="40" y2="60" stroke="var(--muted)"/>
-            <line x1="620" y1="50" x2="620" y2="60" stroke="var(--muted)"/>
-            <line x1="40" y1="55" x2="620" y2="55" stroke="var(--muted)"/>
-            <text x="330" y="42" text-anchor="middle" font-size="12" fill="var(--muted)">27 days</text>
-            <line x1="40" y1="110" x2="620" y2="110" stroke="var(--cobalt)" stroke-width="2" pathLength="100" class="lkd-draw"/>
-            <g><line x1="40" y1="104" x2="40" y2="86" stroke="var(--line)"/><text x="40" y="80" text-anchor="middle" font-size="12">LingoFlyer</text><circle class="d-mark" tabindex="0" role="img" aria-label="Aug 31 2026: LingoFlyer launches on the App Store." cx="40" cy="110" r="6" fill="var(--cobalt)"/><text x="40" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Aug 31</text></g>
-            <g><line x1="241" y1="104" x2="241" y2="86" stroke="var(--line)"/><text x="241" y="80" text-anchor="middle" font-size="12">Lingo Pairs</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 9 2026: Lingo Pairs launches on the App Store." cx="241" cy="110" r="6" fill="var(--coral)"/><text x="241" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 9</text></g>
-            <g><line x1="553" y1="104" x2="553" y2="86" stroke="var(--line)"/><text x="553" y="80" text-anchor="middle" font-size="12">Crabwise</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 23 2026: Crabwise launches on the App Store." cx="553" cy="110" r="6" fill="var(--teal)"/><text x="553" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 23</text></g>
-            <g><line x1="620" y1="104" x2="620" y2="86" stroke="var(--line)"/><text x="600" y="80" text-anchor="middle" font-size="12">Palabrazo</text><circle class="d-mark" tabindex="0" role="img" aria-label="Sep 26 2026: Palabrazo launches on the App Store." cx="620" cy="110" r="6" fill="var(--sun)"/><text x="608" y="134" text-anchor="middle" font-size="11" fill="var(--muted)">Sep 26</text></g>
-          </svg>
-        </div>
-        <figcaption>4 App Store launches, Aug 31 to Sep 26, 2026, 27 days apart.</figcaption>
-        <table class="d-sr"><caption>App launch sprint</caption><thead><tr><th>Date</th><th>App</th></tr></thead><tbody><tr><td>Aug 31 2026</td><td>LingoFlyer</td></tr><tr><td>Sep 9 2026</td><td>Lingo Pairs</td></tr><tr><td>Sep 23 2026</td><td>Crabwise</td></tr><tr><td>Sep 26 2026</td><td>Palabrazo</td></tr></tbody></table>
-      </figure>
-
-    </div>
-  </div>
-</section>
-
-<section class="d-section" id="d-process">
-  <div class="d-wrap">
-    <div class="d-head">
-      <p class="d-eyebrow">Process</p>
-      <h2 class="d-h2">How we work. Literally.</h2>
-      <p class="d-sub">Six steps, every project, no exceptions.</p>
-    </div>
-    <div class="d-pipeline">
-      <div class="d-pipeline__pulse" style="animation-delay:0s"></div>
-      <div class="d-pipeline__pulse" style="animation-delay:1.7s"></div>
-      <div class="d-pipeline__pulse" style="animation-delay:3.4s"></div>
-      <div class="d-step"><div class="d-step__n">1</div><h3>Brief</h3><p>You describe the job in an email.</p></div>
-      <div class="d-step"><div class="d-step__n">2</div><h3>Clickable designs</h3><p>You get several working looks and pick one before we build.</p></div>
-      <div class="d-step"><div class="d-step__n">3</div><h3>Build</h3><p>In short rounds you can see.</p></div>
-      <div class="d-step d-step--gauge" data-reveal>
-        <div class="d-step__n">4</div><h3>Test gates</h3><p>Every screen size, every button clicked, every link opened, zero console errors.</p>
-        <div class="d-gaugewrap">
-          <svg viewBox="0 0 120 120" width="86" height="86" role="img" aria-label="Release test meter: 96 of 96 checks passed">
-            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--line)" stroke-width="10"/>
-            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--cobalt)" stroke-width="10" stroke-linecap="round" pathLength="100" class="lkd-draw" transform="rotate(-90 60 60)"/>
-            <text x="60" y="57" text-anchor="middle" font-size="17" font-weight="500">96/96</text>
-            <text x="60" y="72" text-anchor="middle" font-size="9" fill="var(--muted)">checks</text>
-          </svg>
-          <div class="d-chips-row">
-            <span class="d-chip-stat">3 widths</span>
-            <span class="d-chip-stat">0 errors</span>
-            <span class="d-chip-stat">13/13 links</span>
-          </div>
-        </div>
-      </div>
-      <div class="d-step"><div class="d-step__n">5</div><h3>Launch</h3><p>App Store, Google Play or the web.</p></div>
-      <div class="d-step"><div class="d-step__n">6</div><h3>Watch</h3><p>A watchdog checks live products every morning and alerts a phone within minutes.</p></div>
     </div>
   </div>
 </section>
@@ -848,7 +596,6 @@ Please send a plan.</div>
       <nav class="d-footer__links" aria-label="Footer">
         <a href="#d-services">Services</a>
         <a href="#d-work">Work</a>
-        <a href="#d-process">Process</a>
         <a href="#d-contact">Contact</a>
         <a href="/5-hour-audit/">5-Hour Audit</a>
       </nav>
@@ -880,24 +627,11 @@ Please send a plan.</div>
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
   })();
 
-  /* ---- reveal on view ---- */
-  (function(){
-    var els = qsa('[data-reveal]');
-    if(!els.length) return;
-    if(!('IntersectionObserver' in window)){ els.forEach(function(el){ el.classList.add('lkd-seen'); }); return; }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(en.isIntersecting){ en.target.classList.add('lkd-seen'); io.unobserve(en.target); }
-      });
-    }, {threshold:.3});
-    els.forEach(function(el){ io.observe(el); });
-  })();
-
   /* ---- tooltip ---- */
   (function(){
     var tip = qs('#d-tip');
     if(!tip) return;
-    var marks = qsa('.d-mark, .d-pill');
+    var marks = qsa('.d-pill');
     function show(el){
       var label = el.getAttribute('aria-label');
       if(!label) return;
