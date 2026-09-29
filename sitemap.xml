@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://syntheticm2m.com/</loc></url>
-  <url><loc>https://syntheticm2m.com/5-hour-audit/</loc></url>
-  <url><loc>https://syntheticm2m.com/buzz/</loc></url>
+  <url><loc>https://syntheticm2m.com/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/5-hour-audit/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/buzz/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/disaster-feed/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/govcon/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/app-development/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/business-automation/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://syntheticm2m.com/automatizacion-pymes-barranquilla/</loc><lastmod>2026-09-29</lastmod></url>
 </urlset>
