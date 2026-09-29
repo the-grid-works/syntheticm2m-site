@@ -166,7 +166,9 @@ img{max-width:100%}
 /* film */
 .lk-d .d-filmbox{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;background:#000}
 .lk-d .d-filmbox video{width:100%;height:100%;object-fit:cover;display:block}
-.lk-d .d-filmtoggle{position:absolute;left:18px;bottom:18px;background:rgba(10,13,19,.75);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13.5px;backdrop-filter:blur(6px)}
+.lk-d .d-filmtoggle{position:absolute;left:18px;bottom:18px;background:rgba(10,13,19,.75);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13.5px;backdrop-filter:blur(6px);cursor:pointer}
+.lk-d .d-filmsound{left:auto;right:18px}
+.lk-d .d-filmsound[aria-pressed="true"]{border-color:var(--teal);color:var(--teal)}
 /* contact */
 .lk-d .d-brief{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:0 0 0 1px rgba(77,124,255,.06),0 20px 60px rgba(77,124,255,.08);display:grid;grid-template-columns:1.1fr 1fr;gap:32px}
 .lk-d .d-field{margin-top:20px}
@@ -524,13 +526,20 @@ img{max-width:100%}
     <div class="d-head">
       <p class="d-eyebrow">See it in motion</p>
       <h2 class="d-h2">The studio, in 30 seconds.</h2>
-      <p class="d-sub">Dashboards, charts and shipped products. No sound needed.</p>
+      <p class="d-sub">Dashboards, charts and shipped products. Tap the speaker for the music.</p>
     </div>
     <div class="d-filmbox">
-      <video id="d-film-video" src="media/m2m-film-30.mp4" poster="media/m2m-film-30-poster.jpg" muted playsinline loop preload="metadata"></video>
+      <video id="d-film-video" poster="media/m2m-film-30-poster.jpg" muted playsinline loop preload="metadata">
+        <source src="media/m2m-film-30.webm" type="video/webm">
+        <source src="media/m2m-film-30.mp4" type="video/mp4">
+      </video>
       <button type="button" class="d-filmtoggle" id="d-filmtoggle" aria-label="Pause film">
         <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" id="d-filmicon"><path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/></svg>
         <span id="d-filmtext">Pause</span>
+      </button>
+      <button type="button" class="d-filmtoggle d-filmsound" id="d-filmsound" aria-label="Turn sound on" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path id="d-soundicon" d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z" fill="currentColor"/></svg>
+        <span id="d-soundtext">Sound</span>
       </button>
     </div>
   </div>
@@ -897,6 +906,19 @@ Please send a plan.</div>
     video.__filmShow = function(){ isVisible = true; if(onScreen) tryPlay(); };
     video.__filmHide = function(){ isVisible = false; doPause(); };
     if(reduced()) label(false);
+    var sound = qs('#d-filmsound');
+    var soundText = qs('#d-soundtext');
+    if(sound){
+      sound.addEventListener('click', function(){
+        var on = video.muted;
+        video.muted = !on;
+        sound.setAttribute('aria-pressed', on ? 'true' : 'false');
+        sound.setAttribute('aria-label', on ? 'Turn sound off' : 'Turn sound on');
+        if(soundText) soundText.textContent = on ? 'Mute' : 'Sound';
+        if(on){ video.currentTime = 0; userPaused = false; onScreen = true; var p = video.play(); if(p && p.catch) p.catch(function(){}); label(true); }
+      });
+      video.addEventListener('ended', function(){ /* loop attr keeps it going; nothing to do */ });
+    }
   })();
 
   /* ---- brief builder ---- */
